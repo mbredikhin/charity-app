@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Box, Paper, Typography } from '@mui/material';
 import { CatalogFilters, CatalogSearch, Requests } from '@/components';
 import CatalogService from '@/api/catalog.service.js';
@@ -38,7 +37,7 @@ const filterRequests = (requests, filters) =>
     )
   );
 
-export function Catalog({ layout }) {
+export function Catalog() {
   const [filters, setFilters] = useState(initialFilters);
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
@@ -103,14 +102,10 @@ export function Catalog({ layout }) {
               </Box>
             </Paper>
           ) : (
-            <Requests layout={layout} requests={filteredRequests} />
+            <Requests layout="vertical" requests={filteredRequests} />
           )}
         </Box>
       </Box>
     </div>
   );
 }
-
-Catalog.propTypes = {
-  layout: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
-};

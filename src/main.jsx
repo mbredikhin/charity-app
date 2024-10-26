@@ -11,7 +11,9 @@ import {
   NotFound,
   Playground,
   Catalog,
+  SignIn,
 } from './pages';
+import { PrivateRoute } from './components';
 import '@/assets/styles/index.scss';
 import { createTheme, ThemeProvider } from '@mui/material';
 
@@ -22,12 +24,16 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       {
+        path: '/login',
+        element: <SignIn />,
+      },
+      {
         path: '/profile',
-        element: <Profile />,
+        element: <PrivateRoute Component={Profile} />,
       },
       {
         path: '/posts',
-        element: <Posts />,
+        element: <PrivateRoute Component={Posts} />,
       },
       {
         path: '/playground',
@@ -35,14 +41,14 @@ const router = createBrowserRouter([
       },
       {
         path: '/catalog',
-        element: <Catalog />,
+        element: <PrivateRoute Component={Catalog} />,
       },
       { path: '*', element: <NotFound /> },
     ],
   },
 ]);
 
-const LightTheme = createTheme({
+const theme = createTheme({
   palette: {
     mode: 'light',
   },
@@ -51,7 +57,7 @@ const LightTheme = createTheme({
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={LightTheme}>
+      <ThemeProvider theme={theme}>
         <RouterProvider router={router} />
       </ThemeProvider>
     </Provider>

@@ -12,12 +12,16 @@ import Logo from '@/assets/images/logo.svg?react';
 import { ChevronRight } from '@mui/icons-material';
 import { HeaderMenu } from './HeaderMenu.jsx';
 import * as pt from 'prop-types';
+import { signOut } from '@/store';
+import { useDispatch } from 'react-redux';
 
 export const AppHeader = ({ isAuthenticated }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  function logout() {
-    // TODO: Add logout logic
+  async function logout() {
+    dispatch(signOut());
+    navigate('/login');
   }
 
   return (
@@ -52,7 +56,9 @@ export const AppHeader = ({ isAuthenticated }) => {
                 component="button"
                 onClick={() => navigate('/catalog')}
               >
-                <Typography variant="body1">Запросы о помощи</Typography>
+                {isAuthenticated ? (
+                  <Typography variant="body1">Запросы о помощи</Typography>
+                ) : null}
               </Link>
             </Box>
 
@@ -65,7 +71,7 @@ export const AppHeader = ({ isAuthenticated }) => {
                   variant="outlined"
                   size="large"
                   endIcon={<ChevronRight />}
-                  onClick={() => navigate('/sign-in')}
+                  onClick={() => navigate('/login')}
                 >
                   Войти
                 </Button>
