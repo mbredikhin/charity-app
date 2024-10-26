@@ -1,6 +1,15 @@
 import { Box } from '@mui/material';
-// import { MyComponent } from '@/components';
+// import { Requests } from '@/components';
 
 export function Playground() {
-  return <Box>{/* As for example: <MyComponent /> */}</Box>;
+  return (
+    <Box>
+      {/* <Requests
+        layout="horizontal"
+        requests={Array.from({ length: 100 }).map((_, index) => ({
+          id: String(index),
+        }))}
+      /> */}
+    </Box>
+  );
 }
