@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { store } from './store';
-import { Layout, Home, Profile, Posts, NotFound } from './pages';
+import { Layout, Home, Profile, Posts, NotFound, Playground } from './pages';
 import '@/assets/styles/index.scss';
 import { createTheme, ThemeProvider } from '@mui/material';
 
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: '/posts',
         element: <Posts />,
+      },
+      {
+        path: '/playground',
+        element: <Playground />,
       },
       { path: '*', element: <NotFound /> },
     ],
