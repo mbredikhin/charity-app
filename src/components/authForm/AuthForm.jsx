@@ -1,4 +1,5 @@
-import * as React from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
@@ -14,9 +15,10 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 
-export const AuthForm = ({ error = false }) => {
-  const [emailValidationError, setEmailValidationError] = React.useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
+export const AuthForm = ({ error }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
   const theme = useTheme();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -29,7 +31,14 @@ export const AuthForm = ({ error = false }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    console.log('Form submission prevented');
+  };
+
+  const handleLoginInputChange = (event) => {
+    setLogin(event.target.value);
+  };
+
+  const handlePassInputChange = (event) => {
+    setPassword(event.target.value);
   };
 
   return (
@@ -69,6 +78,7 @@ export const AuthForm = ({ error = false }) => {
             },
           }}
           sx={{ mb: 3 }}
+          onChange={handleLoginInputChange}
         />
 
         <FormControl fullWidth variant="outlined" sx={{ mb: 3 }}>
@@ -80,7 +90,7 @@ export const AuthForm = ({ error = false }) => {
             placeholder="Введите пароль"
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
-            // helperText={error ? 'Введите корректный пароль' : ''}
+            onChange={handlePassInputChange}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -89,6 +99,7 @@ export const AuthForm = ({ error = false }) => {
                   }
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
+                  onMouseUp={handleMouseUpPassword}
                   edge="end"
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -114,4 +125,8 @@ export const AuthForm = ({ error = false }) => {
       </Box>
     </Box>
   );
+};
+
+AuthForm.propTypes = {
+  error: PropTypes.bool,
 };
