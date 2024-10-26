@@ -15,7 +15,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 
-export const AuthForm = ({ error }) => {
+export const AuthForm = ({ error, onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -31,6 +31,7 @@ export const AuthForm = ({ error }) => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    onSubmit({ login, password });
   };
 
   const handleLoginInputChange = (event) => {
@@ -129,4 +130,5 @@ export const AuthForm = ({ error }) => {
 
 AuthForm.propTypes = {
   error: PropTypes.bool,
+  onSubmit: PropTypes.func,
 };

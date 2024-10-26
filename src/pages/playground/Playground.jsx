@@ -12,7 +12,13 @@ export function Playground() {
         }))}
       /> */}
       <Box sx={{ p: 2, border: '1px solid grey', width: 1 / 2 }}>
-        <AuthForm error={false} />
+        <AuthForm
+          error={false}
+          onSubmit={({ login, password }) => {
+            console.log(login);
+            console.log(password);
+          }}
+        />
         <AuthForm error={true} />
       </Box>
     </Box>
