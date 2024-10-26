@@ -9,11 +9,14 @@ const cx = classnames.bind(styles);
 export function Layout() {
   return (
     <div className={cx(['layout'])}>
-      <ToastContainer />
-      <AppHeader />
-      <main className={cx(['layout-main'])}>
+      <div className={cx(['layout__header'])}>
+        <AppHeader />
+      </div>
+      <main className={cx(['layout__main-content'])}>
         <Outlet />
+        <ToastContainer />
       </main>
+      <div className={cx(['layout__footer'])}>Footer is here</div>
     </div>
   );
 }

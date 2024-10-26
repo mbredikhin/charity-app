@@ -1,3 +1,15 @@
-.layout-main {
-  padding: 24px;
+.layout__header {
+  position: sticky;
+  top: 0;
+  height: 84px;
+  z-index: 100;
+}
+.layout__main-content {
+  position: sticky;
+  overflow-y: scroll;
+}
+.layout__footer {
+  position: relative;
+  bottom: 0;
+  height: 152px;
 }
