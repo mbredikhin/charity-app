@@ -3,6 +3,8 @@ import { Box, Paper, Typography } from '@mui/material';
 import { CatalogFilters, CatalogSearch, Requests } from '@/components';
 import CatalogService from '@/api/catalog.service.js';
 import ServerError from '@/assets/images/server-error.svg?react';
+import catalogService from '@/api/catalog.service.js';
+import { useNavigate } from 'react-router-dom';
 
 const initialFilters = {
   search: null,
@@ -17,24 +19,26 @@ const initialFilters = {
 
 const filtersPredicates = {
   search: (search, request) =>
+    search === null ||
     search.toLowerCase().includes(request.title.toLowerCase()),
   requesterType: (filterValue, request) =>
-    request.requesterType === filterValue,
-  helpType: (filterValue, request) => request.helpType === filterValue,
+    request.requesterType === null || request.requesterType === filterValue,
+  helpType: (filterValue, request) =>
+    request.helpType === null || request.helpType === filterValue,
   helperRequirements: (entries, request) =>
     Object.entries(entries).every(
-      (key, value) => !value || value === request.helperRequirements[key]
+      ([key, value]) =>
+        value === null || value === request.helperRequirements[key]
     ),
-  endingDate: (filterValue, request) =>
-    !filterValue || filterValue < request.endingDate,
 };
 
 const filterRequests = (requests, filters) =>
   requests.filter((request) =>
-    Object.entries(filters).every(
-      (key, filterValue) =>
+    Object.entries(filters).every(([key, filterValue]) => {
+      return (
         filterValue === null || filtersPredicates[key](filterValue, request)
-    )
+      );
+    })
   );
 
 export function Catalog() {
@@ -43,10 +47,35 @@ export function Catalog() {
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  async function addRequestToFavourites(id) {
+    await catalogService.addRequestToFavourites(id);
+    const index = requests.findIndex((request) => request.id === id);
+    if (index !== -1) {
+      setRequests([
+        ...requests.slice(0, index),
+        { ...requests[index], isFavourite: true },
+        ...requests.slice(index + 1),
+      ]);
+    }
+  }
+
+  async function removeRequestFromFavourites(id) {
+    await catalogService.removeRequestFromFavourites(id);
+    const index = requests.findIndex((request) => request.id === id);
+    if (index !== -1) {
+      setRequests([
+        ...requests.slice(0, index),
+        { ...requests[index], isFavourite: false },
+        ...requests.slice(index + 1),
+      ]);
+    }
+  }
 
   function changeFilters(payload) {
     setFilters({ ...filters, ...payload });
-    setFilteredRequests(filterRequests(requests));
+    setFilteredRequests(filterRequests(requests, filters));
   }
 
   const fetchCatalog = useCallback(async () => {
@@ -55,7 +84,7 @@ export function Catalog() {
       setLoading(true);
       const requests = await CatalogService.getCatalog();
       setRequests(requests);
-      setFilteredRequests(filterRequests(requests));
+      setFilteredRequests(filterRequests(requests, filters));
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -102,7 +131,20 @@ export function Catalog() {
               </Box>
             </Paper>
           ) : (
-            <Requests layout="vertical" requests={filteredRequests} />
+            <Paper
+              variant="outlined"
+              sx={{
+                padding: '20px',
+              }}
+            >
+              <Requests
+                layout="vertical"
+                requests={filteredRequests}
+                onAddRequestToFavourites={addRequestToFavourites}
+                onRemoveRequestFromFavourites={removeRequestFromFavourites}
+                onDonate={(id) => navigate(`/catalog/${id}`)}
+              />
+            </Paper>
           )}
         </Box>
       </Box>

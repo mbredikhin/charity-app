@@ -9,7 +9,6 @@ import {
   Profile,
   Posts,
   NotFound,
-  Playground,
   Catalog,
   SignIn,
   Request,
@@ -35,10 +34,6 @@ const router = createBrowserRouter([
       {
         path: '/posts',
         element: <PrivateRoute Component={Posts} />,
-      },
-      {
-        path: '/playground',
-        element: <Playground />,
       },
       {
         path: '/catalog',

@@ -4,6 +4,7 @@ import styles from './Requests.module.scss';
 import classnames from 'classnames/bind';
 import { Pagination } from '@mui/material';
 import { useCallback, useEffect, useReducer, useState } from 'react';
+import { RequestCard } from '../requestCard/RequestCard';
 const cx = classnames.bind(styles);
 
 const PAGINATION_LIMIT = 3;
@@ -36,11 +37,6 @@ export function Requests({
   });
   const [filteredRequests, setFilteredRequests] = useState([]);
 
-  useEffect(() => {
-    changePage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requests]);
-
   const changePage = useCallback(
     (page) => {
       updatePagination({ type: 'set_page', payload: { page } });
@@ -54,12 +50,37 @@ export function Requests({
     [requests, pagination.from, pagination.to]
   );
 
+  useEffect(() => {
+    changePage(1);
+  }, [changePage, filteredRequests]);
+
   return (
     <div className={cx('requests-wrapper')}>
       <div className={cx(['requests', `requests--${layout}`])}>
         {filteredRequests.map((request) => (
-          // TODO: Use Request component
-          <div key={request.id}>{request.id}</div>
+          <RequestCard
+            view="large"
+            key={request.id}
+            id={request.id}
+            title={request.title}
+            organization={request.organization.title}
+            goalDescription={request.goalDescription}
+            endingDate={request.endingDate}
+            locationCity={request.location.city}
+            locationDistrict={request.location.district}
+            isHelpOnline={request.helperRequirements.isOnline}
+            contributorsCount={request.contributorsCount}
+            requestGoal={request.requestGoal}
+            requestGoalCurrentValue={request.requestGoalCurrentValue}
+            isFavourite={request.isFavourite}
+            requesterType={request.requesterType}
+            helpType={request.helpType}
+            addToFavourite={() => onAddRequestToFavourites(request.id)}
+            removeFromFavourites={() =>
+              onRemoveRequestFromFavourites(request.id)
+            }
+            onDonate={() => onDonate(request.id)}
+          />
         ))}
       </div>
       <Pagination

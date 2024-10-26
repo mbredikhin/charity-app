@@ -46,7 +46,7 @@ export const AppHeader = ({ isAuthenticated }) => {
             }}
           >
             <Box sx={{ cursor: 'pointer' }}>
-              <Logo onClick={() => navigate('/')} />
+              <Logo onClick={() => navigate('/profile')} />
             </Box>
 
             <Box display="flex" justifyContent="center">

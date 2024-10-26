@@ -10,6 +10,7 @@ import { PrivateRoute } from './privateRoute/PrivateRoute';
 import { Contacts } from './contacts/Contacts';
 import { AppFooter } from './appFooter/AppFooter';
 import { Request } from './request/Request';
+import { RequestCard } from './requestCard/RequestCard';
 
 export {
   AppHeader,
@@ -24,4 +25,5 @@ export {
   PrivateRoute,
   AppFooter,
   Request,
+  RequestCard,
 };
