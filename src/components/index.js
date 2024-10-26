@@ -8,6 +8,7 @@ import { CatalogSearch } from './catalog/CatalogSearch';
 import { Accounts } from './accounts/Accounts';
 import { PrivateRoute } from './privateRoute/PrivateRoute';
 import { Contacts } from './contacts/Contacts';
+import { AppFooter } from './appFooter/AppFooter';
 
 export {
   AppHeader,
@@ -20,4 +21,5 @@ export {
   Accounts,
   Contacts,
   PrivateRoute,
+  AppFooter,
 };

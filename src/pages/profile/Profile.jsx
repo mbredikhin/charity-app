@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { fetchProfile } from '@/store';
-import { Contacts } from '@/components';
+import { Contacts, ProfileCard } from '@/components';
 
 // {
 //   "id": "user-id-1",
@@ -87,17 +87,7 @@ export function Profile() {
             gap: '20px',
           }}
         >
-          <Paper
-            variant="outlined"
-            sx={{
-              padding: '10px 36px',
-              height: '425px',
-            }}
-          ></Paper>
-          {/* <ProfileCard
-            name={`${profile.name} ${profile.lastName}`}
-            status={profile.status}
-          /> */}
+          <ProfileCard profile={profile} />
           <Paper
             variant="outlined"
             sx={{

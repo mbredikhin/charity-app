@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { updateIsAuthenticated } from '@/store';
 import apiService from '@/api/api.service';
+import { AppFooter } from '@/components';
 const cx = classnames.bind(styles);
 
 export function Layout() {
@@ -43,7 +44,9 @@ export function Layout() {
         <Outlet />
         <ToastContainer />
       </main>
-      <div className={cx(['layout__footer'])}>Footer is here</div>
+      <div className={cx(['layout__footer'])}>
+        <AppFooter />
+      </div>
     </div>
   );
 }

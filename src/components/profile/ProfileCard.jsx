@@ -1,23 +1,52 @@
 import PropTypes from 'prop-types';
-import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  Typography,
+} from '@mui/material';
 
-export function ProfileCard({ profile, loading }) {
+import { signOut } from '@/store';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import PersonIcon from '@/assets/images/PersonRounded.svg?react';
+
+export function ProfileCard({ profile }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  async function logout() {
+    dispatch(signOut());
+    navigate('/login');
+  }
+
   return (
-    <Card variant="outlined" style={{ minWidth: '250px' }}>
-      <CardContent>
-        <Typography variant="h6">Profile</Typography>
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <>
-            <Typography variant="body2">Name: {profile.name}</Typography>
-            <Typography variant="body2">
-              Username: {profile.username}
-            </Typography>
-            <Typography variant="body2">Email: {profile.email}</Typography>
-          </>
-        )}
+    <Card sx={{ width: '320px', height: '425px' }} variant="outlined">
+      <PersonIcon />
+      <Divider />
+      <CardContent height="320" sx={{ padding: '20px', marginBottom: '5px' }}>
+        <Typography gutterBottom variant="h6" component="div">
+          {`${profile?.name} ${profile?.name}`}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: '5px' }}>
+          <Typography variant="subtitle2">{`Статус:`} </Typography>
+          <Typography variant="body2">{`${profile?.status}`}</Typography>
+        </Box>
       </CardContent>
+      <CardActions sx={{ padding: '20px' }}>
+        <Button
+          size="large"
+          variant="outlined"
+          color="inherit"
+          sx={{ width: '280px', height: '42px' }}
+          onClick={logout}
+        >
+          ВЫЙТИ ИЗ АККАУНТА
+        </Button>
+      </CardActions>
     </Card>
   );
 }
