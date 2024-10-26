@@ -8,15 +8,16 @@ import {
   InputLabel,
   InputAdornment,
   IconButton,
+  FormHelperText,
   Button,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
 
-export const AuthFrom = () => {
+export const AuthForm = ({ error = false }) => {
   const [emailValidationError, setEmailValidationError] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
-
-  // Logic for pass inputs
+  const theme = useTheme();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -26,22 +27,40 @@ export const AuthFrom = () => {
     event.preventDefault();
   };
 
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    console.log('Form submission prevented');
+  };
+
   return (
-    <Box sx={{ px: 4, py: 8 }}>
+    <Box component="section" sx={{ px: 4, py: 8 }}>
       <Typography variant="h1" sx={{ fontSize: 'h4.fontSize', mb: 10 }}>
         Авторизация
       </Typography>
       <Typography variant="h2" sx={{ fontSize: 'h5.fontSize', mb: 3 }}>
         Вход
       </Typography>
-      <Box component="form" sx={{ width: '75%' }} noValidate autoComplete="off">
+      <Box
+        component="form"
+        sx={{ width: '75%' }}
+        onSubmit={handleFormSubmit}
+        noValidate
+        autoComplete="off"
+      >
         <TextField
           id="login-input"
           label="Логин"
           type="text"
           placeholder="Введите e-mail"
           helperText={
-            emailValidationError ? 'Введите корректный email-адрес' : ''
+            error ? (
+              <span style={{ color: theme.palette.error.main }}>
+                {' '}
+                {'Введите корректный email-адрес'}
+              </span>
+            ) : (
+              ''
+            )
           }
           fullWidth
           slotProps={{
@@ -52,16 +71,6 @@ export const AuthFrom = () => {
           sx={{ mb: 3 }}
         />
 
-        {/* MORE CUSTOMIZABLE INPUT STRUCTURE*/}
-        {/* <FormControl>
-          <InputLabel htmlFor="component-outlined">Name</InputLabel>
-          <OutlinedInput
-            id="component-outlined"
-            defaultValue="Composed TextField"
-            label="Name"
-          />
-        </FormControl> */}
-        {/* ------------------ FIRST PASS */}
         <FormControl fullWidth variant="outlined" sx={{ mb: 3 }}>
           <InputLabel htmlFor="outlined-adornment-password" shrink>
             Пароль
@@ -71,6 +80,7 @@ export const AuthFrom = () => {
             placeholder="Введите пароль"
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
+            // helperText={error ? 'Введите корректный пароль' : ''}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -87,6 +97,11 @@ export const AuthFrom = () => {
             }
             label="Password"
           />
+          {error && (
+            <FormHelperText sx={{ color: theme.palette.error.main }}>
+              {'Введите корректный пароль'}
+            </FormHelperText>
+          )}{' '}
         </FormControl>
         <Button
           variant="contained"
