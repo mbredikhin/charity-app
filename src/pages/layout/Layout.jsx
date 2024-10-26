@@ -7,10 +7,12 @@ import classnames from 'classnames/bind';
 const cx = classnames.bind(styles);
 
 export function Layout() {
+  const isAuthenticated = true;
+
   return (
     <div className={cx(['layout'])}>
       <div className={cx(['layout__header'])}>
-        <AppHeader />
+        <AppHeader isAuthenticated={isAuthenticated} />
       </div>
       <main className={cx(['layout__main-content'])}>
         <Outlet />
