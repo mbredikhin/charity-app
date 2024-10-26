@@ -8,6 +8,7 @@ import {
   InputLabel,
   InputAdornment,
   IconButton,
+  Button,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
@@ -61,13 +62,13 @@ export const AuthFrom = () => {
           />
         </FormControl> */}
         {/* ------------------ FIRST PASS */}
-        <FormControl fullWidth variant="outlined">
+        <FormControl fullWidth variant="outlined" sx={{ mb: 3 }}>
           <InputLabel htmlFor="outlined-adornment-password" shrink>
-            Password
+            Пароль
           </InputLabel>
           <OutlinedInput
             notched
-            placeholder="Введите e-mail"
+            placeholder="Введите пароль"
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
             endAdornment={
@@ -87,6 +88,14 @@ export const AuthFrom = () => {
             label="Password"
           />
         </FormControl>
+        <Button
+          variant="contained"
+          size="large"
+          type="submit"
+          sx={{ width: '100%' }}
+        >
+          Войти
+        </Button>
       </Box>
     </Box>
   );
