@@ -2,7 +2,6 @@ import {
   AppBar,
   Box,
   Button,
-  IconButton,
   Link,
   Paper,
   Toolbar,
@@ -22,8 +21,8 @@ export const AppHeader = ({ isAuthenticated }) => {
   }
 
   return (
-    <AppBar position="static">
-      <Paper elevation={2}>
+    <AppBar sx={{ borderRadius: 0 }} elevation={2} position="static">
+      <Paper sx={{ borderRadius: 0 }} elevation={0}>
         <Box
           sx={{
             display: 'flex',
@@ -42,14 +41,8 @@ export const AppHeader = ({ isAuthenticated }) => {
               height: '64px',
             }}
           >
-            <Box>
-              <IconButton
-                size="small"
-                color="inherit"
-                onClick={() => navigate('/')}
-              >
-                <Logo />
-              </IconButton>
+            <Box sx={{ cursor: 'pointer' }}>
+              <Logo onClick={() => navigate('/')} />
             </Box>
 
             <Box display="flex" justifyContent="center">

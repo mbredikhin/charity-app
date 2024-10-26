@@ -14,7 +14,12 @@ export function Layout() {
       <div className={cx(['layout__header'])}>
         <AppHeader isAuthenticated={isAuthenticated} />
       </div>
-      <main className={cx(['layout__main-content'])}>
+      <main
+        className={cx([
+          'layout__main-content',
+          isAuthenticated ? 'layout__main-content--authorized' : null,
+        ])}
+      >
         <Outlet />
         <ToastContainer />
       </main>
