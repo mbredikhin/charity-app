@@ -1,16 +1,72 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Alert } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import { fetchProfile } from '@/store';
-import { ProfileCard } from '@/components';
-import styles from './Profile.module.scss';
-import classnames from 'classnames/bind';
-const cx = classnames.bind(styles);
 
+// {
+//   "id": "user-id-1",
+//   "name": "Александр",
+//   "lastName": "Иванов",
+//   "birthdate": "1950-07-23",
+//   "status": "Начинающий",
+//   "baseLocations": [
+//     {
+//       "latitude": 40.712776,
+//       "longitude": -74.005974,
+//       "district": "Центральный",
+//       "city": "Москва"
+//     }
+//   ],
+//   "educations": [
+//     {
+//       "organizationName": "МГУ",
+//       "level": "Среднее общее",
+//       "specialization": "Филология",
+//       "graduationYear": 1980
+//     }
+//   ],
+//   "additionalInfo": "Дополнительная информация о пользователе.",
+//   "contacts": {
+//     "email": "user@example.com",
+//     "phone": "+123456789",
+//     "social": {
+//       "telegram": "@user",
+//       "whatsapp": "+123456789",
+//       "vk": "user_vk_id"
+//     }
+//   },
+//   "favouriteRequests": [
+//     "string"
+//   ]
+// }
 export function Profile() {
-  const profile = useSelector((state) => state.profile.profile);
-  const loading = useSelector((state) => state.profile.loading);
-  const error = useSelector((state) => state.profile.error);
+  const tabs = [
+    {
+      label: 'Личные данные',
+      component: <div>ProfilePersonalInfo</div>,
+      // component: <ProfilePersonalInfo profile={profile} />,
+    },
+    {
+      label: 'Контакты',
+      component: <div>ProfileContacts</div>,
+      // component: <ProfilePersonalInfo contacts={profile.contacts} />,
+    },
+    {
+      label: 'Избранное',
+      component: <div>ProfileFavourites</div>,
+      // component: <ProfileFavourites favourites={profile.favouriteRequests} />,
+    },
+  ];
+  const [tabIndex, setTabIndex] = useState(0);
+  // const { profile, loading } = useSelector((state) => state.profile);
+  const { loading } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,11 +74,61 @@ export function Profile() {
   }, [dispatch]);
 
   return (
-    <div className={cx(['profile'])}>
-      {error ? (
-        <Alert severity="warning">{error}</Alert>
+    <div>
+      <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+        Мой профиль
+      </Typography>
+      {loading ? (
+        <CircularProgress />
       ) : (
-        <ProfileCard profile={profile} loading={loading} />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 4fr',
+            gap: '20px',
+          }}
+        >
+          <Paper
+            variant="outlined"
+            sx={{
+              padding: '10px 36px',
+              height: '425px',
+            }}
+          ></Paper>
+          {/* <ProfileCard
+            name={`${profile.name} ${profile.lastName}`}
+            status={profile.status}
+          /> */}
+          <Paper
+            variant="outlined"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '30px',
+              padding: '10px 36px',
+              minHeight: '982px',
+            }}
+          >
+            <Box
+              sx={{
+                maxWidth: 'fit-content',
+                display: 'inline-flex',
+                borderBottom: 1,
+                borderColor: 'divider',
+              }}
+            >
+              <Tabs
+                value={tabIndex}
+                onChange={(_, index) => setTabIndex(index)}
+              >
+                {tabs.map((tab, index) => (
+                  <Tab key={index} label={tab.label} />
+                ))}
+              </Tabs>
+            </Box>
+            <Box>{tabs[tabIndex].component}</Box>
+          </Paper>
+        </Box>
       )}
     </div>
   );
