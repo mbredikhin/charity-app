@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { fetchProfile } from '@/store';
+import { Contacts } from '@/components';
 
 // {
 //   "id": "user-id-1",
@@ -47,6 +48,7 @@ import { fetchProfile } from '@/store';
 //   ]
 // }
 export function Profile() {
+  const { profile, loading } = useSelector((state) => state.profile);
   const tabs = [
     {
       label: 'Личные данные',
@@ -55,8 +57,7 @@ export function Profile() {
     },
     {
       label: 'Контакты',
-      component: <div>ProfileContacts</div>,
-      // component: <ProfilePersonalInfo contacts={profile.contacts} />,
+      component: <Contacts contacts={profile.contacts} />,
     },
     {
       label: 'Избранное',
@@ -65,8 +66,6 @@ export function Profile() {
     },
   ];
   const [tabIndex, setTabIndex] = useState(0);
-  // const { profile, loading } = useSelector((state) => state.profile);
-  const { loading } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
 
   useEffect(() => {

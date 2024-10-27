@@ -7,6 +7,7 @@ import { CatalogFilters } from './catalog/CatalogFilters';
 import { CatalogSearch } from './catalog/CatalogSearch';
 import { Accounts } from './accounts/Accounts';
 import { PrivateRoute } from './privateRoute/PrivateRoute';
+import { Contacts } from './contacts/Contacts';
 
 export {
   AppHeader,
@@ -17,5 +18,6 @@ export {
   CatalogSearch,
   AuthForm,
   Accounts,
+  Contacts,
   PrivateRoute,
 };
