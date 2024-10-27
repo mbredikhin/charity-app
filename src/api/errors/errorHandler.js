@@ -1,10 +1,21 @@
+import { toast } from 'react-toastify';
+
 export class ServerErrorHandler {
   canHandle(error) {
     return error.response && error.response.status === 500;
   }
 
   async handle() {
-    // handle error
+    toast.error('Ошибка! Попробуйте еще раз', {
+      position: 'bottom-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    });
   }
 }
 
