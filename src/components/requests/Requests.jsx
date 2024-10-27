@@ -22,10 +22,9 @@ function paginationReducer(state, action) {
 export function Requests({
   requests,
   layout,
-  // TODO: Use Request component
-  // onAddRequestToFavourites,
-  // onRemoveRequestFromFavourites,
-  // onDonate,
+  onAddRequestToFavourites,
+  onRemoveRequestFromFavourites,
+  onDonate,
 }) {
   const [pagination, updatePagination] = useReducer(paginationReducer, {
     page: 1,
@@ -66,7 +65,7 @@ export function Requests({
       <Pagination
         color="primary"
         size="large"
-        boundaryCount={pagination.pagesCount}
+        boundaryCount={3}
         count={pagination.pagesCount}
         onChange={(_, page) => changePage(page)}
       />
@@ -77,8 +76,7 @@ export function Requests({
 Requests.propTypes = {
   requests: pt.arrayOf(RequestType).isRequired,
   layout: pt.oneOf(['vertical', 'horizontal']).isRequired,
-  // TODO: Use Request component
-  // onAddRequestToFavourites: pt.func.isRequired,
-  // onRemoveRequestFromFavourites: pt.func.isRequired,
-  // onDonate: pt.func.isRequired,
+  onAddRequestToFavourites: pt.func.isRequired,
+  onRemoveRequestFromFavourites: pt.func.isRequired,
+  onDonate: pt.func.isRequired,
 };
