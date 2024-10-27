@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-export function PersonalData({ data }) {
+export function PersonalData({ profile }) {
   const {
     lastName,
     name,
@@ -8,7 +8,7 @@ export function PersonalData({ data }) {
     baseLocations,
     educations,
     additionalInfo,
-  } = data;
+  } = profile;
   const bigFontProps = { fontWeight: 500, fontSize: 20, lineHeight: 2.5 };
   const smallRegularFontProps = {
     display: 'inline',
