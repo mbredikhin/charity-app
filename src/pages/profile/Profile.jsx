@@ -9,7 +9,12 @@ import {
   Typography,
 } from '@mui/material';
 import { fetchProfile } from '@/store';
-import { Contacts, ProfileCard, Requests } from '@/components';
+import {
+  Contacts,
+  ProfileCard,
+  Requests,
+  ProfilePersonalInfo,
+} from '@/components';
 import catalogService from '@/api/catalog.service';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,8 +62,7 @@ export function Profile() {
   const tabs = [
     {
       label: 'Личные данные',
-      component: <div>ProfilePersonalInfo</div>,
-      // component: <ProfilePersonalInfo profile={profile} />,
+      component: <ProfilePersonalInfo profile={profile} />,
     },
     {
       label: 'Контакты',
