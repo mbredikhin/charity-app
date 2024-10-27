@@ -1,0 +1,7 @@
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.main-content__authForm {
+  border-right: 1px solid #e0e0e0;
+}

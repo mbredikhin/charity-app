@@ -4,7 +4,6 @@ import { errorHandler } from './errors/errorHandler';
 class ApiService {
   http = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
   });
 
   constructor() {

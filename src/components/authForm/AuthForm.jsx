@@ -15,7 +15,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 
-export const AuthForm = ({ error, onSubmit }) => {
+export const AuthForm = ({ loading, error, onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -35,100 +35,114 @@ export const AuthForm = ({ error, onSubmit }) => {
   };
 
   const handleLoginInputChange = (event) => {
-    setLogin(event.target.value);
+    setLogin(event.target.value.trim());
   };
 
   const handlePassInputChange = (event) => {
-    setPassword(event.target.value);
+    setPassword(event.target.value.trim());
   };
 
   return (
-    <Box component="section" sx={{ px: 4, py: 8 }}>
-      <Typography variant="h1" sx={{ fontSize: 'h4.fontSize', mb: 10 }}>
-        Авторизация
-      </Typography>
-      <Typography variant="h2" sx={{ fontSize: 'h5.fontSize', mb: 3 }}>
-        Вход
-      </Typography>
+    <Box
+      component="section"
+      sx={{
+        display: 'grid',
+        gap: '90px',
+        padding: '64px 40px',
+      }}
+    >
+      <Typography variant="h4">Авторизация</Typography>
       <Box
-        component="form"
-        sx={{ width: '75%' }}
-        onSubmit={handleFormSubmit}
-        noValidate
-        autoComplete="off"
+        sx={{
+          display: 'grid',
+          gap: '30px',
+        }}
       >
-        <TextField
-          id="login-input"
-          label="Логин"
-          type="text"
-          placeholder="Введите e-mail"
-          helperText={
-            error ? (
-              <span style={{ color: theme.palette.error.main }}>
-                {' '}
-                {'Введите корректный email-адрес'}
-              </span>
-            ) : (
-              ''
-            )
-          }
-          fullWidth
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-          }}
-          sx={{ mb: 3 }}
-          onChange={handleLoginInputChange}
-        />
-
-        <FormControl fullWidth variant="outlined" sx={{ mb: 3 }}>
-          <InputLabel htmlFor="outlined-adornment-password" shrink>
-            Пароль
-          </InputLabel>
-          <OutlinedInput
-            notched
-            placeholder="Введите пароль"
-            id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            onChange={handlePassInputChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label={
-                    showPassword ? 'hide the password' : 'display the password'
-                  }
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  onMouseUp={handleMouseUpPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-          />
-          {error && (
-            <FormHelperText sx={{ color: theme.palette.error.main }}>
-              {'Введите корректный пароль'}
-            </FormHelperText>
-          )}{' '}
-        </FormControl>
-        <Button
-          variant="contained"
-          size="large"
-          type="submit"
-          sx={{ width: '100%' }}
+        <Typography variant="h5">Вход</Typography>
+        <Box
+          component="form"
+          sx={{ width: '75%' }}
+          onSubmit={handleFormSubmit}
+          noValidate
+          autoComplete="off"
         >
-          Войти
-        </Button>
+          <TextField
+            id="login-input"
+            label="Логин"
+            type="text"
+            placeholder="Введите e-mail"
+            helperText={
+              error ? (
+                <span style={{ color: theme.palette.error.main }}>
+                  {' '}
+                  {'Введите корректный email-адрес'}
+                </span>
+              ) : (
+                ''
+              )
+            }
+            fullWidth
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+            sx={{ mb: 3 }}
+            onChange={handleLoginInputChange}
+          />
+
+          <FormControl fullWidth variant="outlined" sx={{ mb: 3 }}>
+            <InputLabel htmlFor="outlined-adornment-password" shrink>
+              Пароль
+            </InputLabel>
+            <OutlinedInput
+              notched
+              placeholder="Введите пароль"
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              onChange={handlePassInputChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword
+                        ? 'hide the password'
+                        : 'display the password'
+                    }
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+            {error && (
+              <FormHelperText sx={{ color: theme.palette.error.main }}>
+                {'Введите корректный пароль'}
+              </FormHelperText>
+            )}{' '}
+          </FormControl>
+          <Button
+            variant="contained"
+            size="large"
+            type="submit"
+            disabled={loading}
+            sx={{ width: '100%', marginTop: '15px' }}
+          >
+            Войти
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
 };
 
 AuthForm.propTypes = {
+  loading: PropTypes.bool,
   error: PropTypes.bool,
   onSubmit: PropTypes.func,
 };
