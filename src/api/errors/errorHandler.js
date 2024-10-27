@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import apiService from '../api.service';
 
 export class ServerErrorHandler {
   canHandle(error) {
@@ -19,7 +20,19 @@ export class ServerErrorHandler {
   }
 }
 
-let handlers = [new ServerErrorHandler()];
+export class ForbiddenErrorHandler {
+  canHandle(error) {
+    return error.response && error.response.status === 403;
+  }
+
+  async handle() {
+    apiService.removeHeader('Authorization');
+    localStorage.removeItem('token');
+    window.location.replace('/login');
+  }
+}
+
+let handlers = [new ServerErrorHandler(), new ForbiddenErrorHandler()];
 
 export const errorHandler = async (error) => {
   for await (let handler of handlers) {

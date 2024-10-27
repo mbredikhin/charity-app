@@ -9,6 +9,7 @@ import { Accounts } from './accounts/Accounts';
 import { PrivateRoute } from './privateRoute/PrivateRoute';
 import { Contacts } from './contacts/Contacts';
 import { AppFooter } from './appFooter/AppFooter';
+import { Request } from './request/Request';
 
 export {
   AppHeader,
@@ -22,4 +23,5 @@ export {
   Contacts,
   PrivateRoute,
   AppFooter,
+  Request,
 };

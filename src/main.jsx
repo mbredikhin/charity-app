@@ -12,6 +12,7 @@ import {
   Playground,
   Catalog,
   SignIn,
+  Request,
 } from './pages';
 import { PrivateRoute } from './components';
 import '@/assets/styles/index.scss';
@@ -41,7 +42,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/catalog',
-        element: <PrivateRoute Component={Catalog} />,
+        children: [
+          { index: true, element: <PrivateRoute Component={Catalog} /> },
+          {
+            path: ':requestId',
+            element: <PrivateRoute Component={Request} />,
+          },
+        ],
       },
       { path: '*', element: <NotFound /> },
     ],
