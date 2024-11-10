@@ -52,7 +52,7 @@ export function Requests({
 
   useEffect(() => {
     changePage(1);
-  }, [changePage, filteredRequests]);
+  }, [changePage]);
 
   return (
     <div className={cx('requests-wrapper')}>

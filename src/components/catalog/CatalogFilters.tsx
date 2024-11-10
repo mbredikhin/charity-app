@@ -12,15 +12,24 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import styles from './CatalogFilters.module.scss';
+import classnames from 'classnames/bind';
+import { get, set, xor } from '@/utils/common';
+const cx = classnames.bind(styles);
 
 interface CatalogFilters {
-  requesterType: 'person' | 'organization' | null;
-  helpType: 'finance' | 'material' | null;
+  requesterType: ('person' | 'organization')[];
+  helpType: ('finance' | 'material')[];
   helperRequirements: {
-    helperType: 'group' | 'single' | null;
-    isOnline: boolean | null;
-    qualification: 'professional' | 'common' | null;
+    helperType: ('group' | 'single')[];
+    isOnline: boolean[];
+    qualification: ('professional' | 'common')[];
   };
+}
+
+interface FilterSchema {
+  label: string;
+  value: string | boolean;
 }
 
 interface CatalogFiltersProps {
@@ -29,83 +38,104 @@ interface CatalogFiltersProps {
   onReset: () => void;
 }
 
+const filtersSchema: Record<
+  string,
+  Record<string, FilterSchema[]> | FilterSchema[]
+> = {
+  requesterType: [
+    {
+      label: 'Пенсионеры',
+      value: 'person',
+    },
+    {
+      label: 'Дома престарелых',
+      value: 'organization',
+    },
+  ],
+  helpType: [
+    {
+      label: 'Вещи',
+      value: 'material',
+    },
+    {
+      label: 'Финансирование',
+      value: 'finance',
+    },
+  ],
+  helperRequirements: {
+    qualification: [
+      {
+        label: 'Квалифицированная',
+        value: 'professional',
+      },
+      {
+        label: 'Не требует профессии',
+        value: 'common',
+      },
+    ],
+    isOnline: [
+      {
+        label: 'Онлайн',
+        value: true,
+      },
+      {
+        label: 'Офлайн',
+        value: false,
+      },
+    ],
+    helperType: [
+      {
+        label: 'Группа',
+        value: 'group',
+      },
+      {
+        label: 'Один',
+        value: 'single',
+      },
+    ],
+  },
+};
+
 export function CatalogFilters({
   filters,
   onChange,
   onReset,
 }: CatalogFiltersProps) {
+  function changeFilter(path: string, value: string | boolean) {
+    set(filters, path, xor(get(filters, path), [value]));
+    onChange(filters);
+  }
+
+  function renderFilters(path: string) {
+    return get(filtersSchema, path).map(({ label, value }, index) => (
+      <FormControlLabel
+        key={index}
+        label={label}
+        control={
+          <Checkbox
+            checked={get(filters, path).includes(value)}
+            onChange={() => changeFilter(path, value)}
+          />
+        }
+      />
+    ));
+  }
+
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        padding: '20px',
-        display: 'grid',
-        gap: '20px',
-      }}
-    >
+    <Paper variant="outlined" className={cx('catalog-filters')}>
       <Typography variant="h6">Фильтрация</Typography>
 
       <FormControl component="fieldset" variant="standard">
         <FormLabel component="legend">Кому мы помогаем</FormLabel>
         <FormGroup sx={{ paddingLeft: '10px' }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={filters.requesterType === 'person'}
-                onChange={(event) =>
-                  onChange({
-                    requesterType: event.target.checked ? 'person' : null,
-                  })
-                }
-              />
-            }
-            label="Пенсионеры"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={filters.requesterType === 'organization'}
-                onChange={(event) =>
-                  onChange({
-                    requesterType: event.target.checked ? 'organization' : null,
-                  })
-                }
-              />
-            }
-            label="Дома престарелых"
-          />
+          {renderFilters('requesterType')}
         </FormGroup>
       </FormControl>
 
       <FormControl component="fieldset" variant="standard">
         <FormLabel component="legend">Чем мы помогаем</FormLabel>
         <FormGroup sx={{ paddingLeft: '10px' }}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={filters.helpType === 'material'}
-                onChange={(event) =>
-                  onChange({
-                    helpType: event.target.checked ? 'material' : null,
-                  })
-                }
-              />
-            }
-            label="Вещи"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={filters.helpType === 'finance'}
-                onChange={(event) =>
-                  onChange({
-                    helpType: event.target.checked ? 'finance' : null,
-                  })
-                }
-              />
-            }
-            label="Финансирование"
-          />
+          {renderFilters('helpType')}
         </FormGroup>
       </FormControl>
 
@@ -116,148 +146,33 @@ export function CatalogFilters({
           border: 'none',
         }}
       >
-        <AccordionSummary
-          sx={{
-            border: '1px solid #00000010',
-            paddingLeft: '42px',
-          }}
-        >
+        <AccordionSummary className={cx('catalog-filters-form__title')}>
           <Typography variant="body1">Волонтерство</Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ padding: 0 }}>
           <Paper
             variant="outlined"
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-              padding: '8px 16px 16px 42px',
-              background: '#F5F5F5',
-              border: 'none',
-            }}
+            className={cx([
+              'catalog-filters-form',
+              'catalog-filters-form--secondary',
+            ])}
           >
             <FormControl component="fieldset" variant="standard">
               <FormLabel component="legend">Специализация</FormLabel>
               <FormGroup sx={{ paddingLeft: '10px' }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={
-                        filters.helperRequirements.qualification ===
-                        'professional'
-                      }
-                      onChange={(event) =>
-                        onChange({
-                          helperRequirements: {
-                            ...filters.helperRequirements,
-                            qualification: event.target.checked
-                              ? 'professional'
-                              : null,
-                          },
-                        })
-                      }
-                    />
-                  }
-                  label="Квалифицированная"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={
-                        filters.helperRequirements.qualification === 'common'
-                      }
-                      onChange={(event) =>
-                        onChange({
-                          helperRequirements: {
-                            ...filters.helperRequirements,
-                            qualification: event.target.checked
-                              ? 'common'
-                              : null,
-                          },
-                        })
-                      }
-                    />
-                  }
-                  label="Не требует профессии"
-                />
+                {renderFilters('helperRequirements.qualification')}
               </FormGroup>
             </FormControl>
             <FormControl component="fieldset" variant="standard">
               <FormLabel component="legend">Формат</FormLabel>
               <FormGroup sx={{ paddingLeft: '10px' }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={filters.helperRequirements.isOnline === true}
-                      onChange={(event) =>
-                        onChange({
-                          helperRequirements: {
-                            ...filters.helperRequirements,
-                            isOnline: event.target.checked ? true : null,
-                          },
-                        })
-                      }
-                    />
-                  }
-                  label="Онлайн"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={filters.helperRequirements.isOnline === false}
-                      onChange={(event) =>
-                        onChange({
-                          helperRequirements: {
-                            ...filters.helperRequirements,
-                            isOnline: event.target.checked ? false : null,
-                          },
-                        })
-                      }
-                    />
-                  }
-                  label="Офлайн"
-                />
+                {renderFilters('helperRequirements.isOnline')}
               </FormGroup>
             </FormControl>
             <FormControl component="fieldset" variant="standard">
               <FormLabel component="legend">Необходимо волонтеров</FormLabel>
               <FormGroup sx={{ paddingLeft: '10px' }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={
-                        filters.helperRequirements.helperType === 'group'
-                      }
-                      onChange={(event) =>
-                        onChange({
-                          helperRequirements: {
-                            ...filters.helperRequirements,
-                            helperType: event.target.checked ? 'group' : null,
-                          },
-                        })
-                      }
-                    />
-                  }
-                  label="Группа"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={
-                        filters.helperRequirements.helperType === 'single'
-                      }
-                      onChange={(event) =>
-                        onChange({
-                          helperRequirements: {
-                            ...filters.helperRequirements,
-                            helperType: event.target.checked ? 'single' : null,
-                          },
-                        })
-                      }
-                    />
-                  }
-                  label="Один"
-                />
+                {renderFilters('helperRequirements.helperType')}
               </FormGroup>
             </FormControl>
           </Paper>

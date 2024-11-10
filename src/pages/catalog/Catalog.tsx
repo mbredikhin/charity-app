@@ -5,44 +5,34 @@ import CatalogService from '@/api/catalog.service.js';
 import ServerError from '@/assets/images/server-error.svg?react';
 import catalogService from '@/api/catalog.service.js';
 import { useNavigate } from 'react-router-dom';
+import { flatten, get } from '@/utils/common';
 
-const initialFilters = {
-  search: null,
-  requesterType: null,
-  helpType: null,
+const getInitialFilters = () => ({
+  requesterType: [],
+  helpType: [],
   helperRequirements: {
-    helperType: null,
-    isOnline: null,
-    qualification: null,
+    helperType: [],
+    isOnline: [],
+    qualification: [],
   },
-};
+});
 
-const filtersPredicates = {
-  search: (search, request) =>
-    search === null ||
-    search.toLowerCase().includes(request.title.toLowerCase()),
-  requesterType: (filterValue, request) =>
-    request.requesterType === null || request.requesterType === filterValue,
-  helpType: (filterValue, request) =>
-    request.helpType === null || request.helpType === filterValue,
-  helperRequirements: (entries, request) =>
-    Object.entries(entries).every(
-      ([key, value]) =>
-        value === null || value === request.helperRequirements[key]
-    ),
-};
-
-const filterRequests = (requests, filters) =>
-  requests.filter((request) =>
-    Object.entries(filters).every(([key, filterValue]) => {
-      return (
-        filterValue === null || filtersPredicates[key](filterValue, request)
-      );
-    })
-  );
+function filterRequests(search, filters, requests) {
+  return requests.filter((request) => {
+    const isMatchedBySearch =
+      search === null ||
+      search.toLowerCase().includes(request.title.toLowerCase());
+    const isMatchedByFilters = Object.entries(flatten(filters)).every(
+      ([path, value]: [string, (string | boolean)[]]) =>
+        !value.length || value.includes(get(request, path))
+    );
+    return isMatchedBySearch && isMatchedByFilters;
+  });
+}
 
 export function Catalog() {
-  const [filters, setFilters] = useState(initialFilters);
+  const [search, setSearch] = useState('');
+  const [filters, setFilters] = useState(getInitialFilters());
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [loading, setLoading] = useState(null);
@@ -73,18 +63,13 @@ export function Catalog() {
     }
   }
 
-  function changeFilters(payload) {
-    setFilters({ ...filters, ...payload });
-    setFilteredRequests(filterRequests(requests, filters));
-  }
-
   const fetchCatalog = useCallback(async () => {
     try {
       setError(null);
       setLoading(true);
       const requests = await CatalogService.getCatalog();
-      setRequests(requests);
-      setFilteredRequests(filterRequests(requests, filters));
+      setRequests(requests as unknown as any[]);
+      setFilteredRequests(filterRequests(search, filters, requests));
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -92,8 +77,24 @@ export function Catalog() {
     }
   }, []);
 
+  function changeSearch(search: string) {
+    setSearch(search);
+    submit();
+  }
+
+  function changeFilters(filters) {
+    setFilters(filters);
+    submit();
+  }
+
   function resetFilters() {
-    changeFilters({ ...initialFilters, search: filters.search });
+    setFilters(getInitialFilters());
+    submit();
+  }
+
+  function submit() {
+    const filteredRequests = filterRequests(search, filters, requests);
+    setFilteredRequests(filteredRequests);
   }
 
   useEffect(() => {
@@ -116,7 +117,7 @@ export function Catalog() {
         <Box
           sx={{ display: 'grid', gridTemplateRows: '150px auto', gap: '20px' }}
         >
-          <CatalogSearch onChange={(search) => changeFilters({ search })} />
+          <CatalogSearch onChange={changeSearch} />
           {error && !loading ? (
             <Paper variant="outlined">
               <Box

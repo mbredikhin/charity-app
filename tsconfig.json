@@ -21,5 +21,10 @@
     },
     "types": ["node"]
   },
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/pages/catalog/Catalog.tsx"]
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.tsx",
+    "src/declaration.d.ts"
+  ]
 }

@@ -1,0 +1,22 @@
+.catalog-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 20px 30px;
+  height: fit-content;
+}
+.catalog-filters-form {
+  &--secondary {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 8px 16px 16px 42px;
+    background-color: #f5f5f5;
+    border: none;
+    border: none;
+  }
+}
+.catalog-filters-form__title {
+  border: 1px solid #00000010;
+  padding-left: 42px;
+}

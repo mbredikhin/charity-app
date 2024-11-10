@@ -14,7 +14,11 @@ import {
 } from './pages';
 import { PrivateRoute } from './components';
 import '@/assets/styles/index.scss';
-import { createTheme, ThemeProvider } from '@mui/material';
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider,
+} from '@mui/material';
 import { routes } from './utils/constants';
 
 const router = createBrowserRouter([
@@ -56,7 +60,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+        <StyledEngineProvider injectFirst>
+          <RouterProvider router={router} />
+        </StyledEngineProvider>
       </ThemeProvider>
     </Provider>
   </StrictMode>
