@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 import apiService from '../api.service';
+import { routes } from '@/utils/constants';
 
 export class ServerErrorHandler {
   canHandle(error) {
@@ -28,7 +29,7 @@ export class ForbiddenErrorHandler {
   async handle() {
     apiService.removeHeader('Authorization');
     localStorage.removeItem('token');
-    window.location.replace('/login');
+    window.location.replace(routes.login());
   }
 }
 

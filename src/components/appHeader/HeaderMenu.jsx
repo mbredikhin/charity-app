@@ -11,6 +11,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import * as pt from 'prop-types';
+import { routes } from '@/utils/constants';
 
 export const HeaderMenu = ({ onLogout }) => {
   const menuActivator = useRef(null);
@@ -53,7 +54,7 @@ export const HeaderMenu = ({ onLogout }) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => goTo('/profile')}>
+        <MenuItem onClick={() => goTo(routes.profile())}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>

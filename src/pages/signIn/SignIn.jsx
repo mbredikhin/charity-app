@@ -4,6 +4,7 @@ import { Accounts, AuthForm } from '@/components';
 import styles from './SignIn.module.scss';
 import classnames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
+import { routes } from '@/utils/constants';
 const cx = classnames.bind(styles);
 
 export function SignIn() {
@@ -15,7 +16,7 @@ export function SignIn() {
   async function signIn(data) {
     await dispatch(authorize(data))
       .unwrap()
-      .then(() => navigate('/profile'));
+      .then(() => navigate(routes.profile()));
   }
 
   return (

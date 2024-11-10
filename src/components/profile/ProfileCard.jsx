@@ -13,6 +13,7 @@ import { signOut } from '@/store';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PersonIcon from '@/assets/images/PersonRounded.svg?react';
+import { routes } from '@/utils/constants';
 
 export function ProfileCard({ profile }) {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export function ProfileCard({ profile }) {
 
   async function logout() {
     dispatch(signOut());
-    navigate('/login');
+    navigate(routes.login());
   }
 
   return (

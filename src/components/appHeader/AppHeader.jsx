@@ -7,21 +7,23 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/images/Logo.svg?react';
 import { ChevronRight } from '@mui/icons-material';
 import { HeaderMenu } from './HeaderMenu.jsx';
 import * as pt from 'prop-types';
 import { signOut } from '@/store';
 import { useDispatch } from 'react-redux';
+import { routes } from '@/utils/constants.js';
 
 export const AppHeader = ({ isAuthenticated }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   async function logout() {
     dispatch(signOut());
-    navigate('/login');
+    navigate(routes.login());
   }
 
   return (
@@ -46,7 +48,7 @@ export const AppHeader = ({ isAuthenticated }) => {
             }}
           >
             <Box sx={{ cursor: 'pointer' }}>
-              <Logo onClick={() => navigate('/profile')} />
+              <Logo onClick={() => navigate(routes.profile())} />
             </Box>
 
             <Box display="flex" justifyContent="center">
@@ -54,7 +56,7 @@ export const AppHeader = ({ isAuthenticated }) => {
                 underline="hover"
                 color="inherit"
                 component="button"
-                onClick={() => navigate('/catalog')}
+                onClick={() => navigate(routes.catalog())}
               >
                 {isAuthenticated ? (
                   <Typography variant="body1">Запросы о помощи</Typography>
@@ -65,13 +67,13 @@ export const AppHeader = ({ isAuthenticated }) => {
             <Box display="flex" justifyContent="end">
               {isAuthenticated ? (
                 <HeaderMenu onLogout={logout} />
-              ) : (
+              ) : location.pathname === routes.login() ? null : (
                 <Button
                   color="inherit"
                   variant="outlined"
                   size="large"
                   endIcon={<ChevronRight />}
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate(routes.login())}
                 >
                   Войти
                 </Button>

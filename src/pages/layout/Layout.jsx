@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateIsAuthenticated } from '@/store';
 import apiService from '@/api/api.service';
 import { AppFooter } from '@/components';
+import { Box } from '@mui/material';
 const cx = classnames.bind(styles);
 
 export function Layout() {
@@ -26,22 +27,22 @@ export function Layout() {
   }
 
   return (
-    <div className={cx(['layout'])}>
-      <div className={cx(['layout__header'])}>
+    <Box className={cx('layout')}>
+      <Box className={cx('layout__header')}>
         <AppHeader isAuthenticated={isAuthenticated} />
-      </div>
-      <main
-        className={cx([
-          'layout__main-content',
-          isAuthenticated ? 'layout__main-content--authorized' : null,
-        ])}
+      </Box>
+      <Box
+        className={cx({
+          'layout__main-content': true,
+          'layout__main-content--authorized': isAuthenticated,
+        })}
       >
         <Outlet />
         <ToastContainer />
-      </main>
-      <div className={cx(['layout__footer'])}>
+      </Box>
+      <Box className={cx('layout__footer')}>
         <AppFooter />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

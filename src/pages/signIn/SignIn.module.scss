@@ -1,6 +1,8 @@
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  min-height: 75vh;
+  overflow-y: hidden;
 }
 .main-content__authForm {
   border-right: 1px solid #e0e0e0;
