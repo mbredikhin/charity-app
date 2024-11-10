@@ -7,7 +7,6 @@ import {
   Layout,
   Home,
   Profile,
-  Posts,
   NotFound,
   Catalog,
   SignIn,
@@ -16,27 +15,24 @@ import {
 import { PrivateRoute } from './components';
 import '@/assets/styles/index.scss';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { routes } from './utils/constants';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: routes.home(),
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
       {
-        path: '/login',
+        path: routes.login(),
         element: <SignIn />,
       },
       {
-        path: '/profile',
+        path: routes.profile(),
         element: <PrivateRoute Component={Profile} />,
       },
       {
-        path: '/posts',
-        element: <PrivateRoute Component={Posts} />,
-      },
-      {
-        path: '/catalog',
+        path: routes.catalog(),
         children: [
           { index: true, element: <PrivateRoute Component={Catalog} /> },
           {

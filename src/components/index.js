@@ -1,6 +1,5 @@
 import { AppHeader } from './appHeader/AppHeader';
 import { ProfileCard } from './profile/ProfileCard';
-import { Post } from './post/Post';
 import { AuthForm } from './authForm/AuthForm.jsx';
 import { Requests } from './requests/Requests';
 import { CatalogFilters } from './catalog/CatalogFilters';
@@ -16,7 +15,6 @@ import { ProfilePersonalInfo } from './profilePersonalInfo/ProfilePersonalInfo';
 export {
   AppHeader,
   ProfileCard,
-  Post,
   Requests,
   CatalogFilters,
   CatalogSearch,
