@@ -6,8 +6,8 @@ export function ProfilePersonalInfo({ profile }) {
     lastName,
     name,
     birthdate,
-    baseLocations,
-    educations,
+    baseLocations = [],
+    educations = [],
     additionalInfo,
   } = profile;
   console.log(profile);
