@@ -1,3 +1,4 @@
+import * as pt from 'prop-types';
 import { Box, Typography } from '@mui/material';
 
 export function ProfilePersonalInfo({ profile }) {
@@ -9,80 +10,79 @@ export function ProfilePersonalInfo({ profile }) {
     educations,
     additionalInfo,
   } = profile;
-  const bigFontProps = { fontWeight: 500, fontSize: 20, lineHeight: 2.5 };
-  const smallRegularFontProps = {
-    display: 'inline',
-    fontWeight: 400,
-    fontSize: 14,
-  };
-  const smallBoldFontProps = {
-    display: 'inline',
-    fontWeight: 500,
-    fontSize: 14,
-  };
+  console.log(profile);
+  const formatedBirthdate = new Date(birthdate).toLocaleDateString();
   return (
     <Box>
       <Box sx={{ mb: 2 }}>
-        <Typography sx={bigFontProps}>Профиль</Typography>
-        <Box>
-          <Typography sx={smallBoldFontProps}>Фамилия:</Typography>
-          <Typography sx={smallRegularFontProps}> {lastName}</Typography>
+        <Typography variant="h6" sx={{lineHeight: 3}}>Профиль</Typography>
+        <Box sx={{ mb: 1 }}>
+          <Typography variant="subtitle2" display="inline">Фамилия:</Typography>
+          <Typography variant="body2" display="inline"> {lastName}</Typography>
         </Box>
-        <Box>
-          <Typography sx={smallBoldFontProps}>Имя:</Typography>
-          <Typography sx={smallRegularFontProps}>{name}</Typography>
+        <Box sx={{ mb: 1 }}>
+          <Typography variant="subtitle2" display="inline">Имя:</Typography>
+          <Typography variant="body2" display="inline"> {name}</Typography>
         </Box>
       </Box>
       <Box sx={{ mb: 2 }}>
-        <Typography sx={bigFontProps}>Дата рождения</Typography>
-        <Typography sx={smallRegularFontProps}>
-          {/* {birthdate.split('-').reverse().join('.')} */}
-        </Typography>
+        <Typography variant="h6" sx={{lineHeight: 3}}>Дата рождения</Typography>
+        <Typography variant="body2" display="inline"> {formatedBirthdate}</Typography>
       </Box>
       <Box sx={{ mb: 2 }}>
-        <Typography sx={bigFontProps}>Локация для помощи</Typography>
-        {/* {baseLocations.map(({ district, city }) => (
-          <Box key={Math.random() * 100} sx={{ mb: 1 }}>
-            <Box>
-              <Typography sx={smallBoldFontProps}>Область:</Typography>
-              <Typography sx={smallRegularFontProps}> {district}</Typography>
+        <Typography variant="h6" sx={{lineHeight: 3}}>Локация для помощи</Typography>
+        {baseLocations.map(({ district, city }, index) => (
+            <Box key={index} sx={{ mb: 2 }}>
+              <Box sx={{ mb: 1 }}>
+                <Typography variant="subtitle2" display="inline">Область:</Typography>
+                <Typography variant="body2" display="inline"> {district}</Typography>
+              </Box>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" display="inline">Населенный пункт:</Typography>
+                <Typography variant="body2" display="inline"> {city}</Typography>
+              </Box>
             </Box>
-            <Box>
-              <Typography sx={smallBoldFontProps}>Населенный пункт:</Typography>
-              <Typography sx={smallRegularFontProps}> {city}</Typography>
-            </Box>
-          </Box>
-        ))} */}
+          )
+        )}
       </Box>
       <Box sx={{ mb: 2 }}>
-        <Typography sx={bigFontProps}>Образование</Typography>
-        {/* {educations.map(({ organizationName, level, graduationYear }) => (
-          <Box key={Math.random() * 100} sx={{ mb: 1 }}>
-            <Box>
-              <Typography sx={smallBoldFontProps}>Учреждение:</Typography>
-              <Typography sx={smallRegularFontProps}>
-                {organizationName}
-              </Typography>
+        <Typography variant="h6" sx={{lineHeight: 3}}>Образование</Typography>
+        {educations.map(({ organizationName, level, graduationYear, specialization = null }, index) => (
+          <Box key={index} sx={{ mb: 2 }}>
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="subtitle2" display="inline">Учреждение:</Typography>
+              <Typography variant="body2" display="inline"> {organizationName}</Typography>
             </Box>
-            <Box>
-              <Typography sx={smallBoldFontProps}>
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="subtitle2" display="inline">
                 Уровень образования:
               </Typography>
-              <Typography sx={smallRegularFontProps}> {level}</Typography>
+              <Typography variant="body2" display="inline"> {level}</Typography>
             </Box>
-            <Box>
-              <Typography sx={smallBoldFontProps}>Год окончания:</Typography>
-              <Typography sx={smallRegularFontProps}>
-                {graduationYear}
-              </Typography>
+            {specialization ? 
+              <Box sx={{ mb: 1 }}>
+                <Typography variant="subtitle2" display="inline">
+                  Направление:
+                </Typography>
+                <Typography variant="body2" display="inline"> {specialization}</Typography>
+              </Box>
+              :
+              null}
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="subtitle2" display="inline">Год окончания:</Typography>
+              <Typography variant="body2" display="inline"> {graduationYear}</Typography>
             </Box>
           </Box>
-        ))} */}
+        ))}
       </Box>
       <Box sx={{ mb: 2 }}>
-        <Typography sx={bigFontProps}>Обо мне</Typography>
-        <Typography sx={smallRegularFontProps}>{additionalInfo}</Typography>
+        <Typography variant="h6" sx={{lineHeight: 3}}>Обо мне</Typography>
+        <Typography variant="body2" display="inline">{additionalInfo}</Typography>
       </Box>
     </Box>
   );
 }
+
+ProfilePersonalInfo.propTypes = {
+  profile: pt.object,
+};
