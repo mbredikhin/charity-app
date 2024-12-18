@@ -25,7 +25,7 @@ export function Requests({
   layout,
   onAddRequestToFavourites,
   onRemoveRequestFromFavourites,
-  onDonate,
+  onMakeDonationClick,
 }) {
   const [pagination, updatePagination] = useReducer(paginationReducer, {
     page: 1,
@@ -59,37 +59,24 @@ export function Requests({
       <div className={cx(['requests', `requests--${layout}`])}>
         {filteredRequests.map((request) => (
           <RequestCard
-            view="large"
             key={request.id}
-            id={request.id}
-            title={request.title}
-            organization={request.organization.title}
-            goalDescription={request.goalDescription}
-            endingDate={request.endingDate}
-            locationCity={request.location.city}
-            locationDistrict={request.location.district}
-            isHelpOnline={request.helperRequirements.isOnline}
-            contributorsCount={request.contributorsCount}
-            requestGoal={request.requestGoal}
-            requestGoalCurrentValue={request.requestGoalCurrentValue}
-            isFavourite={request.isFavourite}
-            requesterType={request.requesterType}
-            helpType={request.helpType}
-            addToFavourite={() => onAddRequestToFavourites(request.id)}
-            removeFromFavourites={() =>
-              onRemoveRequestFromFavourites(request.id)
-            }
-            onDonate={() => onDonate(request.id)}
+            layout="vertical"
+            request={request}
+            onAddToFavourites={onAddRequestToFavourites}
+            onRemoveFromFavourites={onRemoveRequestFromFavourites}
+            onMakeDonationClick={onMakeDonationClick}
           />
         ))}
       </div>
-      <Pagination
-        color="primary"
-        size="large"
-        boundaryCount={3}
-        count={pagination.pagesCount}
-        onChange={(_, page) => changePage(page)}
-      />
+      {requests.length ? (
+        <Pagination
+          color="primary"
+          size="large"
+          boundaryCount={3}
+          count={pagination.pagesCount}
+          onChange={(_, page) => changePage(page)}
+        />
+      ) : null}
     </div>
   );
 }
@@ -99,5 +86,5 @@ Requests.propTypes = {
   layout: pt.oneOf(['vertical', 'horizontal']).isRequired,
   onAddRequestToFavourites: pt.func.isRequired,
   onRemoveRequestFromFavourites: pt.func.isRequired,
-  onDonate: pt.func.isRequired,
+  onMakeDonationClick: pt.func.isRequired,
 };

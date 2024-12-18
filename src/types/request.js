@@ -12,7 +12,7 @@ export const RequestType = pt.exact({
   actionsSchedule: pt.arrayOf(
     pt.exact({
       stepLabel: pt.string,
-      isDone: pt.string,
+      isDone: pt.bool,
     })
   ),
   endingDate: pt.string,
@@ -23,8 +23,8 @@ export const RequestType = pt.exact({
     city: pt.string,
   }),
   contacts: pt.exact({
-    email: pt.number,
-    phone: pt.number,
+    email: pt.string,
+    phone: pt.string,
     website: pt.string,
   }),
   requesterType: pt.oneOf(['person', 'organization']),

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -15,17 +14,8 @@ import {
 import styles from './CatalogFilters.module.scss';
 import classnames from 'classnames/bind';
 import { get, set, xor } from '@/utils/common';
+import type { CatalogFilters } from '@/types';
 const cx = classnames.bind(styles);
-
-interface CatalogFilters {
-  requesterType: ('person' | 'organization')[];
-  helpType: ('finance' | 'material')[];
-  helperRequirements: {
-    helperType: ('group' | 'single')[];
-    isOnline: boolean[];
-    qualification: ('professional' | 'common')[];
-  };
-}
 
 interface FilterSchema {
   label: string;

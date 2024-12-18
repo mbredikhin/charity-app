@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
@@ -16,7 +16,7 @@ import {
   ProfilePersonalInfo,
 } from '@/components';
 import catalogService from '@/api/catalog.service';
-import { useNavigate } from 'react-router-dom';
+import { useRequest } from '@/hooks';
 
 // {
 //   "id": "user-id-1",
@@ -58,7 +58,36 @@ export function Profile() {
   const { profile, loading } = useSelector((state) => state.profile);
   const [requests, setRequests] = useState([]);
   const [favouriteRequests, setFavouriteRequests] = useState([]);
-  const navigate = useNavigate();
+  const [tabIndex, setTabIndex] = useState(0);
+  const dispatch = useDispatch();
+
+  const [
+    addRequestToFavourites,
+    // isLoadingAddRequestToFavourites,
+    // addingRequestToFavouritesError,
+  ] = useRequest(async (id) => {
+    await catalogService.addRequestToFavourites(id);
+    setFavouriteRequests([
+      ...favouriteRequests,
+      requests.find((request) => request.id === id),
+    ]);
+  });
+
+  const [
+    removeRequestFromFavourites,
+    // isLoadingRemoveRequestFromFavourites,
+    // removingRequestFromFavouritesError,
+  ] = useRequest(async (id) => {
+    await catalogService.removeRequestFromFavourites(id);
+    const index = favouriteRequests.findIndex((request) => request.id === id);
+    if (index !== -1) {
+      setFavouriteRequests([
+        ...favouriteRequests.slice(0, index),
+        ...favouriteRequests.slice(index + 1),
+      ]);
+    }
+  });
+
   const tabs = [
     {
       label: 'Личные данные',
@@ -76,50 +105,39 @@ export function Profile() {
           requests={favouriteRequests}
           onAddRequestToFavourites={addRequestToFavourites}
           onRemoveRequestFromFavourites={removeRequestFromFavourites}
-          onDonate={(id) => navigate(`/catalog/${id}`)}
+          onMakeDonationClick={() => {
+            // TODO
+          }}
         />
       ),
     },
   ];
-  const [tabIndex, setTabIndex] = useState(0);
-  const dispatch = useDispatch();
 
-  async function addRequestToFavourites(id) {
-    await catalogService.addRequestToFavourites(id);
-    setFavouriteRequests([
-      ...favouriteRequests,
-      requests.find((request) => request.id === id),
-    ]);
-  }
-
-  async function removeRequestFromFavourites(id) {
-    await catalogService.removeRequestFromFavourites(id);
-    const index = favouriteRequests.findIndex((request) => request.id === id);
-    if (index !== -1) {
-      setFavouriteRequests([
-        ...favouriteRequests.slice(0, index),
-        ...favouriteRequests.slice(index + 1),
-      ]);
-    }
-  }
-
-  const fetchCatalog = useCallback(async () => {
+  const [
+    getRequests,
+    // areLoadingRequests,
+    // requestsError
+  ] = useRequest(async () => {
     const requests = await catalogService.getCatalog();
     setRequests(requests);
+  });
+
+  function init() {
+    dispatch(fetchProfile()).unwrap();
+    getRequests();
+  }
+
+  useEffect(() => {
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    (async () => {
-      await dispatch(fetchProfile()).unwrap();
-      await fetchCatalog();
-      setFavouriteRequests(
-        requests.filter((request) =>
-          profile.favouriteRequests.includes(request.id)
-        )
-      );
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, fetchCatalog, setFavouriteRequests, profile.favouriteRequests]);
+    const favouriteRequests = requests.filter((request) =>
+      profile.favouriteRequests.includes(request.id)
+    );
+    setFavouriteRequests(favouriteRequests);
+  }, [profile.favouriteRequests, requests]);
 
   return (
     <div>

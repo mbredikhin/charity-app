@@ -1,49 +1,61 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import catalogService from '@/api/catalog.service';
 import { Request, RequestCard } from '@/components';
+import { useRequest } from '@/hooks';
+import type { Request as IRequest } from '@/types';
+import { routes } from '@/utils/constants';
 
 function RequestPage() {
   const { requestId } = useParams();
-  const [request, setRequest] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [request, setRequest] = useState<IRequest>(null);
+  const navigate = useNavigate();
 
-  async function fetchRequest(id) {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await catalogService.getRequest(id);
-      setRequest(response);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setError(err);
+  const [getRequest, isLoadingRequest, requestError] = useRequest(
+    async (id: string) => {
+      const request = await catalogService.getRequest(id);
+      setRequest(request);
+      setRequest({ ...request, isFavourite: false });
     }
-  }
+  );
 
-  async function addRequestToFavourites(id) {
+  const [
+    addRequestToFavourites,
+    // isLoadingAddRequestToFavourites,
+    // addingRequestToFavouritesError,
+  ] = useRequest(async (id: string) => {
     await catalogService.addRequestToFavourites(id);
     setRequest({ ...request, isFavourite: true });
-  }
+  });
 
-  async function removeRequestFromFavourites(id) {
+  const [
+    removeRequestFromFavourites,
+    // isLoadingRemoveRequestFromFavourites,
+    // removingRequestFromFavouritesError,
+  ] = useRequest(async (id: string) => {
     await catalogService.removeRequestFromFavourites(id);
     setRequest({ ...request, isFavourite: false });
-  }
+  });
 
-  async function fetchFavouriteRequests() {
-    return catalogService.getFavouriteRequests();
+  const [
+    getFavouriteRequests,
+    // areLoadingFavouriteRequests,
+    // favouriteRequestsError,
+  ] = useRequest(async () => {
+    const favourites = await catalogService.getFavouriteRequests();
+    return favourites;
+  });
+
+  async function init() {
+    getRequest(requestId);
+    getFavouriteRequests().then((favourites) => {
+      setRequest({ ...request, isFavourite: favourites.includes(request.id) });
+    });
   }
 
   useEffect(() => {
-    fetchRequest(requestId);
-    fetchFavouriteRequests().then((favourites) => {
-      if ((favourites as unknown as string[]).includes(request.id)) {
-        setRequest({ ...request, isFavourite: true });
-      }
-    });
+    init();
   }, []);
 
   return (
@@ -59,7 +71,7 @@ function RequestPage() {
           gap: '20px',
         }}
       >
-        {request && !loading ? (
+        {request && !isLoadingRequest ? (
           <>
             <Request
               request={request}
@@ -67,10 +79,13 @@ function RequestPage() {
               onRemoveFromFavourites={removeRequestFromFavourites}
             />
             <RequestCard
-              view="large"
+              layout="compact"
               request={request}
               onAddToFavourites={addRequestToFavourites}
               onRemoveFromFavourites={removeRequestFromFavourites}
+              onMakeDonationClick={() => {
+                // TODO
+              }}
             />
           </>
         ) : null}

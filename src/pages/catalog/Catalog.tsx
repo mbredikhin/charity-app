@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import { CatalogFilters, CatalogSearch, Requests } from '@/components';
-import CatalogService from '@/api/catalog.service.js';
 import ServerError from '@/assets/images/server-error.svg?react';
-import catalogService from '@/api/catalog.service.js';
+import catalogService from '@/api/catalog.service';
 import { useNavigate } from 'react-router-dom';
 import { flatten, get } from '@/utils/common';
+import { useRequest } from '@/hooks';
+import type { CatalogFilters as ICatalogFilters, Request } from '@/types';
 
-const getInitialFilters = () => ({
+const getInitialFilters = (): ICatalogFilters => ({
   requesterType: [],
   helpType: [],
   helperRequirements: {
@@ -17,11 +18,14 @@ const getInitialFilters = () => ({
   },
 });
 
-function filterRequests(search, filters, requests) {
+function filterRequests(
+  search: string,
+  filters: ICatalogFilters,
+  requests: Request[]
+) {
   return requests.filter((request) => {
     const isMatchedBySearch =
-      search === null ||
-      search.toLowerCase().includes(request.title.toLowerCase());
+      !search || request.title.toLowerCase().includes(search.toLowerCase());
     const isMatchedByFilters = Object.entries(flatten(filters)).every(
       ([path, value]: [string, (string | boolean)[]]) =>
         !value.length || value.includes(get(request, path))
@@ -31,15 +35,17 @@ function filterRequests(search, filters, requests) {
 }
 
 export function Catalog() {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState<string>(null);
   const [filters, setFilters] = useState(getInitialFilters());
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState<Request[]>([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
-  const [loading, setLoading] = useState(null);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  async function addRequestToFavourites(id) {
+  const [
+    addRequestToFavourites,
+    // isLoadingAddRequestToFavourites,
+    // addingRequestToFavouritesError,
+  ] = useRequest(async (id: string) => {
     await catalogService.addRequestToFavourites(id);
     const index = requests.findIndex((request) => request.id === id);
     if (index !== -1) {
@@ -49,9 +55,13 @@ export function Catalog() {
         ...requests.slice(index + 1),
       ]);
     }
-  }
+  });
 
-  async function removeRequestFromFavourites(id) {
+  const [
+    removeRequestFromFavourites,
+    // isLoadingRemoveRequestFromFavourites,
+    // removingRequestFromFavouritesError,
+  ] = useRequest(async (id: string) => {
     await catalogService.removeRequestFromFavourites(id);
     const index = requests.findIndex((request) => request.id === id);
     if (index !== -1) {
@@ -61,45 +71,45 @@ export function Catalog() {
         ...requests.slice(index + 1),
       ]);
     }
-  }
+  });
 
-  const fetchCatalog = useCallback(async () => {
-    try {
-      setError(null);
-      setLoading(true);
-      const requests = await CatalogService.getCatalog();
-      setRequests(requests as unknown as any[]);
-      setFilteredRequests(filterRequests(search, filters, requests));
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setError(err);
-    }
-  }, []);
+  const [getCatalog, isLoadingCatalog, catalogError] = useRequest(async () => {
+    const requests = await catalogService.getCatalog();
+    setRequests(requests);
+    return requests;
+  });
 
   function changeSearch(search: string) {
     setSearch(search);
-    submit();
+    submit(search, filters, requests);
   }
 
-  function changeFilters(filters) {
+  function changeFilters(filters: ICatalogFilters) {
     setFilters(filters);
-    submit();
+    submit(search, filters, requests);
   }
 
   function resetFilters() {
-    setFilters(getInitialFilters());
-    submit();
+    changeFilters(getInitialFilters());
   }
 
-  function submit() {
+  function submit(
+    search: string,
+    filters: ICatalogFilters,
+    requests: Request[]
+  ) {
     const filteredRequests = filterRequests(search, filters, requests);
     setFilteredRequests(filteredRequests);
   }
 
+  async function fetchCatalog() {
+    const requests = await getCatalog();
+    submit(search, filters, requests);
+  }
+
   useEffect(() => {
     fetchCatalog();
-  }, [fetchCatalog]);
+  }, []);
 
   return (
     <div>
@@ -118,7 +128,7 @@ export function Catalog() {
           sx={{ display: 'grid', gridTemplateRows: '150px auto', gap: '20px' }}
         >
           <CatalogSearch onChange={changeSearch} />
-          {error && !loading ? (
+          {catalogError && !isLoadingCatalog ? (
             <Paper variant="outlined">
               <Box
                 sx={{
@@ -143,7 +153,9 @@ export function Catalog() {
                 requests={filteredRequests}
                 onAddRequestToFavourites={addRequestToFavourites}
                 onRemoveRequestFromFavourites={removeRequestFromFavourites}
-                onDonate={(id) => navigate(`/catalog/${id}`)}
+                onMakeDonationClick={() => {
+                  // TODO
+                }}
               />
             </Paper>
           )}

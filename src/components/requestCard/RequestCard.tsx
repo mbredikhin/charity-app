@@ -1,4 +1,3 @@
-import * as pt from 'prop-types';
 import {
   Divider,
   Stack,
@@ -14,6 +13,10 @@ import {
 } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { Request } from '@/types';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '@/utils/constants';
+import { SyntheticEvent } from 'react';
 
 const styles = {
   favoriteButton: {
@@ -43,30 +46,26 @@ const styles = {
   },
 };
 
-export const RequestCard = ({
-  title,
-  organization,
-  goalDescription,
-  endingDate,
-  locationCity,
-  locationDistrict,
-  isHelpOnline,
-  contributorsCount,
-  requestGoal,
-  requestGoalCurrentValue,
-  isFavourite,
-  requesterType,
-  helpType,
-  addToFavourite,
-  removeFromFavourites,
-  onDonate,
-  view,
-}) => {
-  const goalProgressInPercent = Math.floor(
-    (requestGoalCurrentValue / requestGoal) * 100
-  );
+interface RequestCardProps {
+  request: Request;
+  layout: 'vertical' | 'horizontal' | 'compact';
+  onAddToFavourites: (id: string) => void;
+  onRemoveFromFavourites: (id: string) => void;
+  onMakeDonationClick: (id: string) => void;
+}
 
-  const isLargeView = view === 'large';
+export const RequestCard = ({
+  request,
+  layout,
+  onAddToFavourites,
+  onRemoveFromFavourites,
+  onMakeDonationClick,
+}: RequestCardProps) => {
+  const navigate = useNavigate();
+
+  const goalProgressInPercent = Math.floor(
+    (request.requestGoalCurrentValue / request.requestGoal) * 100
+  );
 
   const getImage = (requesterType, helpType) => {
     if (requesterType === 'organization') {
@@ -78,51 +77,49 @@ export const RequestCard = ({
     }
   };
 
-  const handleAddToFavourite = (e) => {
-    e.stopPropagation();
-    // addToFavourite();
-  };
-  const handleRemoveFromFavourite = (e) => {
-    e.stopPropagation();
-    // removeFromFavourites();
-  };
+  function removeFromFavourites(event: SyntheticEvent) {
+    event.stopPropagation();
+    onRemoveFromFavourites(request.id);
+  }
 
-  const handleCardClick = () => {
-    //  ТУТ НАДО ОТКРЫТЬ СТРАНИЦУ Request'а
-    console.log('Переход на страницу реквеста');
-  };
+  function addToFavourites(event: SyntheticEvent) {
+    event.stopPropagation();
+    onAddToFavourites(request.id);
+  }
 
-  const handleHelpButtonClick = (e) => {
-    e.stopPropagation();
-    console.log('Help Button');
-    // onDonate();
-  };
+  function makeDonation(event: SyntheticEvent) {
+    event.stopPropagation();
+    onMakeDonationClick(request.id);
+  }
 
   return (
     <>
-      {isLargeView && (
-        <Card onClick={handleCardClick} sx={{ maxWidth: 320 }}>
+      {layout === 'vertical' && (
+        <Card
+          sx={{ maxWidth: 320, cursor: 'pointer' }}
+          onClick={() => navigate(routes.catalogRequest(request.id))}
+        >
           <CardMedia
             component="img"
             height="220"
-            image={getImage(requesterType, helpType)}
+            image={getImage(request.requesterType, request.helpType)}
             alt="Картинка для карточки запроса о помощи"
             sx={{ objectFit: 'contain' }}
           />
           <Box sx={{ p: '16px', display: 'flex', alignItems: 'flex-start' }}>
-            <CardHeader title={title} sx={styles.title} />
-            {isFavourite ? (
+            <CardHeader title={request.title} sx={styles.title} />
+            {request.isFavourite ? (
               <Button
                 variant="outlined"
-                onClick={handleRemoveFromFavourite}
                 sx={styles.favoriteButton}
+                onClick={removeFromFavourites}
               >
                 <StarIcon sx={styles.favoriteButtonIcon} />
               </Button>
             ) : (
               <Button
                 variant="outlined"
-                onClick={handleAddToFavourite}
+                onClick={addToFavourites}
                 sx={styles.favoriteButton}
               >
                 <StarBorderIcon sx={styles.favoriteButtonIcon} />
@@ -140,20 +137,22 @@ export const RequestCard = ({
           >
             <Stack gap="4px">
               <Typography variant="subtitle2">Организатор</Typography>
-              <Typography variant="body2">{organization}</Typography>
+              <Typography variant="body2">
+                {request.organization.title}
+              </Typography>
             </Stack>
             <Stack gap="4px">
               <Typography variant="subtitle2">Локация</Typography>
               {/* Conditional render for Online or with Location */}
-              {isHelpOnline ? (
+              {request.helperRequirements.isOnline ? (
                 <Typography variant="body2">Онлайн</Typography>
               ) : (
                 <>
                   <Typography variant="body2">
-                    Область: {locationDistrict}
+                    Область: {request.location.district}
                   </Typography>
                   <Typography variant="body2">
-                    Населенный пункт: {locationCity}
+                    Населенный пункт: {request.location.city}
                   </Typography>
                 </>
               )}
@@ -161,13 +160,13 @@ export const RequestCard = ({
             <Stack gap="4px">
               <Typography variant="subtitle2">Цель сбора</Typography>
               <Typography variant="body2" sx={styles.goalDescription}>
-                {goalDescription}
+                {request.goalDescription}
               </Typography>
             </Stack>
             <Stack gap="4px">
               <Typography variant="subtitle2">Завершение</Typography>
               <Typography variant="body2">
-                {new Date(endingDate).toLocaleDateString()}
+                {new Date(request.endingDate).toLocaleDateString()}
               </Typography>
             </Stack>
             <Stack gap="4px">
@@ -182,13 +181,13 @@ export const RequestCard = ({
                   variant="body2"
                   sx={{ lineHeight: 1.5, opacity: 0.6 }}
                 >
-                  {requestGoalCurrentValue} руб
+                  {request.requestGoalCurrentValue} руб
                 </Typography>
                 <Typography
                   variant="body2"
                   sx={{ lineHeight: 1.5, opacity: 0.6 }}
                 >
-                  {requestGoal} руб
+                  {request.requestGoal} руб
                 </Typography>
               </Box>
             </Stack>
@@ -199,15 +198,15 @@ export const RequestCard = ({
                 variant="body2"
                 sx={{ lineHeight: 1.5, opacity: 0.6 }}
               >
-                {contributorsCount === 0
+                {request.contributorsCount === 0
                   ? 'Вы будете первым'
-                  : `Нас уже: ${contributorsCount}`}
+                  : `Нас уже: ${request.contributorsCount}`}
               </Typography>
               <Button
                 variant="contained"
-                onClick={handleHelpButtonClick}
                 size="large"
                 sx={{ width: '100%' }}
+                onClick={makeDonation}
               >
                 ПОМОЧЬ
               </Button>
@@ -217,7 +216,7 @@ export const RequestCard = ({
       )}
 
       {/* ---------------------- SMALL VIEW --------------------*/}
-      {!isLargeView && (
+      {layout === 'compact' && (
         <Card sx={{ maxWidth: 320 }}>
           <CardContent
             sx={{
@@ -230,12 +229,12 @@ export const RequestCard = ({
             <Typography variant="h6">Вместе для добрых дел</Typography>
             <Stack gap="4px">
               <Typography variant="subtitle2">Цель сбора</Typography>
-              <Typography variant="body2">{goalDescription}</Typography>
+              <Typography variant="body2">{request.goalDescription}</Typography>
             </Stack>
             <Stack gap="4px">
               <Typography variant="subtitle2">Завершение</Typography>
               <Typography variant="body2">
-                {new Date(endingDate).toLocaleDateString()}
+                {new Date(request.endingDate).toLocaleDateString()}
               </Typography>
             </Stack>
             <Stack gap="4px">
@@ -250,13 +249,13 @@ export const RequestCard = ({
                   variant="body2"
                   sx={{ lineHeight: 1.5, opacity: 0.6 }}
                 >
-                  {requestGoalCurrentValue} руб
+                  {request.requestGoalCurrentValue} руб
                 </Typography>
                 <Typography
                   variant="body2"
                   sx={{ lineHeight: 1.5, opacity: 0.6 }}
                 >
-                  {requestGoal} руб
+                  {request.requestGoal} руб
                 </Typography>
               </Box>
             </Stack>
@@ -267,15 +266,15 @@ export const RequestCard = ({
                 variant="body2"
                 sx={{ lineHeight: 1.5, opacity: 0.6 }}
               >
-                {contributorsCount === 0
+                {request.contributorsCount === 0
                   ? 'Вы будете первым'
-                  : `Нас уже: ${contributorsCount}`}
+                  : `Нас уже: ${request.contributorsCount}`}
               </Typography>
               <Button
                 variant="contained"
-                onClick={handleHelpButtonClick}
                 size="large"
                 sx={{ width: '100%' }}
+                onClick={makeDonation}
               >
                 ПОМОЧЬ
               </Button>
@@ -285,25 +284,4 @@ export const RequestCard = ({
       )}
     </>
   );
-};
-
-RequestCard.propTypes = {
-  id: pt.string,
-  title: pt.string,
-  organization: pt.string,
-  goalDescription: pt.string,
-  endingDate: pt.string,
-  locationDistrict: pt.string,
-  locationCity: pt.string,
-  isHelpOnline: pt.bool,
-  contributorsCount: pt.number,
-  requestGoal: pt.number,
-  requestGoalCurrentValue: pt.number,
-  isFavourite: pt.bool,
-  addToFavourite: pt.func,
-  removeFromFavourites: pt.func,
-  onDonate: pt.func,
-  requesterType: pt.oneOf(['person', 'organization']),
-  helpType: pt.oneOf(['finance', 'material']),
-  view: pt.oneOf(['large', 'small']),
 };
