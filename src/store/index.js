@@ -1,13 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import profileSlice from './profile';
-import authorizationSlice from './authorization.js';
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { createAuthSlice } from './auth.js';
+import { createProfileSlice } from './profile.js';
 
-export const store = configureStore({
-  reducer: {
-    profile: profileSlice,
-    authorization: authorizationSlice,
-  },
-});
+const middlewares = (f) => devtools(immer(f));
 
-export * from './authorization';
-export * from './profile';
+export const useStore = create()(
+  middlewares((...args) => ({
+    ...createAuthSlice(...args),
+    ...createProfileSlice(...args),
+  }))
+);

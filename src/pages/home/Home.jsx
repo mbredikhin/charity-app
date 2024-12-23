@@ -1,12 +1,10 @@
 import { routes } from '@/utils/constants';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useStore } from '@/store';
 import { useNavigate } from 'react-router-dom';
 
 export function Home() {
-  const isAuthenticated = useSelector(
-    (state) => state.authorization.isAuthenticated
-  );
+  const isAuthenticated = useStore((state) => state.auth.data.isAuthenticated);
   const navigate = useNavigate();
 
   useEffect(() => {

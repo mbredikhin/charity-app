@@ -1,31 +1,21 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import profileService from '@/api/profile.service.js';
+import { createAsyncAction } from '@/hooks';
 
-export const fetchProfile = createAsyncThunk('profile/fetch', async () => {
-  return await profileService.getProfile();
-});
-
-export const profileSlice = createSlice({
-  name: 'profile',
-  initialState: {
-    profile: {},
+const initialState = {
+  profile: {
+    data: {},
     loading: false,
     error: null,
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchProfile.pending, (state) => {
-      state.error = null;
-      state.loading = true;
-    });
-    builder.addCase(fetchProfile.fulfilled, (state, action) => {
-      state.loading = false;
-      state.profile = action.payload;
-    });
-    builder.addCase(fetchProfile.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error?.message;
-    });
-  },
-});
+};
 
-export default profileSlice.reducer;
+export const createProfileSlice = (set) => ({
+  ...initialState,
+  fetchProfile: createAsyncAction(
+    (f) => set(({ profile }) => f(profile)),
+    async () => {
+      const profile = await profileService.getProfile();
+      return profile;
+    }
+  ),
+});

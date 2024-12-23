@@ -4,27 +4,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import styles from './Layout.module.scss';
 import classnames from 'classnames/bind';
 import { Outlet } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateIsAuthenticated } from '@/store';
-import apiService from '@/api/api.service';
+import { useStore } from '@/store';
 import { AppFooter } from '@/components';
 import { Box } from '@mui/material';
 const cx = classnames.bind(styles);
 
 export function Layout() {
-  const isAuthenticated = useSelector(
-    (state) => state.authorization.isAuthenticated
-  );
-  const dispatch = useDispatch();
-
-  const token = localStorage.getItem('token');
-  if (token) {
-    apiService.addHeader({
-      name: 'Authorization',
-      value: `Bearer ${token}`,
-    });
-    dispatch(updateIsAuthenticated(true));
-  }
+  const isAuthenticated = useStore((state) => state.auth.data.isAuthenticated);
 
   return (
     <Box className={cx('layout')}>
@@ -34,7 +20,7 @@ export function Layout() {
       <Box
         className={cx({
           'layout__main-content': true,
-          'layout__main-content--authorized': isAuthenticated,
+          'layout__main-content--authenticated': isAuthenticated,
         })}
       >
         <Outlet />

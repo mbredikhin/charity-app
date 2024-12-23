@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useStore } from '@/store';
 import { Navigate } from 'react-router-dom';
 
 export function PrivateRoute({ Component }) {
-  const isAuthenticated = useSelector(
-    (state) => state.authorization.isAuthenticated
-  );
+  const isAuthenticated = useStore((state) => state.auth.data.isAuthenticated);
   return isAuthenticated ? <Component /> : <Navigate to="/login" />;
 }
 

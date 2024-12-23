@@ -12,17 +12,16 @@ import Logo from '@/assets/images/Logo.svg?react';
 import { ChevronRight } from '@mui/icons-material';
 import { HeaderMenu } from './HeaderMenu.jsx';
 import * as pt from 'prop-types';
-import { signOut } from '@/store';
-import { useDispatch } from 'react-redux';
+import { useStore } from '@/store';
 import { routes } from '@/utils/constants.js';
 
 export const AppHeader = ({ isAuthenticated }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  const signOut = useStore((state) => state.signOut);
 
   async function logout() {
-    dispatch(signOut());
+    signOut();
     navigate(routes.login());
   }
 

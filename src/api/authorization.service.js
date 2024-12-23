@@ -1,13 +1,9 @@
-import ApiService from './api.service.js';
+import apiService from './api.service.js';
 
 class AuthorizationService {
   async signIn(data) {
-    const response = await ApiService.http.post('/api/auth', data);
-    localStorage.setItem('token', response.token);
-    ApiService.addHeader({
-      name: 'Authorization',
-      value: `Bearer ${response.token}`,
-    });
+    const { token } = await apiService.http.post('/api/auth', data);
+    return token;
   }
 }
 

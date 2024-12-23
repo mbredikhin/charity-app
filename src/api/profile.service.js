@@ -1,8 +1,8 @@
-import ApiService from './api.service';
+import apiService from './api.service';
 
 class ProfileService {
   async getProfile() {
-    return ApiService.http.get('/api/user');
+    return apiService.http.get('/api/user');
   }
 }
 

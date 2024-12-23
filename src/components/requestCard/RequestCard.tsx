@@ -17,6 +17,9 @@ import { Request } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/utils/constants';
 import { SyntheticEvent } from 'react';
+import img1 from '@/assets/images/card-image-1.svg';
+import img2 from '@/assets/images/card-image-2.svg';
+import img3 from '@/assets/images/card-image-3.svg';
 
 const styles = {
   favoriteButton: {
@@ -69,11 +72,11 @@ export const RequestCard = ({
 
   const getImage = (requesterType, helpType) => {
     if (requesterType === 'organization') {
-      return '/src/assets/images/card-image-2.svg';
+      return img2;
     } else if (helpType === 'finance') {
-      return '/src/assets/images/card-image-1.svg';
+      return img1;
     } else {
-      return '/src/assets/images/card-image-3.svg';
+      return img3;
     }
   };
 
@@ -92,11 +95,20 @@ export const RequestCard = ({
     onMakeDonationClick(request.id);
   }
 
+  function getCorrectTitle(title: string) {
+    return title.slice(4);
+  }
+
   return (
     <>
       {layout === 'vertical' && (
         <Card
-          sx={{ maxWidth: 320, cursor: 'pointer' }}
+          sx={{
+            maxWidth: 320,
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
           onClick={() => navigate(routes.catalogRequest(request.id))}
         >
           <CardMedia
@@ -106,15 +118,25 @@ export const RequestCard = ({
             alt="Картинка для карточки запроса о помощи"
             sx={{ objectFit: 'contain' }}
           />
-          <Box sx={{ p: '16px', display: 'flex', alignItems: 'flex-start' }}>
-            <CardHeader title={request.title} sx={styles.title} />
+          <Box
+            sx={{
+              height: '128px',
+              p: '16px',
+              display: 'flex',
+              alignItems: 'flex-start',
+            }}
+          >
+            <CardHeader
+              title={getCorrectTitle(request.title)}
+              sx={{ ...styles.title, mr: '10px' }}
+            />
             {request.isFavourite ? (
               <Button
                 variant="outlined"
                 sx={styles.favoriteButton}
                 onClick={removeFromFavourites}
               >
-                <StarIcon sx={styles.favoriteButtonIcon} />
+                <StarIcon /*sx={styles.favoriteButtonIcon}*/ />
               </Button>
             ) : (
               <Button
@@ -192,7 +214,9 @@ export const RequestCard = ({
               </Box>
             </Stack>
           </CardContent>
-          <CardActions sx={{ display: 'block', p: '0 16px 20px 16px' }}>
+          <CardActions
+            sx={{ display: 'block', p: '0 16px 20px 16px', mt: 'auto' }}
+          >
             <Stack gap="4px">
               <Typography
                 variant="body2"
