@@ -41,7 +41,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           <Typography variant="body2">{`${profile?.status}`}</Typography>
         </Box>
       </CardContent>
-      <CardActions sx={{ padding: '20px' }}>
+      <CardActions sx={{ padding: '20px'}}>
         <Button
           size="large"
           variant="outlined"
