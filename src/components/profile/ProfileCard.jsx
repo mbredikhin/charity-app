@@ -23,21 +23,20 @@ export function ProfileCard({ profile }) {
     dispatch(signOut());
     navigate(routes.login());
   }
-
-  return (
-    <Card sx={{ width: '320px', height: '425px' }} variant="outlined">
+  return ( 
+    <Card sx={{ width: '320px', height: '436px'}} variant="outlined">
       <PersonIcon />
       <Divider />
       <CardContent height="320" sx={{ padding: '20px', marginBottom: '5px' }}>
         <Typography gutterBottom variant="h6" component="div">
-          {`${profile?.name} ${profile?.name}`}
+          {`${profile?.name} ${profile?.lastName}`}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'baseline', gap: '5px' }}>
           <Typography variant="subtitle2">{`Статус:`} </Typography>
           <Typography variant="body2">{`${profile?.status}`}</Typography>
         </Box>
       </CardContent>
-      <CardActions sx={{ padding: '20px' }}>
+      <CardActions sx={{ padding: '20px'}}>
         <Button
           size="large"
           variant="outlined"

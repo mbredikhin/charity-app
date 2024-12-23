@@ -6,8 +6,10 @@ import {
   Paper,
   Tab,
   Tabs,
+  Badge,
   Typography,
 } from '@mui/material';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { fetchProfile } from '@/store';
 import {
   Contacts,
@@ -55,7 +57,7 @@ import { useRequest } from '@/hooks';
 //   ]
 // }
 export function Profile() {
-  const { profile, loading } = useSelector((state) => state.profile);
+  const { profile, loading, error: fetchProfileError } = useSelector((state) => state.profile);
   const [requests, setRequests] = useState([]);
   const [favouriteRequests, setFavouriteRequests] = useState([]);
   const [tabIndex, setTabIndex] = useState(0);
@@ -88,14 +90,44 @@ export function Profile() {
     }
   });
 
+  const [getRequests, , requestsError] = useRequest(async () => {
+    const requests = await catalogService.getCatalog();
+    console.log(`11${JSON.stringify(requestsError)}`);
+    console.log(`22${JSON.stringify(requests)}`);
+    setRequests(requests);
+  });
+
+  function init() {
+    dispatch(fetchProfile()).unwrap();
+    getRequests();
+  }
+
+  useEffect(() => {
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // иногда данные профиля не загружены к этому моменту
+  useEffect(() => {
+    const favouriteRequests = requests.filter((request) => {
+      if (profile.favouriteRequests) {
+        return profile.favouriteRequests.includes(request.id);
+      }
+    }
+    );
+    setFavouriteRequests(favouriteRequests);
+  }, [profile.favouriteRequests, requests]);
+
   const tabs = [
     {
       label: 'Личные данные',
       component: <ProfilePersonalInfo profile={profile} />,
+      isDataFetchedWithError: fetchProfileError, 
     },
     {
       label: 'Контакты',
       component: <Contacts contacts={profile.contacts} />,
+      isDataFetchedWithError: fetchProfileError, 
     },
     {
       label: 'Избранное',
@@ -110,34 +142,9 @@ export function Profile() {
           }}
         />
       ),
+      isDataFetchedWithError: requestsError, 
     },
   ];
-
-  const [
-    getRequests,
-    // areLoadingRequests,
-    // requestsError
-  ] = useRequest(async () => {
-    const requests = await catalogService.getCatalog();
-    setRequests(requests);
-  });
-
-  function init() {
-    dispatch(fetchProfile()).unwrap();
-    getRequests();
-  }
-
-  useEffect(() => {
-    init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const favouriteRequests = requests.filter((request) =>
-      profile.favouriteRequests.includes(request.id)
-    );
-    setFavouriteRequests(favouriteRequests);
-  }, [profile.favouriteRequests, requests]);
 
   return (
     <div>
@@ -177,8 +184,12 @@ export function Profile() {
                 value={tabIndex}
                 onChange={(_, index) => setTabIndex(index)}
               >
-                {tabs.map((tab, index) => (
-                  <Tab key={index} label={tab.label} />
+                {tabs.map((tab, index) => ( 
+                  <Tab 
+                    key={index} 
+                    label={ tab.isDataFetchedWithError
+                      ? <Badge badgeContent={'!'} color="error" style={{opacity: "50%"}}>{tab.label}</Badge> 
+                      : tab.label} />
                 ))}
               </Tabs>
             </Box>

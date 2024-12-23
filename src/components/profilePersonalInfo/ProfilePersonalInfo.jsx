@@ -10,7 +10,6 @@ export function ProfilePersonalInfo({ profile }) {
     educations = [],
     additionalInfo,
   } = profile;
-  console.log(profile);
   const formatedBirthdate = new Date(birthdate).toLocaleDateString();
   return (
     <Box>
