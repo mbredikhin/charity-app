@@ -8,8 +8,8 @@ interface ContactsProps {
 }
 
 export function Contacts({ contacts }: ContactsProps) {
-  const { email, phone, social } = contacts;
-  const { telegram, whatsapp, vk } = social;
+  const { email='', phone='', social='' } = contacts;
+  const { telegram='', whatsapp='', vk='' } = social;
   const boldFontProps = { fontWeight: 500, fontSize: 20, lineHeight: 2.5 };
   const regularFontProps = { fontWeight: 400, fontSize: 14 };
   const socialProps = { display: 'flex', gap: 3.5, my: 1 };

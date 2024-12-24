@@ -92,8 +92,6 @@ export function Profile() {
 
   const [getRequests, , requestsError] = useRequest(async () => {
     const requests = await catalogService.getCatalog();
-    console.log(`11${JSON.stringify(requestsError)}`);
-    console.log(`22${JSON.stringify(requests)}`);
     setRequests(requests);
   });
 
