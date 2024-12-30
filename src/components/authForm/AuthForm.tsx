@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
@@ -15,7 +14,13 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 
-export const AuthForm = ({ loading, error, onSubmit }) => {
+interface AuthFormProps {
+  loading: boolean;
+  error: Error | null;
+  onSubmit: (credentials: { login: string; password: string }) => void;
+}
+
+export function AuthForm({ loading, error, onSubmit }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -139,10 +144,4 @@ export const AuthForm = ({ loading, error, onSubmit }) => {
       </Box>
     </Box>
   );
-};
-
-AuthForm.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-  onSubmit: PropTypes.func,
-};
+}

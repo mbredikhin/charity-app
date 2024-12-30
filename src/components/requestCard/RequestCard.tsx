@@ -57,13 +57,13 @@ interface RequestCardProps {
   onMakeDonationClick: (id: string) => void;
 }
 
-export const RequestCard = ({
+export function RequestCard({
   request,
   layout,
   onAddToFavourites,
   onRemoveFromFavourites,
   onMakeDonationClick,
-}: RequestCardProps) => {
+}: RequestCardProps) {
   const navigate = useNavigate();
 
   const goalProgressInPercent = Math.floor(
@@ -308,4 +308,4 @@ export const RequestCard = ({
       )}
     </>
   );
-};
+}

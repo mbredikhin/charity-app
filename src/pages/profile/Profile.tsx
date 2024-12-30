@@ -96,7 +96,7 @@ export function Profile() {
       <Typography variant="h4" sx={{ marginBottom: '20px' }}>
         Мой профиль
       </Typography>
-      {isLoadingProfile ? (
+      {isLoadingProfile || !profile.id ? (
         <CircularProgress />
       ) : (
         <Box

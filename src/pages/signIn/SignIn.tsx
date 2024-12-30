@@ -30,11 +30,7 @@ export function SignIn() {
   return (
     <div className={cx(['main-content'])}>
       <section className={cx(['main-content__authForm'])}>
-        <AuthForm
-          loading={loading}
-          error={error?.code === 'ERR_BAD_REQUEST'}
-          onSubmit={login}
-        />
+        <AuthForm loading={loading} error={error} onSubmit={login} />
       </section>
       <section className={cx(['main-content__test-users-field'])}>
         <Accounts />

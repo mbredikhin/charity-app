@@ -10,12 +10,15 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/images/Logo.svg?react';
 import { ChevronRight } from '@mui/icons-material';
-import { HeaderMenu } from './HeaderMenu.jsx';
-import * as pt from 'prop-types';
+import { HeaderMenu } from './HeaderMenu';
 import { useStore } from '@/store';
 import { routes } from '@/utils/constants.js';
 
-export const AppHeader = ({ isAuthenticated }) => {
+interface AppHeaderProps {
+  isAuthenticated: boolean;
+}
+
+export function AppHeader({ isAuthenticated }: AppHeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const signOut = useStore((state) => state.signOut);
@@ -83,8 +86,4 @@ export const AppHeader = ({ isAuthenticated }) => {
       </Paper>
     </AppBar>
   );
-};
-
-AppHeader.propTypes = {
-  isAuthenticated: pt.bool,
-};
+}

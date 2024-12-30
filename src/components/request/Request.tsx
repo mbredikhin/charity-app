@@ -2,18 +2,19 @@ import { Box, Paper, Typography } from '@mui/material';
 import VerifiedIcon from '@/assets/images/verified.svg?react';
 import CheckCircleDisabledIcon from '@/assets/images/check-circle-disabled.svg?react';
 import CheckCircleCheckedIcon from '@/assets/images/check-circle-checked.svg?react';
+import { Request as IRequest } from '@/entities/request';
 
 interface RequestProps {
-  request: any;
-  onAddToFavourites: (id: string) => void;
-  onRemoveFromFavourites: (id: string) => void;
+  request: IRequest;
+  onAddToFavourites: (id: IRequest['id']) => void;
+  onRemoveFromFavourites: (id: IRequest['id']) => void;
 }
 
 export function Request({
   request,
   onAddToFavourites,
   onRemoveFromFavourites,
-}) {
+}: RequestProps) {
   return (
     <Paper
       variant="outlined"
@@ -38,7 +39,7 @@ export function Request({
         >
           <Typography variant="h6">Организация</Typography>
           <Typography variant="body2">{request.organization.title}</Typography>
-          {request.isVerified ? (
+          {request.organization.isVerified ? (
             <Typography variant="caption">
               <VerifiedIcon />
               Организация проверена

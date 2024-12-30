@@ -1,6 +1,6 @@
 import { Box, Divider, Grid2, Link } from '@mui/material';
 
-export const AppFooter = () => {
+export function AppFooter() {
   return (
     <>
       <Divider />
@@ -52,4 +52,4 @@ export const AppFooter = () => {
       </Box>
     </>
   );
-};
+}

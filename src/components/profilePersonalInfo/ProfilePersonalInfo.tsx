@@ -1,13 +1,17 @@
-import * as pt from 'prop-types';
 import { Box, Typography } from '@mui/material';
+import { Profile } from '@/entities/profile';
 
-export function ProfilePersonalInfo({ profile }) {
+interface ProfilePersonalInfoProps {
+  profile: Profile;
+}
+
+export function ProfilePersonalInfo({ profile }: ProfilePersonalInfoProps) {
   const {
     lastName,
     name,
     birthdate,
-    baseLocations = [],
-    educations = [],
+    baseLocations,
+    educations,
     additionalInfo,
   } = profile;
   const formatedBirthdate = new Date(birthdate).toLocaleDateString();
@@ -135,7 +139,3 @@ export function ProfilePersonalInfo({ profile }) {
     </Box>
   );
 }
-
-ProfilePersonalInfo.propTypes = {
-  profile: pt.object,
-};

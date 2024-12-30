@@ -10,10 +10,13 @@ import Avatar from '@mui/material/Avatar';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
-import * as pt from 'prop-types';
 import { routes } from '@/utils/constants';
 
-export const HeaderMenu = ({ onLogout }) => {
+interface HeaderMenuProps {
+  onLogout: () => void;
+}
+
+export function HeaderMenu({ onLogout }: HeaderMenuProps) {
   const menuActivator = useRef(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -69,8 +72,4 @@ export const HeaderMenu = ({ onLogout }) => {
       </Menu>
     </div>
   );
-};
-
-HeaderMenu.propTypes = {
-  onLogout: pt.func,
-};
+}

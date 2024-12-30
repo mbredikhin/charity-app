@@ -1,6 +1,6 @@
 import { AppHeader } from './appHeader/AppHeader';
 import { ProfileCard } from './profile/ProfileCard';
-import { AuthForm } from './authForm/AuthForm.jsx';
+import { AuthForm } from './authForm/AuthForm';
 import { Requests } from './requests/Requests';
 import { CatalogFilters } from './catalog/CatalogFilters';
 import { CatalogSearch } from './catalog/CatalogSearch';

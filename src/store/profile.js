@@ -1,4 +1,4 @@
-import profileService from '@/api/profile.service.js';
+import profileService from '@/api/profile.service';
 import { createAsyncAction } from '@/hooks';
 
 const initialState = {

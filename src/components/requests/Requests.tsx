@@ -1,5 +1,4 @@
-import * as pt from 'prop-types';
-import { RequestType } from '@/types/request';
+import { Request } from '@/entities/request';
 import styles from './Requests.module.scss';
 import classnames from 'classnames/bind';
 import { Pagination } from '@mui/material';
@@ -8,13 +7,21 @@ import { usePagination } from '@/hooks';
 import { useEffect } from 'react';
 const cx = classnames.bind(styles);
 
+interface RequestsProps {
+  requests: Request[];
+  layout: 'vertical' | 'horizontal';
+  onAddRequestToFavourites: (id: Request['id']) => void;
+  onRemoveRequestFromFavourites: (id: Request['id']) => void;
+  onMakeDonationClick: (id: Request['id']) => void;
+}
+
 export function Requests({
   requests,
   layout,
   onAddRequestToFavourites,
   onRemoveRequestFromFavourites,
   onMakeDonationClick,
-}) {
+}: RequestsProps) {
   const [currentPageRequests, pagination, goToPage, goToPrevPage] =
     usePagination(requests, 3);
 
@@ -55,11 +62,3 @@ export function Requests({
     </div>
   );
 }
-
-Requests.propTypes = {
-  requests: pt.arrayOf(RequestType).isRequired,
-  layout: pt.oneOf(['vertical', 'horizontal']).isRequired,
-  onAddRequestToFavourites: pt.func.isRequired,
-  onRemoveRequestFromFavourites: pt.func.isRequired,
-  onMakeDonationClick: pt.func.isRequired,
-};
