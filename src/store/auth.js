@@ -12,17 +12,13 @@ const initialState = {
   },
 };
 
-const token = localStorage.getItem('token');
-if (token) {
-  apiService.addHeader({
-    name: 'Authorization',
-    value: `Bearer ${token}`,
-  });
-  initialState.auth.data.isAuthenticated = true;
-}
-
 export const createAuthSlice = (set) => ({
   ...initialState,
+  setAuth: (data) => {
+    set(({ auth }) => {
+      auth.data = data;
+    });
+  },
   signIn: createAsyncAction(
     (f) => set(({ auth }) => f(auth)),
     async (credentials) => {

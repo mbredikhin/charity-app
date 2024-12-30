@@ -80,8 +80,9 @@ export function Request({
               gap: '8px',
             }}
           >
-            {request.actionsSchedule.map((step) => (
+            {request.actionsSchedule.map((step, index) => (
               <Typography
+                key={index}
                 variant="body2"
                 sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
               >

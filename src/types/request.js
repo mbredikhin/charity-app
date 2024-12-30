@@ -37,4 +37,5 @@ export const RequestType = pt.exact({
   contributorsCount: pt.number,
   requestGoal: pt.number,
   requestGoalCurrentValue: pt.number,
+  isFavourite: pt.bool,
 });

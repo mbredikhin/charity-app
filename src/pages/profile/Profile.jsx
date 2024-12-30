@@ -9,50 +9,50 @@ import {
   Typography,
 } from '@mui/material';
 import { useStore } from '@/store';
+import { useShallow } from 'zustand/react/shallow';
 import {
   Contacts,
   ProfileCard,
   Requests,
   ProfilePersonalInfo,
 } from '@/components';
-import catalogService from '@/api/catalog.service';
-import { useRequest } from '@/hooks';
+import { toList } from '@/utils/common';
 
 export function Profile() {
-  const profile = useStore((state) => state.profile.data);
-  const loading = useStore((state) => state.profile.loading);
-  const error = useStore((state) => state.profile.error);
-  const fetchProfile = useStore((state) => state.fetchProfile);
+  const [
+    profile,
+    isLoadingProfile,
+    fetchProfile,
 
-  const [requests, setRequests] = useState([]);
-  const [favouriteRequests, setFavouriteRequests] = useState([]);
-  const [tabIndex, setTabIndex] = useState(0);
+    catalog,
+    favouriteRequestsIds,
+    isLoadingCatalog,
+    catalogError,
 
-  const [addRequestToFavourites] = useRequest(async (id) => {
-    await catalogService.addRequestToFavourites(id);
-    setFavouriteRequests([
-      ...favouriteRequests,
-      requests.find((request) => request.id === id),
-    ]);
-  });
+    areLoadingFavouriteRequests,
+    favouriteRequestsError,
+    addRequestToFavourites,
+    removeRequestFromFavourites,
+  ] = useStore(
+    useShallow((state) => [
+      state.profile.data,
+      state.profile.loading,
+      state.fetchProfile,
 
-  const [removeRequestFromFavourites] = useRequest(async (id) => {
-    await catalogService.removeRequestFromFavourites(id);
-    const index = favouriteRequests.findIndex((request) => request.id === id);
-    if (index !== -1) {
-      setFavouriteRequests([
-        ...favouriteRequests.slice(0, index),
-        ...favouriteRequests.slice(index + 1),
-      ]);
-    }
-  });
+      state.catalog.data.requests,
+      state.catalog.data.favouritesIds,
+      state.catalog.loading,
+      state.catalog.error,
 
-  const [getRequests, areLoadingRequests, getRequestsError] = useRequest(
-    async () => {
-      const requests = await catalogService.getCatalog();
-      setRequests(requests);
-    }
+      state.favouriteRequests.loading,
+      state.favouriteRequests.error,
+      state.addRequestToFavourites,
+      state.removeRequestFromFavourites,
+    ])
   );
+  const favouriteRequests = toList(catalog, favouriteRequestsIds);
+
+  const [tabIndex, setTabIndex] = useState(0);
 
   function changeTab(index) {
     if (!tabs[index].disabled) {
@@ -60,22 +60,9 @@ export function Profile() {
     }
   }
 
-  function init() {
+  useEffect(() => {
     fetchProfile();
-    getRequests();
-  }
-
-  useEffect(() => {
-    init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const favouriteRequests = requests.filter((request) =>
-      profile.favouriteRequests?.includes(request.id)
-    );
-    setFavouriteRequests(favouriteRequests);
-  }, [profile.favouriteRequests, requests]);
 
   const tabs = [
     {
@@ -88,7 +75,7 @@ export function Profile() {
     },
     {
       label: 'Избранное',
-      component: (
+      component: favouriteRequests.length ? (
         <Requests
           layout="vertical"
           requests={favouriteRequests}
@@ -98,9 +85,9 @@ export function Profile() {
             // TODO
           }}
         />
-      ),
-      disabled: areLoadingRequests,
-      error: error || getRequestsError,
+      ) : null,
+      disabled: isLoadingCatalog || areLoadingFavouriteRequests,
+      error: catalogError || favouriteRequestsError,
     },
   ];
 
@@ -109,7 +96,7 @@ export function Profile() {
       <Typography variant="h4" sx={{ marginBottom: '20px' }}>
         Мой профиль
       </Typography>
-      {loading ? (
+      {isLoadingProfile ? (
         <CircularProgress />
       ) : (
         <Box

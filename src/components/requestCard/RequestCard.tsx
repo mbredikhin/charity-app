@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
-import { Request } from '@/types';
+import { Request } from '@/entities/request';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/utils/constants';
 import { SyntheticEvent } from 'react';

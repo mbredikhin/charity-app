@@ -58,3 +58,17 @@ export function lens(obj, path) {
     [key]: lens(value, pathParts.slice(1).join('.')),
   };
 }
+
+export function toDictionary(list, key = 'id', transform = (el) => el) {
+  return list.reduce(
+    ([dictionary, ids], element) => {
+      const id = element[key];
+      return [{ ...dictionary, [id]: transform(element) }, [...ids, id]];
+    },
+    [{}, []]
+  );
+}
+
+export function toList(dictionary, keys) {
+  return keys.map((key) => dictionary[key]);
+}

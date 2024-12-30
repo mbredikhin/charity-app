@@ -24,7 +24,7 @@ interface FilterSchema {
 
 interface CatalogFiltersProps {
   filters: CatalogFilters;
-  onChange: (payload: Partial<CatalogFilters>) => void;
+  onChange: (filters: CatalogFilters) => void;
   onReset: () => void;
 }
 
@@ -92,8 +92,9 @@ export function CatalogFilters({
   onReset,
 }: CatalogFiltersProps) {
   function changeFilter(path: string, value: string | boolean) {
-    set(filters, path, xor(get(filters, path), [value]));
-    onChange(filters);
+    const filtersPayload = { ...filters };
+    set(filtersPayload, path, xor(get(filtersPayload, path), [value]));
+    onChange(filtersPayload);
   }
 
   function renderFilters(path: string) {

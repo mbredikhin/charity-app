@@ -8,10 +8,12 @@ import { useEffect } from 'react';
 const cx = classnames.bind(styles);
 
 export function SignIn() {
+  const {
+    data: { isAuthenticated },
+    loading,
+    error,
+  } = useStore((state) => state.auth);
   const signIn = useStore((state) => state.signIn);
-  const isAuthenticated = useStore((state) => state.auth.data.isAuthenticated);
-  const error = useStore((state) => state.auth.error);
-  const loading = useStore((state) => state.auth.loading);
   const navigate = useNavigate();
 
   async function login(credentials) {
@@ -23,7 +25,6 @@ export function SignIn() {
     if (isAuthenticated) {
       navigate(routes.profile());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
