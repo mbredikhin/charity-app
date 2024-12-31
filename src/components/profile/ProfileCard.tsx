@@ -31,7 +31,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
       <PersonIcon />
       <Divider />
       <CardContent
-        sx={{ height: '320px', padding: '20px', marginBottom: '5px' }}
+        sx={{ height: '95px', padding: '20px', marginBottom: '5px' }}
       >
         <Typography gutterBottom variant="h6" component="div">
           {profile.fullName}
