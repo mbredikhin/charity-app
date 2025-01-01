@@ -3,11 +3,20 @@ import apiService from '../api.service';
 import { routes } from '@/utils/constants';
 
 export class ServerErrorHandler {
+  static maxRetries = 3;
+
   canHandle(error) {
-    return error.response && error.response.status === 500;
+    return error.response?.status === 500;
   }
 
-  async handle() {
+  async handle(error, httpInstance) {
+    const { status, config } = error.response;
+    const retriesCount = config?.retriesCount ?? 0;
+    if (status === 500 && retriesCount < ServerErrorHandler.maxRetries) {
+      config.retriesCount = retriesCount + 1;
+      return httpInstance.request(config);
+    }
+
     toast.error('Ошибка! Попробуйте еще раз', {
       position: 'bottom-right',
       autoClose: 5000,
@@ -35,11 +44,10 @@ export class ForbiddenErrorHandler {
 
 let handlers = [new ServerErrorHandler(), new ForbiddenErrorHandler()];
 
-export const errorHandler = async (error) => {
+export const errorHandler = async (error, httpInstance) => {
   for await (let handler of handlers) {
     if (handler.canHandle(error)) {
-      await handler.handle();
-      break;
+      return await handler.handle(error, httpInstance);
     }
   }
 };

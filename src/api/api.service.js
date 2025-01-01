@@ -12,9 +12,8 @@ class ApiService {
       'application/json;charset=UTF-8';
     this.http.interceptors.response.use(
       (response) => response.data,
-      (error) => {
-        errorHandler(error);
-        return Promise.reject(error);
+      async (error) => {
+        return (await errorHandler(error, this.http)) ?? Promise.reject(error);
       }
     );
   }
