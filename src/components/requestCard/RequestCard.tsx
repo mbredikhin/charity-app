@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { styled } from '@mui/material/styles';
 import { Request } from '@/entities/request';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/utils/constants';
@@ -32,8 +33,12 @@ const styles = {
   favoriteButtonIcon: {
     color: 'rgba(0, 0, 0, 0.56)',
   },
+  gap: {
+    mb: '4px',
+  },
   title: {
     p: 0,
+    mr: '10px',
     display: '-webkit-box',
     overflow: 'hidden',
     lineClamp: 3, // For better compatibility
@@ -51,7 +56,7 @@ const styles = {
 
 interface RequestCardProps {
   request: Request;
-  layout: 'vertical' | 'horizontal' | 'compact';
+  layout: string;
   onAddToFavourites: (id: string) => void;
   onRemoveFromFavourites: (id: string) => void;
   onMakeDonationClick: (id: string) => void;
@@ -69,6 +74,16 @@ export function RequestCard({
   const goalProgressInPercent = Math.floor(
     (request.requestGoalCurrentValue / request.requestGoal) * 100
   );
+
+  const FavoriteButtonForHorizontalView = styled(Button)(({ theme }) => ({
+    height: '28px',
+    width: '132px',
+    padding: '5px 10px',
+    textTransform: 'none',
+    color: '#000000',
+    border: 'solid 2px #f5f5f5',
+    borderRadius: 4,
+  }));
 
   const getImage = (requesterType, helpType) => {
     if (requesterType === 'organization') {
@@ -128,7 +143,7 @@ export function RequestCard({
           >
             <CardHeader
               title={getCorrectTitle(request.title)}
-              sx={{ ...styles.title, mr: '10px' }}
+              sx={styles.title}
             />
             {request.isFavourite ? (
               <Button
@@ -136,7 +151,7 @@ export function RequestCard({
                 sx={styles.favoriteButton}
                 onClick={removeFromFavourites}
               >
-                <StarIcon /*sx={styles.favoriteButtonIcon}*/ />
+                <StarIcon sx={styles.favoriteButtonIcon} />
               </Button>
             ) : (
               <Button
@@ -239,7 +254,130 @@ export function RequestCard({
         </Card>
       )}
 
-      {/* ---------------------- SMALL VIEW --------------------*/}
+      {layout === 'horizontal' && (
+        <Card
+          sx={{
+            width: '1008px',
+            p: '20px 0 30px 52px',
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '30px',
+            boxShadow: 'none',
+            borderBottom: '2px solid #f5f5f5',
+            borderRadius: 0,
+          }}
+        >
+          <Stack sx={{ width: '252px' }}>
+            <CardHeader
+              title={getCorrectTitle(request.title)}
+              sx={styles.title}
+            />
+            <Box sx={{ mt: '30px' }}>
+              <Typography variant="subtitle2">Мы собрали</Typography>
+              <LinearProgress
+                variant="determinate"
+                value={goalProgressInPercent}
+                sx={{ borderRadius: 1, m: '4px 0 4px 0' }}
+              />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5, opacity: 0.6 }}
+                >
+                  {request.requestGoalCurrentValue} руб
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5, opacity: 0.6 }}
+                >
+                  {request.requestGoal} руб
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ mt: 'auto' }}>
+              <Typography
+                variant="body2"
+                sx={{ lineHeight: 1.5, opacity: 0.6, mb: '10px' }}
+              >
+                {request.contributorsCount === 0
+                  ? 'Вы будете первым'
+                  : `Нас уже: ${request.contributorsCount}`}
+              </Typography>
+              <Button
+                variant="contained"
+                size="large"
+                sx={{ width: '100%' }}
+                onClick={makeDonation}
+              >
+                ПОМОЧЬ
+              </Button>
+            </Box>
+          </Stack>
+          <Stack sx={{ width: '240px' }}>
+            <Box sx={{ height: '126px' }}>
+              <Typography variant="subtitle2" sx={styles.gap}>
+                Организатор
+              </Typography>
+              <Typography variant="body2">
+                {request.organization.title}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" sx={styles.gap}>
+                Завершение
+              </Typography>
+              <Typography variant="body2">
+                {new Date(request.endingDate).toLocaleDateString()}
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack sx={{ width: '240px' }}>
+            <Box sx={{ height: '126px' }}>
+              <Typography variant="subtitle2" sx={styles.gap}>
+                Локация
+              </Typography>
+              {/* Conditional render for Online or with Location */}
+              {request.helperRequirements.isOnline ? (
+                <Typography variant="body2">Онлайн</Typography>
+              ) : (
+                <>
+                  <Typography variant="body2">
+                    Область: {request.location.district}
+                  </Typography>
+                  <Typography variant="body2">
+                    Населенный пункт: {request.location.city}
+                  </Typography>
+                </>
+              )}
+            </Box>
+            <Box>
+              <Typography variant="subtitle2" sx={styles.gap}>
+                Цель сбора
+              </Typography>
+              <Typography variant="body2" sx={styles.goalDescription}>
+                {request.goalDescription}
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack sx={{ width: '128px' }}>
+            <FavoriteButtonForHorizontalView
+              variant="outlined"
+              startIcon={
+                request.isFavourite ? (
+                  <StarIcon color="action" />
+                ) : (
+                  <StarBorderIcon sx={styles.favoriteButtonIcon} />
+                )
+              }
+              onClick={
+                request.isFavourite ? removeFromFavourites : addToFavourites
+              }
+            >
+              <Typography variant="body2">В избранное</Typography>
+            </FavoriteButtonForHorizontalView>
+          </Stack>
+        </Card>
+      )}
       {layout === 'compact' && (
         <Card sx={{ maxWidth: 320 }}>
           <CardContent

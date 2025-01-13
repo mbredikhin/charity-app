@@ -10,6 +10,7 @@ import { Contacts } from './contacts/Contacts';
 import { AppFooter } from './appFooter/AppFooter';
 import { Request } from './request/Request';
 import { RequestCard } from './requestCard/RequestCard';
+import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup.jsx';
 import { ProfilePersonalInfo } from './profilePersonalInfo/ProfilePersonalInfo';
 
 export {
@@ -25,5 +26,6 @@ export {
   AppFooter,
   Request,
   RequestCard,
+  RequestsLayoutButtonGroup,
   ProfilePersonalInfo,
 };

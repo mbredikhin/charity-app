@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
-import { CatalogFilters, CatalogSearch, Requests } from '@/components';
+import {
+  CatalogFilters,
+  CatalogSearch,
+  Requests,
+  RequestsLayoutButtonGroup,
+} from '@/components';
 import ServerError from '@/assets/images/server-error.svg?react';
 import { flatten, get, toList } from '@/utils/common';
 import type { CatalogFilters as ICatalogFilters } from '@/types';
@@ -53,6 +58,7 @@ export function Catalog() {
   );
   const [search, setSearch] = useState<string>(null);
   const [filters, setFilters] = useState(getInitialFilters());
+  const [layout, setLayout] = useState('vertical');
 
   const requests = toList(catalog, catalogIds);
   const filteredRequests = filterRequests(search, filters, requests);
@@ -60,6 +66,11 @@ export function Catalog() {
   function resetFilters() {
     setFilters(getInitialFilters());
   }
+
+  const handleLayoutChange = (e) => {
+    const newLayout = e.currentTarget.dataset.layoutType;
+    setLayout(newLayout);
+  };
 
   return (
     <div>
@@ -95,12 +106,28 @@ export function Catalog() {
             <Paper
               variant="outlined"
               sx={{
-                padding: '20px',
+                padding: '12px 36px',
               }}
             >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  mb: '20px',
+                }}
+              >
+                <Typography variant="h6">
+                  Найдено: {filteredRequests.length}
+                </Typography>
+                <RequestsLayoutButtonGroup
+                  layout={layout}
+                  changeLayout={setLayout}
+                />
+              </Box>
               {requests.length && !isLoadingCatalog ? (
                 <Requests
-                  layout="vertical"
+                  layout={layout}
                   requests={filteredRequests}
                   onAddRequestToFavourites={addRequestToFavourites}
                   onRemoveRequestFromFavourites={removeRequestFromFavourites}
