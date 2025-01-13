@@ -15,6 +15,7 @@ import {
   ProfileCard,
   Requests,
   ProfilePersonalInfo,
+  RequestsLayoutButtonGroup,
 } from '@/components';
 import { toList } from '@/utils/common';
 
@@ -53,12 +54,20 @@ export function Profile() {
   const favouriteRequests = toList(catalog, favouriteRequestsIds);
 
   const [tabIndex, setTabIndex] = useState(0);
+  const [layout, setLayout] = useState('vertical');
 
   function changeTab(index) {
     if (!tabs[index].disabled) {
       setTabIndex(index);
     }
   }
+
+  const isFavouritesTabActive = tabIndex === 2;
+
+  const handleLayoutChange = (e) => {
+    const newLayout = e.currentTarget.dataset.layoutType;
+    setLayout(newLayout);
+  };
 
   useEffect(() => {
     fetchProfile();
@@ -77,7 +86,7 @@ export function Profile() {
       label: 'Избранное',
       component: favouriteRequests.length ? (
         <Requests
-          layout="vertical"
+          layout={layout}
           requests={favouriteRequests}
           onAddRequestToFavourites={addRequestToFavourites}
           onRemoveRequestFromFavourites={removeRequestFromFavourites}
@@ -113,39 +122,49 @@ export function Profile() {
               display: 'flex',
               flexDirection: 'column',
               gap: '30px',
-              padding: '10px 36px',
+              padding: '12px 36px',
               minHeight: '982px',
             }}
           >
-            <Box
-              sx={{
-                maxWidth: 'fit-content',
-                display: 'inline-flex',
-                borderBottom: 1,
-                borderColor: 'divider',
-              }}
-            >
-              <Tabs value={tabIndex} onChange={(_, index) => changeTab(index)}>
-                {tabs.map((tab, index) => (
-                  <Tab
-                    key={index}
-                    disabled={tab.disabled}
-                    label={
-                      tab.error ? (
-                        <Badge
-                          badgeContent="!"
-                          color="error"
-                          style={{ opacity: '50%' }}
-                        >
-                          {tab.label}
-                        </Badge>
-                      ) : (
-                        tab.label
-                      )
-                    }
-                  />
-                ))}
-              </Tabs>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Box
+                sx={{
+                  maxWidth: 'fit-content',
+                  display: 'inline-flex',
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                }}
+              >
+                <Tabs
+                  value={tabIndex}
+                  onChange={(_, index) => changeTab(index)}
+                >
+                  {tabs.map((tab, index) => (
+                    <Tab
+                      key={index}
+                      disabled={tab.disabled}
+                      label={
+                        tab.error ? (
+                          <Badge
+                            badgeContent="!"
+                            color="error"
+                            style={{ opacity: '50%' }}
+                          >
+                            {tab.label}
+                          </Badge>
+                        ) : (
+                          tab.label
+                        )
+                      }
+                    />
+                  ))}
+                </Tabs>
+              </Box>
+              {isFavouritesTabActive ? (
+                <RequestsLayoutButtonGroup
+                  handleLayoutChange={handleLayoutChange}
+                />
+              ) : null}
             </Box>
             <Box>{tabs[tabIndex].component}</Box>
           </Paper>
