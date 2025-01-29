@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export function xor(a, b) {
   return [
     ...a.filter((element) => !b.includes(element)),
@@ -71,4 +73,15 @@ export function toDictionary(list, key = 'id', transform = (el) => el) {
 
 export function toList(dictionary, keys) {
   return keys.map((key) => dictionary[key]);
+}
+
+export function getCleanedTitle(title) {
+  const regex = new RegExp(/\[\d{1,}\]/);
+  return title.replace(regex, '');
+}
+
+export function donationNotify() {
+  return toast.success('Спасибо за ваш вклад!', {
+    position: 'bottom-right',
+  });
 }

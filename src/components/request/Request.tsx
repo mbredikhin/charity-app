@@ -1,8 +1,11 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography, Stack } from '@mui/material';
+import { SyntheticEvent } from 'react';
 import VerifiedIcon from '@/assets/images/verified.svg?react';
 import CheckCircleDisabledIcon from '@/assets/images/check-circle-disabled.svg?react';
 import CheckCircleCheckedIcon from '@/assets/images/check-circle-checked.svg?react';
 import { Request as IRequest } from '@/entities/request';
+import { FavoriteButton } from '@/components';
+import { getCleanedTitle } from '@/utils/common.js';
 
 interface RequestProps {
   request: IRequest;
@@ -15,6 +18,15 @@ export function Request({
   onAddToFavourites,
   onRemoveFromFavourites,
 }: RequestProps) {
+  function removeFromFavourites(event: SyntheticEvent) {
+    event.stopPropagation();
+    onRemoveFromFavourites(request.id);
+  }
+
+  function addToFavourites(event: SyntheticEvent) {
+    event.stopPropagation();
+    onAddToFavourites(request.id);
+  }
   return (
     <Paper
       variant="outlined"
@@ -29,7 +41,19 @@ export function Request({
           gap: '30px',
         }}
       >
-        <Typography variant="h4">{request.title}</Typography>
+        <Stack
+          direction="row"
+          sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <Typography variant="h4" sx={{ maxWidth: '60%' }}>
+            {getCleanedTitle(request.title)}
+          </Typography>
+          <FavoriteButton
+            request={request}
+            removeFromFavourites={removeFromFavourites}
+            addToFavourites={addToFavourites}
+          />
+        </Stack>
         <Box
           sx={{
             display: 'flex',
@@ -38,13 +62,19 @@ export function Request({
           }}
         >
           <Typography variant="h6">Организация</Typography>
-          <Typography variant="body2">{request.organization.title}</Typography>
-          {request.organization.isVerified ? (
-            <Typography variant="caption">
-              <VerifiedIcon />
-              Организация проверена
+          <Stack sx={{ gap: '4px' }}>
+            <Typography variant="body2">
+              {request.organization.title}
             </Typography>
-          ) : null}
+            {request.organization.isVerified ? (
+              <Typography
+                variant="caption"
+                sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                <VerifiedIcon /> Организация проверена
+              </Typography>
+            ) : null}
+          </Stack>
         </Box>
         <Box
           sx={{

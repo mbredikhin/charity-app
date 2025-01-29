@@ -13,14 +13,15 @@ import {
 } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
-import { styled } from '@mui/material/styles';
 import { Request } from '@/entities/request';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/utils/constants';
 import { SyntheticEvent } from 'react';
+import { FavoriteButton } from '@/components';
 import img1 from '@/assets/images/card-image-1.svg';
 import img2 from '@/assets/images/card-image-2.svg';
 import img3 from '@/assets/images/card-image-3.svg';
+import { getCleanedTitle } from '@/utils/common.js';
 
 const styles = {
   favoriteButton: {
@@ -75,16 +76,6 @@ export function RequestCard({
     (request.requestGoalCurrentValue / request.requestGoal) * 100
   );
 
-  const FavoriteButtonForHorizontalView = styled(Button)(({ theme }) => ({
-    height: '28px',
-    width: '132px',
-    padding: '5px 10px',
-    textTransform: 'none',
-    color: '#000000',
-    border: 'solid 2px #f5f5f5',
-    borderRadius: 4,
-  }));
-
   const getImage = (requesterType, helpType) => {
     if (requesterType === 'organization') {
       return img2;
@@ -108,10 +99,6 @@ export function RequestCard({
   function makeDonation(event: SyntheticEvent) {
     event.stopPropagation();
     onMakeDonationClick(request.id);
-  }
-
-  function getCorrectTitle(title: string) {
-    return title.slice(4);
   }
 
   return (
@@ -142,7 +129,7 @@ export function RequestCard({
             }}
           >
             <CardHeader
-              title={getCorrectTitle(request.title)}
+              title={getCleanedTitle(request.title)}
               sx={styles.title}
             />
             {request.isFavourite ? (
@@ -180,7 +167,6 @@ export function RequestCard({
             </Stack>
             <Stack gap="4px">
               <Typography variant="subtitle2">Локация</Typography>
-              {/* Conditional render for Online or with Location */}
               {request.helperRequirements.isOnline ? (
                 <Typography variant="body2">Онлайн</Typography>
               ) : (
@@ -266,10 +252,11 @@ export function RequestCard({
             borderBottom: '2px solid #f5f5f5',
             borderRadius: 0,
           }}
+          onClick={() => navigate(routes.catalogRequest(request.id))}
         >
           <Stack sx={{ width: '252px' }}>
             <CardHeader
-              title={getCorrectTitle(request.title)}
+              title={getCleanedTitle(request.title)}
               sx={styles.title}
             />
             <Box sx={{ mt: '30px' }}>
@@ -336,7 +323,6 @@ export function RequestCard({
               <Typography variant="subtitle2" sx={styles.gap}>
                 Локация
               </Typography>
-              {/* Conditional render for Online or with Location */}
               {request.helperRequirements.isOnline ? (
                 <Typography variant="body2">Онлайн</Typography>
               ) : (
@@ -359,27 +345,15 @@ export function RequestCard({
               </Typography>
             </Box>
           </Stack>
-          <Stack sx={{ width: '128px' }}>
-            <FavoriteButtonForHorizontalView
-              variant="outlined"
-              startIcon={
-                request.isFavourite ? (
-                  <StarIcon color="action" />
-                ) : (
-                  <StarBorderIcon sx={styles.favoriteButtonIcon} />
-                )
-              }
-              onClick={
-                request.isFavourite ? removeFromFavourites : addToFavourites
-              }
-            >
-              <Typography variant="body2">В избранное</Typography>
-            </FavoriteButtonForHorizontalView>
-          </Stack>
+          <FavoriteButton
+            request={request}
+            removeFromFavourites={removeFromFavourites}
+            addToFavourites={addToFavourites}
+          />
         </Card>
       )}
       {layout === 'compact' && (
-        <Card sx={{ maxWidth: 320 }}>
+        <Card sx={{ maxWidth: 320, height: 'fit-content' }}>
           <CardContent
             sx={{
               p: '10px 16px',

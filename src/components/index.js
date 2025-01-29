@@ -12,6 +12,8 @@ import { Request } from './request/Request';
 import { RequestCard } from './requestCard/RequestCard';
 import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup.jsx';
 import { ProfilePersonalInfo } from './profilePersonalInfo/ProfilePersonalInfo';
+import { FavoriteButton } from './favoriteButton/FavoriteButton';
+import { Map } from './map/Map.tsx';
 
 export {
   AppHeader,
@@ -28,4 +30,6 @@ export {
   RequestCard,
   RequestsLayoutButtonGroup,
   ProfilePersonalInfo,
+  FavoriteButton,
+  Map,
 };

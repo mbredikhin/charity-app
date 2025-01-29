@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { Request, RequestCard } from '@/components';
 import { useStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
+import { donationNotify } from '@/utils/common';
 
 function RequestPage() {
   const { requestId } = useParams();
@@ -45,9 +46,7 @@ function RequestPage() {
               request={request}
               onAddToFavourites={addRequestToFavourites}
               onRemoveFromFavourites={removeRequestFromFavourites}
-              onMakeDonationClick={() => {
-                // TODO
-              }}
+              onMakeDonationClick={donationNotify}
             />
           </>
         ) : null}

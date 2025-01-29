@@ -17,7 +17,7 @@ import {
   ProfilePersonalInfo,
   RequestsLayoutButtonGroup,
 } from '@/components';
-import { toList } from '@/utils/common';
+import { toList, donationNotify } from '@/utils/common';
 
 export function Profile() {
   const [
@@ -61,7 +61,6 @@ export function Profile() {
       setTabIndex(index);
     }
   }
-
   const isFavouritesTabActive = tabIndex === 2;
 
   useEffect(() => {
@@ -86,7 +85,7 @@ export function Profile() {
           onAddRequestToFavourites={addRequestToFavourites}
           onRemoveRequestFromFavourites={removeRequestFromFavourites}
           onMakeDonationClick={() => {
-            // TODO
+            donationNotify();
           }}
         />
       ),

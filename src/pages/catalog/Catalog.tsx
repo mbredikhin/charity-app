@@ -7,7 +7,7 @@ import {
   RequestsLayoutButtonGroup,
 } from '@/components';
 import ServerError from '@/assets/images/server-error.svg?react';
-import { flatten, get, toList } from '@/utils/common';
+import { flatten, get, toList, donationNotify } from '@/utils/common';
 import type { CatalogFilters as ICatalogFilters } from '@/types';
 import { useStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
@@ -132,7 +132,7 @@ export function Catalog() {
                   onAddRequestToFavourites={addRequestToFavourites}
                   onRemoveRequestFromFavourites={removeRequestFromFavourites}
                   onMakeDonationClick={() => {
-                    // TODO
+                    donationNotify();
                   }}
                 />
               ) : null}

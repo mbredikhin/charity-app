@@ -1,8 +1,8 @@
 import { Request } from '@/entities/request';
 import styles from './Requests.module.scss';
 import classnames from 'classnames/bind';
-import { Pagination, Paper, Box, Typography } from '@mui/material';
-import { RequestCard } from '../requestCard/RequestCard';
+import { Pagination, Box, Typography } from '@mui/material';
+import { RequestCard, Map } from '@/components';
 import { usePagination } from '@/hooks';
 import { useEffect } from 'react';
 import NotFoundResult from '@/assets/images/not-found-result.svg?react';
@@ -36,9 +36,12 @@ export function Requests({
     }
   }, [currentPageRequests]);
 
-  return (
-    <div className={cx('requests-wrapper')} style={{ position: 'relative' }}>
-      {requests.length ? (
+  const isMapActive = layout === 'map';
+  const renderRequests = () => {
+    if (requests.length && isMapActive) {
+      return <Map requests={requests} />;
+    } else if (requests.length && !isMapActive) {
+      return (
         <div className={cx(['requests', `requests--${layout}`])}>
           {currentPageRequests.map((request) => (
             <RequestCard
@@ -51,7 +54,9 @@ export function Requests({
             />
           ))}
         </div>
-      ) : (
+      );
+    } else {
+      return (
         <Box
           sx={{
             height: '800px',
@@ -66,8 +71,14 @@ export function Requests({
             Запросы не найдены
           </Typography>
         </Box>
-      )}
-      {requests.length ? (
+      );
+    }
+  };
+
+  return (
+    <div className={cx('requests-wrapper')} style={{ position: 'relative' }}>
+      {renderRequests()}
+      {requests.length && !isMapActive ? (
         <Pagination
           color="primary"
           size="large"
