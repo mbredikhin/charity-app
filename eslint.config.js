@@ -37,5 +37,11 @@ export default [
       ],
     },
   },
+  {
+    files: ['vite.config.js'],
+    globals: {
+      process: true,
+    },
+  },
   eslintConfigPrettier,
 ];
