@@ -1,24 +1,21 @@
-# react-event
+# charity-app
 
-Starting repo for React hackaton
-
-Production version is available here:
-react-event-delta.vercel.app
+Charity web service
 
 ## Getting started
 
-> [!TIP]
-> You must use NodeJS >= 18
-
 ```bash
-git clone git@github.com:mbredikhin/react-event.git
-cd react-event
-npm install
-npm run dev
+git clone git@github.com:mbredikhin/charity-app.git
+cd charity-app
 ```
 
-## Production build
+Instructions for both frontend and backend can be found in README files stored in appropriate directories
 
-```
-npm run build
-```
+Production version is available here:
+https://charity-app-delta.vercel.app
+
+## Authors
+
+[Tatiana Yagodina](https://github.com/kinddoctor)
+
+[Maxim Bredikhin](https://github.com/mbredikhin)
