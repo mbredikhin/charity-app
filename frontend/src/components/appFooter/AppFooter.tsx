@@ -31,7 +31,7 @@ export function AppFooter() {
               underline="hover"
               color="inherit"
               variant="body2"
-              href="https://github.com/mbredikhin/react-event"
+              href="https://github.com/mbredikhin/charity-app"
               target="_blank"
             >
               Github проекта
