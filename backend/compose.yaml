@@ -9,6 +9,7 @@ services:
     volumes:
       - ./src:/app/src
       - ./.env:/app/.env
+      - ./tsconfig.json:/app/tsconfig.json
     depends_on:
       db:
         condition: service_healthy
@@ -20,6 +21,7 @@ services:
     shm_size: 128mb
     env_file:
       - .env
+    user: 1000:1000
     ports:
       - 5432:5432
     volumes:

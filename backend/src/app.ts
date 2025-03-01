@@ -19,6 +19,9 @@ app.use('/auth', authRouter);
 app.use('/api', authMiddleware, profileRouter, requestsRouter);
 
 const port = process.env.APP_PORT as string;
+if (!port) {
+  console.error('No port specified for the app, server shutdown');
+}
 app.listen(port, () => {
   console.info(`Server is up and listening on port ${port}`);
 });

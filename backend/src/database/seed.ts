@@ -309,7 +309,7 @@ class Seeder {
 
     await client.query('COMMIT');
 
-    console.log('Db seeding has been completed successfully');
+    console.log('Database seeding has been successfully completed');
   } catch (error: any) {
     console.error(
       `Error occured during db seeding procedure: ${error.message}`

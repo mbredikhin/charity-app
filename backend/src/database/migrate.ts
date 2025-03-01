@@ -22,7 +22,7 @@ const migrationsDir = path.resolve(process.cwd(), `src/database/migrations`);
     await client.query('COMMIT');
 
     console.log(
-      `Migrations from ${latestMigrationsFileName} has been applied successfully`
+      `Migrations from ${latestMigrationsFileName} have been successfully applied`
     );
   } catch (error: any) {
     console.error(
