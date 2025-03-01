@@ -18,7 +18,12 @@
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"],
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
+  "tsc-alias": {
+    "verbose": false,
+    "resolveFullPaths": true,
+    "fileExtensions": {
+      "inputGlob": "{js,ts}",
+      "outputCheck": ["js"]
+    }
   }
 }
