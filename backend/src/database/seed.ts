@@ -105,7 +105,7 @@ class Seeder {
     value: string | number | boolean | null | undefined
   ): string {
     if (typeof value === 'string') {
-      return `'${value.replaceAll("'", `\'`)}'`;
+      return `'${value.replaceAll("'", `\'`).replaceAll('"', `\"`)}'`;
     } else if ([null, undefined].includes(value as null | undefined)) {
       return 'NULL';
     }

@@ -1,5 +1,6 @@
 import { pool } from '@/database';
 import { RequestDto } from '@/dto/request.dto';
+import { dateTimeToDate } from '@/helpers/date.helper';
 import { Request } from '@/models/request.model';
 import { User } from '@/models/user.model';
 import { Pool, QueryResult } from 'pg';
@@ -57,14 +58,20 @@ export class RequestsRepository {
       queries.getAllRequests,
       []
     );
-    return rows;
+    return rows.map((request) => ({
+      ...request,
+      endingDate: dateTimeToDate(request.endingDate ?? ''),
+    }));
   }
   async findRequest(id: Request['id']) {
     const { rows }: QueryResult<RequestDto> = await this.pool.query(
       queries.findRequest,
       [id]
     );
-    return rows[0];
+    return rows.map((request) => ({
+      ...request,
+      endingDate: dateTimeToDate(request.endingDate ?? ''),
+    }))[0];
   }
   async findFavouriteRequests(userId: User['id']) {
     const { rows }: QueryResult<{ request_id: Request['id'] }> =

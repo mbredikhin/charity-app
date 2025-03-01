@@ -1,5 +1,6 @@
 import { pool } from '@/database';
 import { ProfileDto } from '@/dto/profile.dto';
+import { dateTimeToDate } from '@/helpers/date.helper';
 import { Pool, QueryResult } from 'pg';
 
 const queries = {
@@ -40,7 +41,10 @@ export class ProfileRepository {
       queries.findProfile,
       [userId]
     );
-    return rows[0];
+    return rows.map((profile) => ({
+      ...profile,
+      birthdate: dateTimeToDate(profile.birthdate ?? ''),
+    }))[0];
   }
 }
 
