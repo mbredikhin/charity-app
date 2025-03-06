@@ -5,7 +5,7 @@ services:
     restart: always
     command: npm run dev
     ports:
-      - 3000:3000
+      - 8000:8000
     volumes:
       - ./src:/app/src
       - ./.env:/app/.env

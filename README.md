@@ -12,7 +12,7 @@ cd charity-app
 Instructions for both frontend and backend can be found in README files stored in appropriate directories
 
 Production version is available here:
-https://charity-app-delta.vercel.app
+https://charity-app.mbredikhin.com
 
 ## Authors
 

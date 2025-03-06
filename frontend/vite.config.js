@@ -17,7 +17,8 @@ export default defineConfig(({ mode }) => {
       alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
     },
     server: {
-      host: env.VITE_APP_URL,
+      ...(env.VITE_APP_URL && { host: env.VITE_APP_URL }),
+      port: 8001,
     },
     build: {
       target: 'esnext',

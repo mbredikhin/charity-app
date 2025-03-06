@@ -16,4 +16,6 @@ COPY --from=builder /app/tsconfig.json .
 
 RUN apk update && apk add postgresql-client 
 
-CMD ["node", "app.js"]
+EXPOSE 8000
+
+ENTRYPOINT ["node", "app.js"]
