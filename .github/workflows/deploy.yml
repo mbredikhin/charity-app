@@ -34,7 +34,7 @@ jobs:
             docker stop charity-app-backend || true
             docker rm charity-app-backend || true
             docker pull ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
-            docker run -d -p 8000:8000 --name charity-app-backend ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
+            docker run -d -p 8000:8000 --network charity-app --name charity-app-backend ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
 
             docker stop charity-app-frontend || true
             docker rm charity-app-frontend || true

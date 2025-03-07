@@ -3,6 +3,7 @@ declare global {
     interface ProcessEnv {
       NODE_ENV: 'development' | 'production';
       APP_PORT: string;
+      APP_HOST: string;
 
       POSTGRES_HOST: string;
       POSTGRES_PORT: number;

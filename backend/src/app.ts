@@ -18,10 +18,14 @@ app.get('/', (req, res) => {
 app.use('/auth', authRouter);
 app.use('/api', authMiddleware, profileRouter, requestsRouter);
 
+const host = process.env.APP_HOST as string;
+if (!host) {
+  console.error('No host specified for the app, server shutdown');
+}
 const port = process.env.APP_PORT as string;
 if (!port) {
   console.error('No port specified for the app, server shutdown');
 }
-app.listen(port, () => {
+app.listen(+port, host, () => {
   console.info(`Server is up and listening on port ${port}`);
 });
