@@ -1,10 +1,10 @@
 import { Request } from '@/entities/request';
 import styles from './Requests.module.scss';
 import classnames from 'classnames/bind';
-import { Pagination, Box, Typography } from '@mui/material';
+import { Pagination, Box, Typography, CircularProgress } from '@mui/material';
 import { RequestCard, Map } from '@/components';
 import { usePagination } from '@/hooks';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import NotFoundResult from '@/assets/images/not-found-result.svg?react';
 const cx = classnames.bind(styles);
 
@@ -36,10 +36,14 @@ export function Requests({
     }
   }, [currentPageRequests]);
 
-  const isMapActive = layout === 'map';
+  const isMapActive = import.meta.env.VITE_MAPS_ENABLED && layout === 'map';
   const renderRequests = () => {
     if (requests.length && isMapActive) {
-      return <Map requests={requests} />;
+      return (
+        <Suspense fallback={<CircularProgress />}>
+          <Map requests={requests} />;
+        </Suspense>
+      );
     } else if (requests.length && !isMapActive) {
       return (
         <div className={cx(['requests', `requests--${layout}`])}>

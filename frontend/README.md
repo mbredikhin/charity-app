@@ -4,19 +4,31 @@ Frontend for the charity web app
 
 ## Getting started
 
-At first you need to add the address of local frontend to your hosts file in order to make it possible to use Yandex Maps API:
-
-```bash
-sudo su
-echo "127.0.0.1 charity-app.local" >> /etc/hosts
 ```
-
-```bash
 npm install
 npm run dev
 ```
 
 After that dev server is available on address http://localhost:8001/
+
+## How to use maps feature?
+
+In order to use maps, you need to set these environment variables in .env.local:
+
+```
+VITE_MAPS_ENABLED=true
+VITE_YMAPS_API_KEY=*Your Yandex Maps API key*
+VITE_APP_URL=*Hostname which your API key is linked to*
+```
+
+Also, add this mapping from your local frontend hostname to localhost in your hosts file:
+
+```
+sudo su
+echo "127.0.0.1 *Hostname from VITE_APP_URL*" >> /etc/hosts
+```
+
+This mapping allows you to serve the app on the hostname that your API key is linked to with maps feature enabled.
 
 ## Production build
 

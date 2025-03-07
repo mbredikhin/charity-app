@@ -26,13 +26,17 @@ export function RequestsLayoutButtonGroup({ layout, changeLayout }) {
         activeStyle: <ListAltOutlined sx={{ color: 'black' }} />,
       },
     },
-    {
-      layout: 'map',
-      icon: {
-        baseStyle: <Room color="action" />,
-        activeStyle: <Room sx={{ color: 'black' }} />,
-      },
-    },
+    ...(import.meta.env.VITE_MAPS_ENABLED === 'true'
+      ? [
+          {
+            layout: 'map',
+            icon: {
+              baseStyle: <Room color="action" />,
+              activeStyle: <Room sx={{ color: 'black' }} />,
+            },
+          },
+        ]
+      : []),
   ];
 
   return (

@@ -33,7 +33,7 @@ interface MapProps {
   requests: Request[];
 }
 
-export function Map({ requests }: MapProps) {
+function Map({ requests }: MapProps) {
   const coordinates = requests.reduce(
     (acc, request) => [
       ...acc,
@@ -68,3 +68,5 @@ export function Map({ requests }: MapProps) {
     </div>
   );
 }
+
+export default Map;

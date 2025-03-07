@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 import { AppHeader } from './appHeader/AppHeader';
 import { ProfileCard } from './profile/ProfileCard';
 import { AuthForm } from './authForm/AuthForm';
@@ -13,7 +14,7 @@ import { RequestCard } from './requestCard/RequestCard';
 import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup.jsx';
 import { ProfilePersonalInfo } from './profilePersonalInfo/ProfilePersonalInfo';
 import { FavoriteButton } from './favoriteButton/FavoriteButton';
-import { Map } from './map/Map.tsx';
+const Map = lazy(() => import('./map/Map.tsx'));
 
 export {
   AppHeader,
