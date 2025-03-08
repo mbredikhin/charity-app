@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS organizations;
 
-DROP TYPE requester_type;
-DROP TYPE help_type;
-DROP TYPE helper_type;
-DROP TYPE helper_qualification;
+DROP TYPE IF EXISTS requester_type;
+DROP TYPE IF EXISTS help_type;
+DROP TYPE IF EXISTS helper_type;
+DROP TYPE IF EXISTS helper_qualification;
