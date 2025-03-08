@@ -12,11 +12,9 @@ WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package* .
 COPY --from=builder /app/dist .
-COPY --from=builder /app/src ./src
+COPY --from=builder /app/src/configs ./src/configs
+COPY --from=builder /app/src/database ./src/database
 COPY --from=builder /app/tsconfig.json .
-COPY --from=builder /app/.env .
-
-RUN apk update && apk add postgresql-client 
 
 EXPOSE 8000
 
