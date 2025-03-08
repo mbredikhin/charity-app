@@ -2,18 +2,35 @@ name: Deploy
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   workflow_dispatch:
+env:
+  APP_PORT: ${{ secrets.APP_PORT }}
+  APP_HOST: ${{ secrets.APP_HOST }}
+  POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+  POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+  POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  JWT_TOKEN_SIGNING_KEY: ${{ secrets.JWT_TOKEN_SIGNING_KEY }}
+  JWT_TOKEN_EXPIRES_IN: ${{ secrets.JWT_TOKEN_EXPIRES_IN }}
+  PASSWORD_SALT: ${{ secrets.PASSWORD_SALT }}
+  VITE_APP_URL: ${{ vars.VITE_APP_URL }}
+  VITE_API_URL: ${{ vars.VITE_API_URL }}
+  VITE_MAPS_ENABLED: ${{ vars.VITE_MAPS_ENABLED }}
+  VITE_YMAPS_API_KEY: ${{ vars.VITE_YMAPS_API_KEY }}
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-24.04
+    environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Create .env file
+        run: env | grep -E 'VITE_' > ./frontend/.env
       - name: Build images
         run: |
-          rm ./frontend/.env
           docker build ./backend -t ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
           docker build ./frontend -t ${{ secrets.DOCKER_HUB_USER }}/charity-app-frontend:latest
       - name: Push images to docker hub
@@ -24,17 +41,22 @@ jobs:
 
   pull-and-run:
     runs-on: ubuntu-24.04
+    environment: production
     needs: build-and-publish
     steps:
+      - name: Create .env file
+        run: env | grep -E 'APP_|POSTGRES_|JWT_|PASSWORD_' > .env
       - name: Pull and run images on EC2
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
           chmod 600 key.pem
+          scp -o StrictHostKeyChecking=no -i key.pem .env ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/charity-app/.env
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            cd charity-app
             docker stop charity-app-backend || true
             docker rm charity-app-backend || true
             docker pull ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
-            docker run -d -p 8000:8000 --network charity-app --name charity-app-backend ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
+            docker run -d -p 8000:8000 --network charity-app --env-file .env --name charity-app-backend ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
 
             docker stop charity-app-frontend || true
             docker rm charity-app-frontend || true

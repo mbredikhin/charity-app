@@ -4,12 +4,20 @@ Frontend for the charity web app
 
 ## Getting started
 
+Copy the .env.example file to .env.local:
+
+```bash
+cp .env.example .env.local
+```
+
+Install dependencies and run dev server:
+
 ```
 npm install
 npm run dev
 ```
 
-After that dev server is available on address http://localhost:8001/
+The dev server is available at http://localhost:8001/
 
 ## How to use maps feature?
 

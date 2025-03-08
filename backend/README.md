@@ -1,26 +1,41 @@
 # charity-app-backend
 
-REST API backend for the charity web app
+A REST API backend for the charity website.
+
+## Prerequisites
+
+Docker must be installed on your system.
 
 ## Getting started
 
-You need docker to be installed in your system
+Copy the .env.example file to .env.local:
+
+```bash
+cp .env.example .env.local
+```
+
+Build an image and run it:
 
 ```bash
 make build
 make run
+```
+
+Run database migrations and seed data:
+
+```bash
 make migrate-up
 make seed
 ```
 
-API is available on address http://localhost:3000/
+The API is available at http://localhost:8000/
 
-Credentials of test users:
+Test users' credentials:
 
-```
-user-1@site.com password
-user-2@site.com password
-```
+| Username        | Password |
+| --------------- | -------- |
+| user-1@site.com | password |
+| user-2@site.com | password |
 
 ## API Reference
 
