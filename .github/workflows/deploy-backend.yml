@@ -2,7 +2,7 @@ name: Deploy backend
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   workflow_dispatch:
 env:
   APP_PORT: ${{ secrets.APP_PORT }}
@@ -47,5 +47,5 @@ jobs:
             docker stop charity-app-backend || true
             docker rm charity-app-backend || true
             docker pull ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
-            docker run -d -p 8000:8000 --network charity-app --env-file .env --name charity-app-backend ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
+            docker run -d -p 8000:8000 --network charity-app --env-file .env --name charity-app-backend --restart=always ${{ secrets.DOCKER_HUB_USER }}/charity-app-backend:latest
           EOF

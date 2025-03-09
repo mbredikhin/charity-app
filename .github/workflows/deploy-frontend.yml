@@ -2,7 +2,7 @@ name: Deploy frontend
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   workflow_dispatch:
 env:
   VITE_APP_URL: ${{ vars.VITE_APP_URL }}
@@ -39,5 +39,5 @@ jobs:
             docker stop charity-app-frontend || true
             docker rm charity-app-frontend || true
             docker pull ${{ secrets.DOCKER_HUB_USER }}/charity-app-frontend:latest
-            docker run -d -p 8001:80 --name charity-app-frontend ${{ secrets.DOCKER_HUB_USER }}/charity-app-frontend:latest
+            docker run -d -p 8001:80 --name charity-app-frontend --restart=always ${{ secrets.DOCKER_HUB_USER }}/charity-app-frontend:latest
           EOF
