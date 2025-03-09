@@ -10,9 +10,9 @@ export class ServerErrorHandler {
   }
 
   async handle(error, httpInstance) {
-    const { status, config } = error.response;
+    const { config } = error.response;
     const retriesCount = config?.retriesCount ?? 0;
-    if (status === 500 && retriesCount < ServerErrorHandler.maxRetries) {
+    if (retriesCount < ServerErrorHandler.maxRetries) {
       config.retriesCount = retriesCount + 1;
       return httpInstance.request(config);
     }
@@ -30,9 +30,9 @@ export class ServerErrorHandler {
   }
 }
 
-export class ForbiddenErrorHandler {
+export class UnauthorizedErrorHandler {
   canHandle(error) {
-    return error.response && error.response.status === 403;
+    return error.response?.status === 401;
   }
 
   async handle() {
@@ -42,7 +42,7 @@ export class ForbiddenErrorHandler {
   }
 }
 
-let handlers = [new ServerErrorHandler(), new ForbiddenErrorHandler()];
+let handlers = [new ServerErrorHandler(), new UnauthorizedErrorHandler()];
 
 export const errorHandler = async (error, httpInstance) => {
   for await (let handler of handlers) {
