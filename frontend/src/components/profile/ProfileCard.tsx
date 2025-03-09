@@ -38,7 +38,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'baseline', gap: '5px' }}>
           <Typography variant="subtitle2">{`Статус:`} </Typography>
-          <Typography variant="body2">{`${profile?.status}`}</Typography>
+          <Typography variant="body2">{`${profile.status}`}</Typography>
         </Box>
       </CardContent>
       <CardActions sx={{ padding: '20px' }}>

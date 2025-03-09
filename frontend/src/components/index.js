@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { AppHeader } from './appHeader/AppHeader';
-import { ProfileCard } from './profile/ProfileCard';
+import { ProfileCard, ProfilePersonalData } from './profile';
 import { AuthForm } from './authForm/AuthForm';
 import { Requests } from './requests/Requests';
 import { CatalogFilters } from './catalog/CatalogFilters';
@@ -12,7 +12,6 @@ import { AppFooter } from './appFooter/AppFooter';
 import { Request } from './request/Request';
 import { RequestCard } from './requestCard/RequestCard';
 import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup.jsx';
-import { ProfilePersonalInfo } from './profilePersonalInfo/ProfilePersonalInfo';
 import { FavoriteButton } from './favoriteButton/FavoriteButton';
 const Map = lazy(() => import('./map/Map.tsx'));
 
@@ -30,7 +29,7 @@ export {
   Request,
   RequestCard,
   RequestsLayoutButtonGroup,
-  ProfilePersonalInfo,
+  ProfilePersonalData,
   FavoriteButton,
   Map,
 };

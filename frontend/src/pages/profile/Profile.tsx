@@ -14,7 +14,7 @@ import {
   Contacts,
   ProfileCard,
   Requests,
-  ProfilePersonalInfo,
+  ProfilePersonalData,
   RequestsLayoutButtonGroup,
 } from '@/components';
 import { toList, donationNotify } from '@/utils/common';
@@ -72,7 +72,7 @@ export function Profile() {
   const tabs = [
     {
       label: 'Личные данные',
-      component: <ProfilePersonalInfo profile={profile} />,
+      component: <ProfilePersonalData profile={profile} />,
     },
     {
       label: 'Контакты',
