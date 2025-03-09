@@ -10,7 +10,7 @@ import {
   ProfileSocials,
 } from '@/models/profile.model';
 import { Location } from '@/models/location.model';
-import { PoolClient } from 'pg';
+import { escapeLiteral, PoolClient } from 'pg';
 import {
   Organization,
   Request,
@@ -125,7 +125,7 @@ class Seeder {
     value: string | number | boolean | null | undefined
   ): string {
     if (typeof value === 'string') {
-      return `'${value.replaceAll("'", `\'`).replaceAll('"', `\"`)}'`;
+      return escapeLiteral(value);
     } else if ([null, undefined].includes(value as null | undefined)) {
       return 'NULL';
     }
