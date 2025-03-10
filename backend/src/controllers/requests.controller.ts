@@ -20,7 +20,7 @@ export class RequestsController {
       const requests = await this.service.getAllRequests();
       return new ApiResponse(StatusCodes.OK, requests).send(res);
     } catch (error: any) {
-      return new ApiError(error.status, error.message).send(res);
+      return new ApiError(error.status, error.message, error.errors).send(res);
     }
   }
   async getRequest(req: Request, res: Response) {
@@ -28,7 +28,7 @@ export class RequestsController {
       const request = await this.service.getRequest(+req.params.id);
       return new ApiResponse(StatusCodes.OK, request).send(res);
     } catch (error: any) {
-      return new ApiError(error.status, error.message).send(res);
+      return new ApiError(error.status, error.message, error.errors).send(res);
     }
   }
   async getFavouriteRequests(req: Request, res: Response) {
@@ -38,7 +38,7 @@ export class RequestsController {
       );
       return new ApiResponse(StatusCodes.OK, requestsIds).send(res);
     } catch (error: any) {
-      return new ApiError(error.status, error.message).send(res);
+      return new ApiError(error.status, error.message, error.errors).send(res);
     }
   }
   async addRequestToFavourites(req: Request, res: Response) {
@@ -49,7 +49,7 @@ export class RequestsController {
       );
       return new ApiResponse(StatusCodes.CREATED, { status: 'ok' }).send(res);
     } catch (error: any) {
-      return new ApiError(error.status, error.message).send(res);
+      return new ApiError(error.status, error.message, error.errors).send(res);
     }
   }
   async removeRequestFromFavourites(req: Request, res: Response) {
@@ -60,7 +60,7 @@ export class RequestsController {
       );
       return new ApiResponse(StatusCodes.OK, { status: 'ok' }).send(res);
     } catch (error: any) {
-      return new ApiError(error.status, error.message).send(res);
+      return new ApiError(error.status, error.message, error.errors).send(res);
     }
   }
 }

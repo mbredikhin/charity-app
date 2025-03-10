@@ -16,7 +16,7 @@ export class AuthController {
       const token = await this.service.getAuthToken(email, password);
       return new ApiResponse(StatusCodes.OK, token).send(res);
     } catch (error: any) {
-      return new ApiError(error.status, error.message).send(res);
+      return new ApiError(error.status, error.message, error.errors).send(res);
     }
   }
 }

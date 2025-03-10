@@ -15,7 +15,7 @@ export class ProfileController {
       const profile = await this.service.getProfile(res.locals.user_id);
       return new ApiResponse(StatusCodes.OK, profile).send(res);
     } catch (error: any) {
-      return new ApiError(error.status, error.message).send(res);
+      return new ApiError(error.status, error.message, error.errors).send(res);
     }
   }
 }

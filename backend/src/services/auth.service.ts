@@ -13,9 +13,17 @@ export class AuthService {
       process.env.JWT_TOKEN_SIGNING_KEY as string,
       process.env.PASSWORD_SALT as string
     );
-    const user = await this.repository.findUser(email, passwordHash);
+    const user = await this.repository.findUser(email);
     if (!user) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials');
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials', {
+        email: ['There is no user registered with this email address'],
+      });
+    }
+    const ok = await this.repository.matchCredentials(email, passwordHash);
+    if (!ok) {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid credentials', {
+        password: ['Invalid password'],
+      });
     }
     const token = generateJwtToken({ user_id: user.id });
     return token;
