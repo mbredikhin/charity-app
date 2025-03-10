@@ -51,9 +51,13 @@ class UnauthorizedErrorHandler {
   }
 
   async handle() {
-    apiService.removeHeader('Authorization');
-    localStorage.removeItem('token');
-    window.location.replace(routes.login());
+    if (apiService.http.defaults.headers.common.Authorization) {
+      apiService.removeHeader('Authorization');
+      localStorage.removeItem('token');
+    }
+    if (window.location.pathname !== routes.login()) {
+      window.location.replace(routes.login());
+    }
   }
 }
 

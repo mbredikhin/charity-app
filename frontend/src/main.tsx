@@ -7,7 +7,7 @@ import {
   Profile,
   NotFound,
   Catalog,
-  SignIn,
+  Login,
   Request,
 } from './pages';
 import { PrivateRoute } from './components';
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       {
         path: routes.login(),
-        element: <SignIn />,
+        element: <Login />,
       },
       {
         path: routes.profile(),

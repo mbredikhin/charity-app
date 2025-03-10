@@ -13,7 +13,10 @@ class ApiService {
     this.http.interceptors.response.use(
       (response) => response.data,
       async (error) => {
-        return (await errorHandler(error, this.http)) ?? Promise.reject(error);
+        return (
+          (await errorHandler(error, this.http)) ??
+          Promise.reject(error.response.data)
+        );
       }
     );
   }

@@ -1,0 +1,13 @@
+.login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+  overflow-y: hidden;
+}
+
+.login-section {
+  padding: 64px 120px;
+  &--bordered {
+    border-right: 1px solid var(--gray-color);
+  }
+}

@@ -1,0 +1,10 @@
+.login-form {
+  display: grid;
+  gap: 48px;
+}
+
+.form {
+  display: grid;
+  grid-template-rows: 48px repeat(2, 80px);
+  gap: 16px;
+}

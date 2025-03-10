@@ -5,3 +5,5 @@ export const routes = {
   catalog: () => '/catalog',
   catalogRequest: (requestId: number) => `/catalog/${requestId}`,
 };
+
+export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

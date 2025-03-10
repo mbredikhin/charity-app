@@ -1,4 +1,4 @@
-import { Pagination } from '@/types';
+import { ApiError, Pagination } from '@/types';
 import { useEffect, useState } from 'react';
 
 export function useRequest<
@@ -27,7 +27,7 @@ export function useRequest<
 }
 
 export function createAsyncAction<
-  S extends { data?: any; loading: boolean; error: Error | null },
+  S extends { data?: any; loading: boolean; error: Error | ApiError | null },
   P extends any[],
   D extends Partial<S['data']>,
   M extends (data: S['data']) => D,

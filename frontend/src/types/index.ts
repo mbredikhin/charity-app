@@ -1,5 +1,18 @@
 import { Request } from '@/entities/request';
 
+export interface Pagination {
+  page: number;
+  from: number;
+  to: number;
+  total: number;
+  pagesCount: number;
+}
+
+export interface ApiError {
+  message: string;
+  errors?: Record<string, string[]>;
+}
+
 export interface CatalogFilters {
   requester_type: Request['requester_type'][];
   help_type: Request['help_type'][];
@@ -10,10 +23,7 @@ export interface CatalogFilters {
   };
 }
 
-export interface Pagination {
-  page: number;
-  from: number;
-  to: number;
-  total: number;
-  pagesCount: number;
+export interface LoginCredentials {
+  email: string;
+  password: string;
 }

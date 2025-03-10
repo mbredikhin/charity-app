@@ -12,9 +12,9 @@ export type Set<S = Store> = (f: (store: S) => void) => void;
 const middlewares = (f: StateCreator<Store>) => devtools(immer(f));
 
 export const useStore = create<Store>()(
-  middlewares((set) => ({
-    ...createAuthSlice(set as Set),
-    ...createProfileSlice(set as Set),
-    ...createCatalogSlice(set as Set),
+  middlewares((set: Set) => ({
+    ...createAuthSlice(set),
+    ...createProfileSlice(set),
+    ...createCatalogSlice(set),
   }))
 );

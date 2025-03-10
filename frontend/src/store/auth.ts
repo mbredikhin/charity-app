@@ -2,6 +2,7 @@ import apiService from '@/api/api.service';
 import authorizationService from '@/api/authorization.service';
 import { createAsyncAction } from '@/hooks';
 import { Set } from '.';
+import { ApiError, LoginCredentials } from '@/types';
 
 interface AuthState {
   auth: {
@@ -9,16 +10,14 @@ interface AuthState {
       isAuthenticated: boolean;
     };
     loading: boolean;
-    error: Error | null;
+    error: ApiError | null;
   };
 }
 
 export interface AuthSlice extends AuthState {
   setAuth: (data: AuthState['auth']['data']) => void;
-  signIn: (credentials: {
-    email: string;
-    password: string;
-  }) => Promise<{ isAuthenticated: true }>;
+  login: (credentials: LoginCredentials) => Promise<AuthState['auth']['data']>;
+  resetError: () => void;
   signOut: () => void;
 }
 
@@ -39,10 +38,10 @@ export const createAuthSlice = (set: Set): AuthSlice => ({
       auth.data = data;
     });
   },
-  signIn: createAsyncAction(
+  login: createAsyncAction(
     (f) => set(({ auth }) => f(auth)),
     async (credentials) => {
-      const token = await authorizationService.signIn(credentials);
+      const token = await authorizationService.login(credentials);
       apiService.addHeader({
         name: 'Authorization',
         value: `Bearer ${token}`,
@@ -55,6 +54,11 @@ export const createAuthSlice = (set: Set): AuthSlice => ({
     localStorage.removeItem('token');
     set(({ auth }) => {
       auth.data.isAuthenticated = false;
+    });
+  },
+  resetError: () => {
+    set(({ auth }) => {
+      auth.error = null;
     });
   },
 });
