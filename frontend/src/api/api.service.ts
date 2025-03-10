@@ -18,11 +18,11 @@ class ApiService {
     );
   }
 
-  addHeader({ name, value }) {
+  addHeader({ name, value }: { name: string; value: string }) {
     this.http.defaults.headers.common[name] = value;
   }
 
-  removeHeader(name) {
+  removeHeader(name: string) {
     delete this.http.defaults.headers.common[name];
   }
 }

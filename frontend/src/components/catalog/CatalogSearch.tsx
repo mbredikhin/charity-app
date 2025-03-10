@@ -6,13 +6,14 @@ import {
   Typography,
 } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import { ChangeEvent } from 'react';
 
 interface CatalogSearchProps {
   onChange: (search: string) => void;
 }
 
 export function CatalogSearch({ onChange }: CatalogSearchProps) {
-  function changeSearch(event) {
+  function changeSearch(event: ChangeEvent<HTMLInputElement>) {
     onChange(event.target.value);
   }
 

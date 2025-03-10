@@ -50,7 +50,7 @@ export function Requests({
           {currentPageRequests.map((request) => (
             <RequestCard
               key={request.id}
-              layout={layout}
+              layout={layout as Exclude<RequestsProps['layout'], 'map'>}
               request={request}
               onAddToFavourites={onAddRequestToFavourites}
               onRemoveFromFavourites={onRemoveRequestFromFavourites}

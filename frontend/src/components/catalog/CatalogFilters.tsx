@@ -98,18 +98,20 @@ export function CatalogFilters({
   }
 
   function renderFilters(path: string) {
-    return get(filtersSchema, path).map(({ label, value }, index) => (
-      <FormControlLabel
-        key={index}
-        label={label}
-        control={
-          <Checkbox
-            checked={get(filters, path).includes(value)}
-            onChange={() => changeFilter(path, value)}
-          />
-        }
-      />
-    ));
+    return get(filtersSchema, path).map(
+      ({ label, value }: FilterSchema, index: number) => (
+        <FormControlLabel
+          key={index}
+          label={label}
+          control={
+            <Checkbox
+              checked={get(filters, path).includes(value)}
+              onChange={() => changeFilter(path, value)}
+            />
+          }
+        />
+      )
+    );
   }
 
   return (

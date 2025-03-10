@@ -18,6 +18,7 @@ import {
   RequestsLayoutButtonGroup,
 } from '@/components';
 import { toList, donationNotify } from '@/utils/common';
+import { Profile as IProfile } from '@/entities/profile';
 
 export function Profile() {
   const [
@@ -36,7 +37,7 @@ export function Profile() {
     removeRequestFromFavourites,
   ] = useStore(
     useShallow((state) => [
-      state.profile.data,
+      state.profile.data as IProfile,
       state.profile.loading,
       state.fetchProfile,
 
@@ -58,7 +59,7 @@ export function Profile() {
   );
   const [tabIndex, setTabIndex] = useState(0);
 
-  function changeTab(index) {
+  function changeTab(index: number) {
     if (!tabs[index].disabled) {
       setTabIndex(index);
     }

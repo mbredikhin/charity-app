@@ -75,7 +75,10 @@ export function RequestCard({
     (request.request_goal_current_value / request.request_goal) * 100
   );
 
-  const getImage = (requesterType, helpType) => {
+  const getImage = (
+    requesterType: Request['requester_type'],
+    helpType: Request['help_type']
+  ) => {
     if (requesterType === 'organization') {
       return img2;
     } else if (helpType === 'finance') {

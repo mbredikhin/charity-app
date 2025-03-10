@@ -29,7 +29,7 @@ export function HeaderMenu({ onLogout }: HeaderMenuProps) {
     setOpen(false);
   };
 
-  const goTo = (path) => {
+  const goTo = (path: string) => {
     navigate(path);
     setOpen(false);
   };

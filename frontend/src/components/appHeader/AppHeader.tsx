@@ -12,7 +12,7 @@ import Logo from '@/assets/images/Logo.svg?react';
 import { ChevronRight } from '@mui/icons-material';
 import { HeaderMenu } from './HeaderMenu';
 import { useStore } from '@/store';
-import { routes } from '@/utils/constants.js';
+import { routes } from '@/utils/constants';
 
 interface AppHeaderProps {
   isAuthenticated: boolean;

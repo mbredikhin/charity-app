@@ -10,8 +10,16 @@ const ActionButton = styled(Button)(() => ({
   height: '40px',
 }));
 
-export function RequestsLayoutButtonGroup({ layout, changeLayout }) {
-  const buttons = [
+interface RequestsLayoutButtonGroupProps {
+  layout: 'vertical' | 'horizontal' | 'map';
+  changeLayout: (layout: 'vertical' | 'horizontal' | 'map') => void;
+}
+
+export function RequestsLayoutButtonGroup({
+  layout,
+  changeLayout,
+}: RequestsLayoutButtonGroupProps) {
+  const buttons: { layout: 'vertical' | 'horizontal' | 'map'; icon: any }[] = [
     {
       layout: 'vertical',
       icon: {
@@ -34,7 +42,7 @@ export function RequestsLayoutButtonGroup({ layout, changeLayout }) {
               baseStyle: <Room color="action" />,
               activeStyle: <Room sx={{ color: 'black' }} />,
             },
-          },
+          } as { layout: 'vertical' | 'horizontal' | 'map'; icon: any },
         ]
       : []),
   ];

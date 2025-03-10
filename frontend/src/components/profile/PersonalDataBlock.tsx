@@ -28,7 +28,7 @@ export function PersonalDataBlock({ title, entries }: PersonalDataBlockProps) {
         </Typography>
       ) : null}
       {Array.isArray(entries[0][0])
-        ? entries.map((group, groupIndex) => (
+        ? (entries as PersonalDataEntry[][]).map((group, groupIndex) => (
             <Box key={groupIndex}>{renderEntries(group)}</Box>
           ))
         : renderEntries(entries as PersonalDataEntry[])}

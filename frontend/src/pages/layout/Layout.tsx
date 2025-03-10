@@ -26,7 +26,13 @@ const cx = classnames.bind(styles);
   }
 })();
 
-function fallbackRender({ error, resetErrorBoundary }) {
+function fallbackRender({
+  error,
+  resetErrorBoundary,
+}: {
+  error: Error;
+  resetErrorBoundary: () => void;
+}) {
   return (
     <Box
       sx={{ display: 'flex', margin: '50vh 20vw', justifyContent: 'center' }}

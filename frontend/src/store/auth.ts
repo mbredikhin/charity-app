@@ -1,8 +1,28 @@
-import apiService from '@/api/api.service.js';
-import authorizationService from '@/api/authorization.service.js';
+import apiService from '@/api/api.service';
+import authorizationService from '@/api/authorization.service';
 import { createAsyncAction } from '@/hooks';
+import { Set } from '.';
 
-const initialState = {
+interface AuthState {
+  auth: {
+    data: {
+      isAuthenticated: boolean;
+    };
+    loading: boolean;
+    error: Error | null;
+  };
+}
+
+export interface AuthSlice extends AuthState {
+  setAuth: (data: AuthState['auth']['data']) => void;
+  signIn: (credentials: {
+    email: string;
+    password: string;
+  }) => Promise<{ isAuthenticated: true }>;
+  signOut: () => void;
+}
+
+const initialState: AuthState = {
   auth: {
     data: {
       isAuthenticated: false,
@@ -12,7 +32,7 @@ const initialState = {
   },
 };
 
-export const createAuthSlice = (set) => ({
+export const createAuthSlice = (set: Set): AuthSlice => ({
   ...initialState,
   setAuth: (data) => {
     set(({ auth }) => {

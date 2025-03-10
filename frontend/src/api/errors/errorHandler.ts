@@ -1,16 +1,31 @@
 import { toast } from 'react-toastify';
 import apiService from '../api.service';
 import { routes } from '@/utils/constants';
+import {
+  AxiosError,
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
-export class ServerErrorHandler {
+type RequestConfig = InternalAxiosRequestConfig & {
+  retriesCount?: number;
+};
+
+type Response = AxiosResponse & { config: RequestConfig };
+
+class ServerErrorHandler {
   static maxRetries = 3;
 
-  canHandle(error) {
+  canHandle(error: AxiosError) {
     return error.response?.status === 500;
   }
 
-  async handle(error, httpInstance) {
-    const { config } = error.response;
+  async handle(error: AxiosError, httpInstance: AxiosInstance) {
+    if (!error.response) {
+      return;
+    }
+    const { config }: Response = error.response;
     const retriesCount = config?.retriesCount ?? 0;
     if (retriesCount < ServerErrorHandler.maxRetries) {
       config.retriesCount = retriesCount + 1;
@@ -30,8 +45,8 @@ export class ServerErrorHandler {
   }
 }
 
-export class UnauthorizedErrorHandler {
-  canHandle(error) {
+class UnauthorizedErrorHandler {
+  canHandle(error: AxiosError) {
     return error.response?.status === 401;
   }
 
@@ -44,7 +59,10 @@ export class UnauthorizedErrorHandler {
 
 let handlers = [new ServerErrorHandler(), new UnauthorizedErrorHandler()];
 
-export const errorHandler = async (error, httpInstance) => {
+export const errorHandler = async (
+  error: AxiosError,
+  httpInstance: AxiosInstance
+) => {
   for await (let handler of handlers) {
     if (handler.canHandle(error)) {
       return await handler.handle(error, httpInstance);

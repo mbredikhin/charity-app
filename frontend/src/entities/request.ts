@@ -1,3 +1,5 @@
+import { omit } from '@/utils/common';
+
 export interface RequestDto {
   id: number;
   title: string;
@@ -40,7 +42,5 @@ export interface Request extends RequestDto {
 }
 
 export function toRequestDto(request: Request): RequestDto {
-  const dto = { ...request };
-  delete dto.is_favourite;
-  return dto;
+  return omit(request, ['is_favourite']);
 }

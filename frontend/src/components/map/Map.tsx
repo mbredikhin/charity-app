@@ -16,7 +16,9 @@ import styles from './Map.module.scss';
 import classnames from 'classnames/bind';
 const cx = classnames.bind(styles);
 
-function getLocationLimits(coordinates) {
+type Coords = [lat: number, lon: number];
+
+function getLocationLimits(coordinates: Coords[]) {
   const latitudes = coordinates.map(([latitude]) => latitude);
   const longitudes = coordinates.map(([, longitude]) => longitude);
   const maxLat = Math.max(...latitudes);
@@ -37,12 +39,12 @@ function Map({ requests }: MapProps) {
   const coordinates = requests.reduce(
     (acc, request) => [
       ...acc,
-      ...request.locations.map(({ latitude, longitude }) => [
+      ...(request.locations.map(({ latitude, longitude }) => [
         latitude,
         longitude,
-      ]),
+      ]) as Coords[]),
     ],
-    []
+    [] as Coords[]
   );
 
   const markersGeoJsonSource: Omit<YMapMarkerProps, 'popup'>[] =

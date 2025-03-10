@@ -28,9 +28,9 @@ export function ProfilePersonalData({ profile }: ProfilePersonalDataProps) {
     {
       title: 'Дата рождения',
       entries: [
-        ['', new Date(birthdate).toLocaleDateString()],
+        ['', new Date(birthdate ?? '').toLocaleDateString()],
       ] as PersonalDataEntry[],
-      visible: true,
+      visible: Boolean(birthdate),
     },
     {
       title: 'Локации для помощи',
@@ -61,7 +61,9 @@ export function ProfilePersonalData({ profile }: ProfilePersonalDataProps) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
       {blocks.map(({ title, entries, visible }) =>
-        visible ? <PersonalDataBlock title={title} entries={entries} /> : null
+        visible ? (
+          <PersonalDataBlock key={title} title={title} entries={entries} />
+        ) : null
       )}
     </Box>
   );

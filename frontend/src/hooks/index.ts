@@ -16,14 +16,14 @@ export function useRequest<
       const result: R = await request(...args);
       setLoading(false);
       return result;
-    } catch (err) {
+    } catch (error) {
       setLoading(false);
-      setError(err);
-      throw err;
+      setError(error as Error);
+      throw error;
     }
   }
 
-  return [sendRequest, loading, error];
+  return [sendRequest, loading, error as Error];
 }
 
 export function createAsyncAction<
@@ -59,7 +59,7 @@ export function createAsyncAction<
     } catch (error) {
       set((state) => {
         state.loading = false;
-        state.error = error;
+        state.error = error as Error;
       });
       throw error;
     }

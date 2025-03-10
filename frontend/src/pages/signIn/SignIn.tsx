@@ -16,7 +16,7 @@ export function SignIn() {
   const signIn = useStore((state) => state.signIn);
   const navigate = useNavigate();
 
-  async function login(credentials) {
+  async function login(credentials: { email: string; password: string }) {
     await signIn(credentials);
     navigate(routes.profile());
   }

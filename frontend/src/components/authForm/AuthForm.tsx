@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import {
   Box,
   Typography,
@@ -27,23 +27,23 @@ export function AuthForm({ loading, error, onSubmit }: AuthFormProps) {
   const theme = useTheme();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: MouseEvent) => {
     event.preventDefault();
   };
-  const handleMouseUpPassword = (event) => {
+  const handleMouseUpPassword = (event: MouseEvent) => {
     event.preventDefault();
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault();
     onSubmit({ email, password });
   };
 
-  const handleEmailInputChange = (event) => {
+  const handleEmailInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value.trim());
   };
 
-  const handlePassInputChange = (event) => {
+  const handlePassInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value.trim());
   };
 
@@ -108,6 +108,7 @@ export function AuthForm({ loading, error, onSubmit }: AuthFormProps) {
               onChange={handlePassInputChange}
               endAdornment={
                 <InputAdornment position="end">
+                  {/* @ts-ignore */}
                   <IconButton
                     aria-label={
                       showPassword

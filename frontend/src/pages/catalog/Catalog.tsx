@@ -24,16 +24,17 @@ const getInitialFilters = (): ICatalogFilters => ({
 });
 
 function filterRequests(
-  search: string,
+  search: string | null,
   filters: ICatalogFilters,
   requests: Request[]
 ) {
   return requests.filter((request) => {
     const isMatchedBySearch =
       !search || request.title.toLowerCase().includes(search.toLowerCase());
-    const isMatchedByFilters = Object.entries(flatten(filters)).every(
-      ([path, value]: [string, (string | boolean)[]]) =>
-        !value.length || value.includes(get(request, path))
+    const isMatchedByFilters = (
+      Object.entries(flatten(filters)) as [string, (string | boolean)[]][]
+    ).every(
+      ([path, value]) => !value.length || value.includes(get(request, path))
     );
     return isMatchedBySearch && isMatchedByFilters;
   });
@@ -56,7 +57,7 @@ export function Catalog() {
       state.removeRequestFromFavourites,
     ])
   );
-  const [search, setSearch] = useState<string>(null);
+  const [search, setSearch] = useState<string | null>(null);
   const [filters, setFilters] = useState(getInitialFilters());
   const [layout, setLayout] = useState<'vertical' | 'horizontal' | 'map'>(
     'vertical'

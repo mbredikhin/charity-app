@@ -3,5 +3,5 @@ export const routes = {
   login: () => '/login',
   profile: () => '/profile',
   catalog: () => '/catalog',
-  catalogRequest: (requestId) => `/catalog/${requestId}`,
+  catalogRequest: (requestId: number) => `/catalog/${requestId}`,
 };

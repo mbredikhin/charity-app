@@ -6,7 +6,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { donationNotify } from '@/utils/common';
 
 function RequestPage() {
-  const { requestId } = useParams();
+  const { requestId = 0 } = useParams();
   const [
     request,
     isLoadingCatalog,
@@ -14,7 +14,7 @@ function RequestPage() {
     removeRequestFromFavourites,
   ] = useStore(
     useShallow((state) => [
-      state.catalog.data.requests[requestId],
+      state.catalog.data.requests[+requestId],
       state.catalog.loading,
       state.addRequestToFavourites,
       state.removeRequestFromFavourites,

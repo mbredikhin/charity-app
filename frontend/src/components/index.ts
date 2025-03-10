@@ -11,9 +11,9 @@ import { Contacts } from './contacts/Contacts';
 import { AppFooter } from './appFooter/AppFooter';
 import { Request } from './request/Request';
 import { RequestCard } from './requestCard/RequestCard';
-import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup.jsx';
+import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup';
 import { FavoriteButton } from './favoriteButton/FavoriteButton';
-const Map = lazy(() => import('./map/Map.tsx'));
+const Map = lazy(() => import('./map/Map'));
 
 export {
   AppHeader,
