@@ -7,7 +7,6 @@ import { CatalogFilters } from './catalog/CatalogFilters';
 import { CatalogSearch } from './catalog/CatalogSearch';
 import { PrivateRoute } from './privateRoute/PrivateRoute';
 import { Contacts } from './contacts/Contacts';
-import { AppFooter } from './appFooter/AppFooter';
 import { Request } from './request/Request';
 import { RequestCard } from './requestCard/RequestCard';
 import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup';
@@ -24,7 +23,6 @@ export {
   Accounts,
   Contacts,
   PrivateRoute,
-  AppFooter,
   Request,
   RequestCard,
   RequestsLayoutButtonGroup,

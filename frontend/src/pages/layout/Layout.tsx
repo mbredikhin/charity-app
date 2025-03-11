@@ -5,7 +5,6 @@ import styles from './Layout.module.scss';
 import classnames from 'classnames/bind';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
-import { AppFooter } from '@/components';
 import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
 import apiService from '@/api/api.service';
 import { useEffect } from 'react';
@@ -85,9 +84,6 @@ export function Layout() {
         >
           <Outlet />
           <ToastContainer />
-        </Box>
-        <Box className={cx('layout__footer')}>
-          <AppFooter />
         </Box>
       </ErrorBoundary>
     </Box>
