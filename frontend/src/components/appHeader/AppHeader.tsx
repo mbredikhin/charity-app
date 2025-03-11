@@ -10,9 +10,12 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/images/Logo.svg?react';
 import { ChevronRight } from '@mui/icons-material';
-import { HeaderMenu } from './HeaderMenu';
+import { AppHeaderMenu } from './AppHeaderMenu';
 import { useStore } from '@/store';
 import { routes } from '@/utils/constants';
+import styles from './AppHeader.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 interface AppHeaderProps {
   isAuthenticated: boolean;
@@ -29,31 +32,15 @@ export function AppHeader({ isAuthenticated }: AppHeaderProps) {
   }
 
   return (
-    <AppBar sx={{ borderRadius: 0 }} elevation={2} position="static">
-      <Paper sx={{ borderRadius: 0 }} elevation={0}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '84px',
-          }}
-        >
-          <Toolbar
-            disableGutters
-            sx={{
-              flexGrow: 1,
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              maxWidth: '1500px',
-              height: '64px',
-            }}
-          >
-            <Box sx={{ cursor: 'pointer' }}>
+    <AppBar className={cx(['app-header'])} elevation={2} position="static">
+      <Paper className={cx(['paper'])} elevation={0}>
+        <Box className={cx(['content'])}>
+          <Toolbar className={cx(['toolbar'])} disableGutters>
+            <Box className={cx(['logo'])}>
               <Logo onClick={() => navigate(routes.profile())} />
             </Box>
 
-            <Box display="flex" justifyContent="center">
+            <Box className={cx(['wrapper', 'wrapper--content-center'])}>
               <Link
                 underline="hover"
                 color="inherit"
@@ -66,9 +53,9 @@ export function AppHeader({ isAuthenticated }: AppHeaderProps) {
               </Link>
             </Box>
 
-            <Box display="flex" justifyContent="end">
+            <Box className={cx(['wrapper', 'wrapper--content-end'])}>
               {isAuthenticated ? (
-                <HeaderMenu onLogout={logout} />
+                <AppHeaderMenu onLogout={logout} />
               ) : location.pathname === routes.login() ? null : (
                 <Button
                   color="inherit"

@@ -12,27 +12,45 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/utils/constants';
 
-interface HeaderMenuProps {
+interface MenuItem {
+  text: string;
+  icon: JSX.Element;
+  onClick: () => void;
+}
+
+interface AppHeaderMenuProps {
   onLogout: () => void;
 }
 
-export function HeaderMenu({ onLogout }: HeaderMenuProps) {
+export function AppHeaderMenu({ onLogout }: AppHeaderMenuProps) {
   const menuActivator = useRef(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const menuItems: MenuItem[] = [
+    {
+      text: 'Мой профиль',
+      icon: <PersonIcon />,
+      onClick: openProfile,
+    },
+    {
+      text: 'Выйти',
+      icon: <LogoutIcon />,
+      onClick: onLogout,
+    },
+  ];
 
-  const onActivatorClick = () => {
+  function toggle() {
     setOpen(!open);
-  };
+  }
 
-  const handleClose = () => {
+  function close() {
     setOpen(false);
-  };
+  }
 
-  const goTo = (path: string) => {
-    navigate(path);
+  function openProfile() {
     setOpen(false);
-  };
+    navigate(routes.profile());
+  }
 
   return (
     <div>
@@ -40,7 +58,7 @@ export function HeaderMenu({ onLogout }: HeaderMenuProps) {
         ref={menuActivator}
         size="small"
         color="inherit"
-        onClick={onActivatorClick}
+        onClick={toggle}
       >
         <Avatar />
       </IconButton>
@@ -55,20 +73,14 @@ export function HeaderMenu({ onLogout }: HeaderMenuProps) {
           horizontal: 'right',
         }}
         open={open}
-        onClose={handleClose}
+        onClose={close}
       >
-        <MenuItem onClick={() => goTo(routes.profile())}>
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText>Мой профиль</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={onLogout}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText>Выйти</ListItemText>
-        </MenuItem>
+        {menuItems.map(({ text, icon, onClick }) => (
+          <MenuItem key={text} onClick={onClick}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText>{text}</ListItemText>
+          </MenuItem>
+        ))}
       </Menu>
     </div>
   );

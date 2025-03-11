@@ -1,0 +1,36 @@
+.app-header {
+  border-radius: 0;
+}
+
+.paper {
+  border-radius: 0;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 84px;
+}
+
+.toolbar {
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1500px;
+  height: 64px;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.wrapper {
+  display: flex;
+  &--content-center {
+    justify-content: center;
+  }
+  &--content-end {
+    justify-content: end;
+  }
+}
