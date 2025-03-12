@@ -11,7 +11,7 @@ import {
 import { useStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import {
-  Contacts,
+  ProfileContacts,
   ProfileCard,
   Requests,
   ProfilePersonalData,
@@ -78,7 +78,10 @@ export function Profile() {
     {
       label: 'Контакты',
       component: (
-        <Contacts contacts={profile.contacts} socials={profile.socials} />
+        <ProfileContacts
+          contacts={profile.contacts}
+          socials={profile.socials}
+        />
       ),
     },
     {

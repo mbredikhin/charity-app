@@ -6,7 +6,7 @@ import { Requests } from './requests/Requests';
 import { CatalogFilters } from './catalog/CatalogFilters';
 import { CatalogSearch } from './catalog/CatalogSearch';
 import { PrivateRoute } from './privateRoute/PrivateRoute';
-import { Contacts } from './contacts/Contacts';
+import { ProfileContacts } from './profile/ProfileContacts';
 import { Request } from './request/Request';
 import { RequestCard } from './requestCard/RequestCard';
 import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup';
@@ -21,7 +21,7 @@ export {
   CatalogSearch,
   LoginForm,
   Accounts,
-  Contacts,
+  ProfileContacts,
   PrivateRoute,
   Request,
   RequestCard,
