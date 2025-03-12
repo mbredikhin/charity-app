@@ -7,6 +7,9 @@ import {
 } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { ChangeEvent } from 'react';
+import styles from './CatalogSearch.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 interface CatalogSearchProps {
   onChange: (search: string) => void;
@@ -18,14 +21,7 @@ export function CatalogSearch({ onChange }: CatalogSearchProps) {
   }
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        padding: '20px 36px 40px',
-        display: 'grid',
-        gap: '20px',
-      }}
-    >
+    <Paper className={cx('catalog-search')} variant="outlined">
       <Typography variant="h6">Найти запрос</Typography>
       <FormControl component="fieldset" variant="standard">
         <TextField
