@@ -1,10 +1,13 @@
 import { Box, Paper, Typography, Stack } from '@mui/material';
 import { SyntheticEvent } from 'react';
 import VerifiedIcon from '@/assets/images/verified.svg?react';
-import CheckCircleDisabledIcon from '@/assets/images/check-circle-disabled.svg?react';
-import CheckCircleCheckedIcon from '@/assets/images/check-circle-checked.svg?react';
+import CheckCircle from '@/assets/images/check-circle.svg?react';
 import { Request as IRequest } from '@/entities/request';
 import { FavoriteButton } from '@/components';
+import { formatDate } from '@/utils/dates';
+import styles from './Request.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 interface RequestProps {
   request: IRequest;
@@ -27,24 +30,10 @@ export function Request({
     onAddToFavourites(request.id);
   }
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        padding: '40px 36px',
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '30px',
-        }}
-      >
-        <Stack
-          direction="row"
-          sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-        >
-          <Typography variant="h4" sx={{ maxWidth: '60%' }}>
+    <Paper className={cx('request')} variant="outlined">
+      <Box className={cx('request-container')}>
+        <Stack className={cx('request-header')} direction="row">
+          <Typography variant="h4" className={cx('request-header__title')}>
             {request.title}
           </Typography>
           <FavoriteButton
@@ -53,13 +42,7 @@ export function Request({
             addToFavourites={addToFavourites}
           />
         </Stack>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
+        <Box className={cx('request-section')}>
           <Typography variant="h6">Организация</Typography>
           <Stack sx={{ gap: '4px' }}>
             <Typography variant="body2">
@@ -67,62 +50,39 @@ export function Request({
             </Typography>
             {request.organization.is_verified ? (
               <Typography
+                className={cx('request__organization-badge')}
                 variant="caption"
-                sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}
               >
                 <VerifiedIcon /> Организация проверена
               </Typography>
             ) : null}
           </Stack>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
+        <Box className={cx('request-section')}>
           <Typography variant="h6">Кому мы помогаем</Typography>
           <Typography variant="body2">{request.description}</Typography>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
+        <Box className={cx('request-section')}>
           <Typography variant="h6">Цель сбора</Typography>
           <Typography variant="body2">{request.goal_description}</Typography>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
+        <Box className={cx('request-section')}>
           <Typography variant="h6">План действий</Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-            }}
-          >
+          <Box className={cx('request-subsection')}>
             {request.actions_schedule.map((step, index) => (
               <Typography
                 key={index}
                 variant="body2"
-                sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                className={cx('request-step')}
               >
                 {
                   <>
-                    {step.is_done ? (
-                      <CheckCircleCheckedIcon />
-                    ) : (
-                      <CheckCircleDisabledIcon />
-                    )}
+                    <CheckCircle
+                      className={cx({
+                        'check-icon': true,
+                        'check-icon--disabled': !step.is_done,
+                      })}
+                    />
                     {step.step_label}
                   </>
                 }
@@ -130,88 +90,43 @@ export function Request({
             ))}
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
+        <Box className={cx('request-section')}>
           <Typography variant="h6">Завершение</Typography>
           <Typography variant="body2">
-            {new Date(request.ending_date).toLocaleDateString()}
+            {formatDate(request.ending_date)}
           </Typography>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
+        <Box className={cx('request-section')}>
           <Typography variant="h6">Локация</Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-            }}
-          >
+          <Box className={cx('request-subsection')}>
             {request.locations.map((location, index) => (
-              <div key={index}>
-                <div>
+              <Box key={index}>
+                <Box>
                   <Typography variant="subtitle2">Область: </Typography>
                   <Typography variant="body2">{location.district}</Typography>
-                </div>
-                <div>
+                </Box>
+                <Box>
                   <Typography variant="subtitle2">Насленный пункт: </Typography>
                   <Typography variant="body2">{location.city}</Typography>
-                </div>
-              </div>
+                </Box>
+              </Box>
             ))}
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
+        <Box className={cx('request-section')}>
           <Typography variant="h6">Контакты</Typography>
           <Box
-            sx={{
-              display: 'flex',
-              gap: '80px',
-            }}
+            className={cx(['request-subsection', 'request-subsection--row'])}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '4px',
-              }}
-            >
+            <Box className={cx('request__contact')}>
               <Typography variant="subtitle2">Телефон</Typography>
               <Typography variant="body2">{request.contacts.phone}</Typography>
             </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '4px',
-              }}
-            >
+            <Box className={cx('request__contact')}>
               <Typography variant="subtitle2">E-mail</Typography>
               <Typography variant="body2">{request.contacts.email}</Typography>
             </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '4px',
-              }}
-            >
+            <Box className={cx('request__contact')}>
               <Typography variant="subtitle2">Сайт</Typography>
               <Typography variant="body2">
                 {request.contacts.website}

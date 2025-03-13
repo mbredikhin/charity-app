@@ -1,0 +1,61 @@
+.request {
+  padding: 40px 36px;
+}
+
+.request-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.request-header {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.request-header__title {
+  max-width: 60%;
+}
+
+.request-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.request-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  &--row {
+    flex-direction: row;
+    gap: 80px;
+  }
+}
+
+.request-step {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.check-icon {
+  &--disabled {
+    path {
+      fill: black;
+      fill-opacity: 0.38;
+    }
+  }
+}
+
+.request__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.request__organization-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
