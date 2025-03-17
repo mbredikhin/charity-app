@@ -82,17 +82,19 @@ export function Requests({
   return (
     <div className={cx('requests-wrapper')} style={{ position: 'relative' }}>
       {renderRequests()}
-      {requests.length && !isMapActive ? (
-        <Pagination
-          color="primary"
-          size="large"
-          boundaryCount={1}
-          page={pagination.page}
-          count={pagination.pagesCount}
-          onChange={(_, page) => goToPage(page)}
-          sx={{ mb: '28px' }}
-        />
-      ) : null}
+      <Box className={cx('requests-pagination')}>
+        {requests.length && !isMapActive ? (
+          <Pagination
+            color="primary"
+            size="large"
+            boundaryCount={1}
+            page={pagination.page}
+            count={pagination.pagesCount}
+            onChange={(_, page) => goToPage(page)}
+            sx={{ mb: '28px' }}
+          />
+        ) : null}
+      </Box>
     </div>
   );
 }

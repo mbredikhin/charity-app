@@ -1,7 +1,6 @@
 .requests-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 30px;
 }
 .requests {
@@ -13,4 +12,9 @@
   &--horizontal {
     grid-template-rows: repeat(3, 322px);
   }
+}
+
+.requests-pagination {
+  display: flex;
+  justify-content: center;
 }
