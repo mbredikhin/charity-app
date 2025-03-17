@@ -3,7 +3,7 @@ import { SyntheticEvent } from 'react';
 import VerifiedIcon from '@/assets/images/verified.svg?react';
 import CheckCircle from '@/assets/images/check-circle.svg?react';
 import { Request as IRequest } from '@/entities/request';
-import { FavoriteButton } from '@/components';
+import { FavouriteButton } from './FavouriteButton';
 import { formatDate } from '@/utils/dates';
 import styles from './Request.module.scss';
 import classnames from 'classnames/bind';
@@ -36,7 +36,7 @@ export function Request({
           <Typography variant="h4" className={cx('request-header__title')}>
             {request.title}
           </Typography>
-          <FavoriteButton
+          <FavouriteButton
             request={request}
             removeFromFavourites={removeFromFavourites}
             addToFavourites={addToFavourites}

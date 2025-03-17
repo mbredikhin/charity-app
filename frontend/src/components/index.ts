@@ -8,9 +8,8 @@ import { CatalogSearch } from './catalog/CatalogSearch';
 import { PrivateRoute } from './privateRoute/PrivateRoute';
 import { ProfileContacts } from './profile/ProfileContacts';
 import { Request } from './request/Request';
-import { RequestCard } from './requestCard/RequestCard';
+import { RequestCard } from './request/RequestCard';
 import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup';
-import { FavoriteButton } from './favoriteButton/FavoriteButton';
 const Map = lazy(() => import('./map/Map'));
 
 export {
@@ -27,6 +26,5 @@ export {
   RequestCard,
   RequestsLayoutButtonGroup,
   ProfilePersonalData,
-  FavoriteButton,
   Map,
 };

@@ -17,20 +17,20 @@ import { Request } from '@/entities/request';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/utils/constants';
 import { SyntheticEvent } from 'react';
-import { FavoriteButton } from '@/components';
+import { FavouriteButton } from './FavouriteButton';
 import img1 from '@/assets/images/card-image-1.svg';
 import img2 from '@/assets/images/card-image-2.svg';
 import img3 from '@/assets/images/card-image-3.svg';
 
 const styles = {
-  favoriteButton: {
+  favouriteButton: {
     minWidth: '32px',
     height: '32px',
     width: '32px',
     p: 0,
     border: '1px solid rgba(0, 0, 0, 0.12)',
   },
-  favoriteButtonIcon: {
+  favouriteButtonIcon: {
     color: 'rgba(0, 0, 0, 0.56)',
   },
   gap: {
@@ -134,18 +134,18 @@ export function RequestCard({
             {request.is_favourite ? (
               <Button
                 variant="outlined"
-                sx={styles.favoriteButton}
+                sx={styles.favouriteButton}
                 onClick={removeFromFavourites}
               >
-                <StarIcon sx={styles.favoriteButtonIcon} />
+                <StarIcon sx={styles.favouriteButtonIcon} />
               </Button>
             ) : (
               <Button
                 variant="outlined"
                 onClick={addToFavourites}
-                sx={styles.favoriteButton}
+                sx={styles.favouriteButton}
               >
-                <StarBorderIcon sx={styles.favoriteButtonIcon} />
+                <StarBorderIcon sx={styles.favouriteButtonIcon} />
               </Button>
             )}
           </Box>
@@ -345,11 +345,13 @@ export function RequestCard({
               </Typography>
             </Box>
           </Stack>
-          <FavoriteButton
-            request={request}
-            removeFromFavourites={removeFromFavourites}
-            addToFavourites={addToFavourites}
-          />
+          <Stack height="32px">
+            <FavouriteButton
+              request={request}
+              removeFromFavourites={removeFromFavourites}
+              addToFavourites={addToFavourites}
+            />
+          </Stack>
         </Card>
       )}
       {layout === 'compact' && (
