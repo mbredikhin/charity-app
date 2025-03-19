@@ -1,12 +1,15 @@
+import { lazy } from 'react';
 import { Request } from '@/entities/request';
 import { Pagination, Box, Typography, CircularProgress } from '@mui/material';
-import { RequestCard, Map } from '@/components';
+import { RequestCard } from '@/components';
 import { usePagination } from '@/hooks';
 import { Suspense, useEffect } from 'react';
 import NotFoundResult from '@/assets/images/not-found-result.svg?react';
 import styles from './Requests.module.scss';
 import classnames from 'classnames/bind';
 const cx = classnames.bind(styles);
+
+const RequestsMap = lazy(() => import('./RequestsMap'));
 
 interface RequestsProps {
   requests: Request[];
@@ -47,7 +50,7 @@ export function Requests({
     <Box className={cx('requests-wrapper')}>
       {isMapActive ? (
         <Suspense fallback={<CircularProgress />}>
-          <Map requests={requests} />;
+          <RequestsMap requests={requests} />;
         </Suspense>
       ) : (
         <Box className={cx(['requests', `requests--${layout}`])}>

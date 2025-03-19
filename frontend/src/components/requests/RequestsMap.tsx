@@ -12,30 +12,27 @@ import type {
   LngLatBounds,
 } from 'ymaps3';
 import { Request } from '@/entities/request';
-import styles from './Map.module.scss';
+import { Box } from '@mui/material';
+import styles from './RequestsMap.module.scss';
 import classnames from 'classnames/bind';
 const cx = classnames.bind(styles);
 
-type Coords = [lat: number, lon: number];
-
-function getLocationLimits(coordinates: Coords[]) {
-  const latitudes = coordinates.map(([latitude]) => latitude);
-  const longitudes = coordinates.map(([, longitude]) => longitude);
-  const maxLat = Math.max(...latitudes);
-  const minLat = Math.min(...latitudes);
-  const maxLng = Math.max(...longitudes);
-  const minLng = Math.min(...longitudes);
-  return [
-    [maxLat, minLng],
-    [minLat, maxLng],
-  ] as LngLatBounds;
-}
-
-interface MapProps {
+interface RequestsMapProps {
   requests: Request[];
 }
 
-function Map({ requests }: MapProps) {
+type Coords = [lat: number, lon: number];
+
+function getBounds(coordinates: Coords[]) {
+  const latitudes = coordinates.map(([latitude]) => latitude);
+  const longitudes = coordinates.map(([, longitude]) => longitude);
+  return [
+    [Math.max(...latitudes), Math.min(...longitudes)],
+    [Math.min(...latitudes), Math.max(...longitudes)],
+  ] as LngLatBounds;
+}
+
+function RequestsMap({ requests }: RequestsMapProps) {
   const coordinates = requests.reduce(
     (acc, request) => [
       ...acc,
@@ -46,29 +43,28 @@ function Map({ requests }: MapProps) {
     ],
     [] as Coords[]
   );
-
-  const markersGeoJsonSource: Omit<YMapMarkerProps, 'popup'>[] =
-    coordinates.map((latLong) => ({
+  const markers: Omit<YMapMarkerProps, 'popup'>[] = coordinates.map(
+    (latLong) => ({
       coordinates: [...latLong] as LngLat,
-    }));
-
-  const location: YMapLocationRequest = {
-    bounds: getLocationLimits(coordinates),
+    })
+  );
+  const defaultLocation: YMapLocationRequest = {
+    bounds: getBounds(coordinates),
   };
 
   return (
-    <div style={{ width: '1000px', height: '850px' }}>
-      <YMap location={reactify.useDefault(location)}>
+    <Box className={cx('requests-map')}>
+      <YMap location={reactify.useDefault(defaultLocation)}>
         <YMapDefaultSchemeLayer />
         <YMapDefaultFeaturesLayer />
-        {markersGeoJsonSource.map((markerSource, i) => (
-          <YMapMarker key={i} {...markerSource}>
-            <div className={cx('marker')}></div>
+        {markers.map((marker, index) => (
+          <YMapMarker key={index} {...marker}>
+            <div className={cx('requests-map__marker')}></div>
           </YMapMarker>
         ))}
       </YMap>
-    </div>
+    </Box>
   );
 }
 
-export default Map;
+export default RequestsMap;
