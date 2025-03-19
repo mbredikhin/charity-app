@@ -14,10 +14,10 @@
 }
 
 .profile-socials {
-  display: 'flex';
-  gap: 14px;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .profile-socials__text {

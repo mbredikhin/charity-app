@@ -1,0 +1,30 @@
+.profile-card {
+  width: 320px;
+  height: 436px;
+}
+
+.profile-card-avatar {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card-content {
+  height: 95px;
+  padding: 20px;
+  margin-bottom: 5px;
+}
+
+.profile-card-status {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.profile-card-actions {
+  padding: 20px;
+}
+
+.profile-card-actions__logout-button {
+  width: 280px;
+  height: 42px;
+}

@@ -2,6 +2,9 @@ import { Box } from '@mui/material';
 import { Profile } from '@/entities/profile';
 import { PersonalDataBlock } from './PersonalDataBlock';
 import { PersonalDataEntry } from './lib';
+import styles from './ProfilePersonalData.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 interface ProfilePersonalDataProps {
   profile: Profile;
@@ -59,7 +62,7 @@ export function ProfilePersonalData({ profile }: ProfilePersonalDataProps) {
     },
   ];
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <Box className={cx('profile-personal-data')}>
       {blocks.map(({ title, entries, visible }) =>
         visible ? (
           <PersonalDataBlock key={title} title={title} entries={entries} />

@@ -1,9 +1,26 @@
+.fallback-render {
+  display: flex;
+  justify-content: center;
+  margin: 50vh 20vw;
+}
+
+.fallback-render__error {
+  color: red;
+}
+
+.fallback-render-footer {
+  display: flex;
+  justify-content: end;
+  padding: 10px 0 0;
+}
+
 .layout__header {
   position: sticky;
   top: 0;
   height: 84px;
   z-index: 100;
 }
+
 .layout__main-content {
   overflow-y: scroll;
   min-height: 75vh;

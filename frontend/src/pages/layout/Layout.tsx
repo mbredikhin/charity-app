@@ -33,19 +33,13 @@ function fallbackRender({
   resetErrorBoundary: () => void;
 }) {
   return (
-    <Box
-      sx={{ display: 'flex', margin: '50vh 20vw', justifyContent: 'center' }}
-    >
+    <Box className={cx('fallback-render')}>
       <Alert severity="error">
         <AlertTitle>Something went wrong:</AlertTitle>
-        <Typography style={{ color: 'red' }}>{error.message}</Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'end',
-            padding: '10px 0 0',
-          }}
-        >
+        <Typography className={cx('fallback-render__error')}>
+          {error.message}
+        </Typography>
+        <Box className={cx('fallback-render-footer')}>
           <Button size="small" color="secondary" onClick={resetErrorBoundary}>
             Go to home page
           </Button>

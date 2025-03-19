@@ -1,0 +1,19 @@
+.requests-layout-button-group {
+  border: 2px;
+}
+
+.requests-layout-button-group__icon {
+  &--active {
+    color: black;
+  }
+}
+
+.requests-layout-button-group__action-button {
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  &--active {
+    background-color: #f5f5f5;
+  }
+}

@@ -54,7 +54,12 @@
   gap: 4px;
 }
 
-.request__organization-badge {
+.request-organization {
+  display: flex;
+  gap: 4px;
+}
+
+.request-organization__badge {
   display: flex;
   align-items: center;
   gap: 5px;

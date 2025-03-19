@@ -5,6 +5,15 @@
   padding: 20px 20px 30px;
   height: fit-content;
 }
+
+.catalog-filters-accordion {
+  border: none;
+}
+
+.catalog-filters-accordion-details {
+  padding: 0;
+}
+
 .catalog-filters-form {
   &--secondary {
     display: flex;
@@ -16,7 +25,16 @@
     border: none;
   }
 }
+
 .catalog-filters-form__title {
   border: 1px solid #00000010;
   padding-left: 42px;
+}
+
+.catalog-filters-form-group {
+  padding-left: 10px;
+}
+
+.catalog-filters-footer {
+  margin-top: 20px;
 }

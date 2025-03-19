@@ -1,0 +1,32 @@
+.catalog__title {
+  margin-bottom: 20px;
+}
+
+.catalog-content {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 20px;
+}
+
+.catalog-main-content {
+  display: grid;
+  grid-template-rows: 150px auto;
+  gap: 20px;
+}
+
+.catalog-error {
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.catalog-requests-wrapper {
+  padding: 12px 36px;
+}
+
+.catalog-requests {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}

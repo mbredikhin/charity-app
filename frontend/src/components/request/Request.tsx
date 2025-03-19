@@ -44,19 +44,19 @@ export function Request({
         </Stack>
         <Box className={cx('request-section')}>
           <Typography variant="h6">Организация</Typography>
-          <Stack sx={{ gap: '4px' }}>
+          <Box className={cx('request-organization')}>
             <Typography variant="body2">
               {request.organization.title}
             </Typography>
             {request.organization.is_verified ? (
               <Typography
-                className={cx('request__organization-badge')}
+                className={cx('request-organization__badge')}
                 variant="caption"
               >
                 <VerifiedIcon /> Организация проверена
               </Typography>
             ) : null}
-          </Stack>
+          </Box>
         </Box>
         <Box className={cx('request-section')}>
           <Typography variant="h6">Кому мы помогаем</Typography>

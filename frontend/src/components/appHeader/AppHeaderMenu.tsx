@@ -1,4 +1,5 @@
 import {
+  Box,
   IconButton,
   ListItemIcon,
   ListItemText,
@@ -53,7 +54,7 @@ export function AppHeaderMenu({ onLogout }: AppHeaderMenuProps) {
   }
 
   return (
-    <div>
+    <Box>
       <IconButton
         ref={menuActivator}
         size="small"
@@ -82,6 +83,6 @@ export function AppHeaderMenu({ onLogout }: AppHeaderMenuProps) {
           </MenuItem>
         ))}
       </Menu>
-    </div>
+    </Box>
   );
 }

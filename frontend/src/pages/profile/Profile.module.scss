@@ -1,0 +1,27 @@
+.profile__title {
+  margin-bottom: 20px;
+}
+
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 20px;
+}
+
+.profile-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 12px 36px;
+  min-height: 982px;
+}
+
+.profile-main-content-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-tabs {
+  max-width: fit-content;
+  display: inline-flex;
+}
