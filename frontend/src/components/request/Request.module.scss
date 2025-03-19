@@ -42,7 +42,7 @@
 .check-icon {
   &--disabled {
     path {
-      fill: black;
+      fill: var(--black-color);
       fill-opacity: 0.38;
     }
   }

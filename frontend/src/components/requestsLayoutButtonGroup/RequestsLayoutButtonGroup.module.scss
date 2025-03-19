@@ -4,7 +4,7 @@
 
 .requests-layout-button-group__icon {
   &--active {
-    color: black;
+    color: var(--black-color);
   }
 }
 
@@ -12,8 +12,8 @@
   padding: 8px;
   width: 40px;
   height: 40px;
-  background-color: white;
+  background-color: var(--white-color);
   &--active {
-    background-color: #f5f5f5;
+    background-color: var(--gray-light-color);
   }
 }

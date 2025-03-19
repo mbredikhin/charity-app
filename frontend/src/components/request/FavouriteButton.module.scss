@@ -5,8 +5,8 @@
   max-width: 135px;
   padding: 5px 10px;
   text-transform: none;
-  color: #000000;
-  border: solid 2px #f5f5f5;
+  color: var(--black-color);
+  border: solid 2px var(--gray-light-color);
   white-space: nowrap;
   &--sm {
     min-width: 0;
