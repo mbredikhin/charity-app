@@ -1,4 +1,3 @@
-import { lazy } from 'react';
 import { AppHeader } from './appHeader/AppHeader';
 import { ProfileCard, ProfilePersonalData } from './profile';
 import { LoginForm, Accounts } from './login';
@@ -10,7 +9,6 @@ import { ProfileContacts } from './profile/ProfileContacts';
 import { Request } from './request/Request';
 import { RequestCard } from './request/RequestCard';
 import { RequestsLayoutButtonGroup } from './requestsLayoutButtonGroup/RequestsLayoutButtonGroup';
-const Map = lazy(() => import('./map/Map'));
 
 export {
   AppHeader,
@@ -26,5 +24,4 @@ export {
   RequestCard,
   RequestsLayoutButtonGroup,
   ProfilePersonalData,
-  Map,
 };
