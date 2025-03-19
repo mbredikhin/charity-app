@@ -82,12 +82,12 @@ export function usePagination<T extends any>(
   const [currentPageData, setCurrentPageData] = useState<T[]>([]);
 
   function goToPage(page: number) {
-    setPagination((pagination) => ({
+    setPagination({
       ...pagination,
       page,
       from: (page - 1) * limit + 1,
       to: page * limit,
-    }));
+    });
   }
 
   function goToPrevPage() {
@@ -103,16 +103,23 @@ export function usePagination<T extends any>(
   }
 
   useEffect(() => {
-    setCurrentPageData(data.slice(pagination.from - 1, pagination.to));
-  }, [data, pagination]);
-
-  useEffect(() => {
+    if (data.length === 0) {
+      return;
+    }
+    const pagesCount = Math.ceil(data.length / limit);
+    const page = pagination.page > pagesCount ? pagesCount : pagination.page;
     setPagination({
-      ...pagination,
+      page,
+      from: limit * (page - 1) + 1,
+      to: limit * page,
       total: data.length,
-      pagesCount: Math.ceil(data.length / limit),
+      pagesCount,
     });
   }, [data.length, limit]);
+
+  useEffect(() => {
+    setCurrentPageData(data.slice(pagination.from - 1, pagination.to));
+  }, [pagination, data]);
 
   return [currentPageData, pagination, goToPage, goToPrevPage, goToNextPage];
 }
