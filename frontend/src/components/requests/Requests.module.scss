@@ -1,8 +1,15 @@
 .requests-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 30px;
+  &--no-result {
+    min-height: 800px;
+    justify-content: center;
+    align-items: center;
+  }
 }
+
 .requests {
   display: grid;
   &--vertical {
@@ -10,11 +17,12 @@
     gap: 24px;
   }
   &--horizontal {
-    grid-template-rows: repeat(3, 322px);
+    grid-template-rows: repeat(3, 320px);
   }
 }
 
 .requests-pagination {
   display: flex;
   justify-content: center;
+  padding-bottom: 28px;
 }
