@@ -4,6 +4,9 @@ import { Request, RequestCard } from '@/components';
 import { useStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import { donationNotify } from '@/utils/common';
+import styles from './Request.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 function RequestPage() {
   const { requestId = 0 } = useParams();
@@ -22,18 +25,12 @@ function RequestPage() {
   );
 
   return (
-    <div>
-      <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+    <Box>
+      <Typography className={cx('request__title')} variant="h4">
         Запрос на помощь
       </Typography>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: '4fr 1fr',
-          gap: '20px',
-        }}
-      >
+      <Box className={cx('request-content')}>
         {request && !isLoadingCatalog ? (
           <>
             <Request
@@ -51,7 +48,7 @@ function RequestPage() {
           </>
         ) : null}
       </Box>
-    </div>
+    </Box>
   );
 }
 

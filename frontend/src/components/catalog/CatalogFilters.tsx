@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   Checkbox,
   FormControl,
@@ -120,29 +121,27 @@ export function CatalogFilters({
 
       <FormControl component="fieldset" variant="standard">
         <FormLabel component="legend">Кому мы помогаем</FormLabel>
-        <FormGroup sx={{ paddingLeft: '10px' }}>
+        <FormGroup className={cx('catalog-filters-form-group')}>
           {renderFilters('requester_type')}
         </FormGroup>
       </FormControl>
 
       <FormControl component="fieldset" variant="standard">
         <FormLabel component="legend">Чем мы помогаем</FormLabel>
-        <FormGroup sx={{ paddingLeft: '10px' }}>
+        <FormGroup className={cx('catalog-filters-form-group')}>
           {renderFilters('help_type')}
         </FormGroup>
       </FormControl>
 
       <Accordion
+        className={cx('catalog-filters-accordion')}
         expanded
         variant="outlined"
-        sx={{
-          border: 'none',
-        }}
       >
         <AccordionSummary className={cx('catalog-filters-form__title')}>
           <Typography variant="body1">Волонтерство</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ padding: 0 }}>
+        <AccordionDetails className={cx('catalog-filters-accordion-details')}>
           <Paper
             variant="outlined"
             className={cx([
@@ -152,19 +151,19 @@ export function CatalogFilters({
           >
             <FormControl component="fieldset" variant="standard">
               <FormLabel component="legend">Специализация</FormLabel>
-              <FormGroup sx={{ paddingLeft: '10px' }}>
+              <FormGroup className={cx('catalog-filters-form-group')}>
                 {renderFilters('helper_requirements.qualification')}
               </FormGroup>
             </FormControl>
             <FormControl component="fieldset" variant="standard">
               <FormLabel component="legend">Формат</FormLabel>
-              <FormGroup sx={{ paddingLeft: '10px' }}>
+              <FormGroup className={cx('catalog-filters-form-group')}>
                 {renderFilters('helper_requirements.is_online')}
               </FormGroup>
             </FormControl>
             <FormControl component="fieldset" variant="standard">
               <FormLabel component="legend">Необходимо волонтеров</FormLabel>
-              <FormGroup sx={{ paddingLeft: '10px' }}>
+              <FormGroup className={cx('catalog-filters-form-group')}>
                 {renderFilters('helper_requirements.helper_type')}
               </FormGroup>
             </FormControl>
@@ -172,16 +171,17 @@ export function CatalogFilters({
         </AccordionDetails>
       </Accordion>
 
-      <Button
-        fullWidth
-        sx={{ marginTop: '20px' }}
-        color="inherit"
-        variant="outlined"
-        size="large"
-        onClick={onReset}
-      >
-        Сбросить
-      </Button>
+      <Box className={cx('catalog-filters-footer')}>
+        <Button
+          fullWidth
+          color="inherit"
+          variant="outlined"
+          size="large"
+          onClick={onReset}
+        >
+          Сбросить
+        </Button>
+      </Box>
     </Paper>
   );
 }

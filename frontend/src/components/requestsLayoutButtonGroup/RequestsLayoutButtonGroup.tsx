@@ -1,14 +1,8 @@
-import * as pt from 'prop-types';
-import { ButtonGroup, Button } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
 import { GridOnOutlined, ListAltOutlined, Room } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
-
-const ActionButton = styled(Button)(() => ({
-  padding: '8px',
-  width: '40px',
-  height: '40px',
-}));
+import styles from './RequestsLayoutButtonGroup.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 interface RequestsLayoutButtonGroupProps {
   layout: 'vertical' | 'horizontal' | 'map';
@@ -24,14 +18,28 @@ export function RequestsLayoutButtonGroup({
       layout: 'vertical',
       icon: {
         baseStyle: <GridOnOutlined color="action" />,
-        activeStyle: <GridOnOutlined sx={{ color: 'black' }} />,
+        activeStyle: (
+          <GridOnOutlined
+            className={cx([
+              'requests-layout-button-group__icon',
+              'requests-layout-button-group__icon--active',
+            ])}
+          />
+        ),
       },
     },
     {
       layout: 'horizontal',
       icon: {
         baseStyle: <ListAltOutlined color="action" />,
-        activeStyle: <ListAltOutlined sx={{ color: 'black' }} />,
+        activeStyle: (
+          <ListAltOutlined
+            className={cx([
+              'requests-layout-button-group__icon',
+              'requests-layout-button-group__icon--active',
+            ])}
+          />
+        ),
       },
     },
     ...(import.meta.env.VITE_MAPS_ENABLED === 'true'
@@ -40,7 +48,14 @@ export function RequestsLayoutButtonGroup({
             layout: 'map',
             icon: {
               baseStyle: <Room color="action" />,
-              activeStyle: <Room sx={{ color: 'black' }} />,
+              activeStyle: (
+                <Room
+                  className={cx([
+                    'requests-layout-button-group__icon',
+                    'requests-layout-button-group__icon--active',
+                  ])}
+                />
+              ),
             },
           } as { layout: 'vertical' | 'horizontal' | 'map'; icon: any },
         ]
@@ -49,34 +64,26 @@ export function RequestsLayoutButtonGroup({
 
   return (
     <ButtonGroup
+      className={cx('requests-layout-button-group')}
       variant="outlined"
       color="secondary"
-      sx={{
-        border: '2px',
-      }}
       aria-label="Buttons for choosing layout type for requests"
     >
-      {buttons.map((button) => {
-        const isButtonActive = button.layout === layout;
-        const backgroundColor = isButtonActive ? grey[100] : 'white';
-        const icon = isButtonActive
-          ? button.icon.activeStyle
-          : button.icon.baseStyle;
-        return (
-          <ActionButton
-            key={button.layout}
-            onClick={() => changeLayout(button.layout)}
-            sx={{ backgroundColor }}
-          >
-            {icon}
-          </ActionButton>
-        );
-      })}
+      {buttons.map((button) => (
+        <Button
+          className={cx({
+            'requests-layout-button-group__action-button': true,
+            'requests-layout-button-group__action-button--active':
+              button.layout === layout,
+          })}
+          key={button.layout}
+          onClick={() => changeLayout(button.layout)}
+        >
+          {button.layout === layout
+            ? button.icon.activeStyle
+            : button.icon.baseStyle}
+        </Button>
+      ))}
     </ButtonGroup>
   );
 }
-
-RequestsLayoutButtonGroup.propTypes = {
-  layout: pt.string,
-  changeLayout: pt.func,
-};

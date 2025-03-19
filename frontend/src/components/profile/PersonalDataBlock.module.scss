@@ -1,0 +1,15 @@
+.personal-data-block {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.personal-data-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.personal-data-group__title {
+  line-height: 3;
+}

@@ -19,6 +19,9 @@ import {
 } from '@/components';
 import { toList, donationNotify } from '@/utils/common';
 import { Profile as IProfile } from '@/entities/profile';
+import styles from './Profile.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 export function Profile() {
   const [
@@ -103,40 +106,18 @@ export function Profile() {
   ];
 
   return (
-    <div>
-      <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+    <Box>
+      <Typography className={cx('profile__title')} variant="h4">
         Мой профиль
       </Typography>
       {isLoadingProfile || !profile.full_name ? (
         <CircularProgress />
       ) : (
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 4fr',
-            gap: '20px',
-          }}
-        >
+        <Box className={cx('profile-content')}>
           <ProfileCard profile={profile} />
-          <Paper
-            variant="outlined"
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '30px',
-              padding: '12px 36px',
-              minHeight: '982px',
-            }}
-          >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Box
-                sx={{
-                  maxWidth: 'fit-content',
-                  display: 'inline-flex',
-                  borderBottom: 1,
-                  borderColor: 'divider',
-                }}
-              >
+          <Paper className={cx('profile-main-content')} variant="outlined">
+            <Box className={cx('profile-main-content-header')}>
+              <Box className={cx('profile-tabs')}>
                 <Tabs
                   value={tabIndex}
                   onChange={(_, index) => changeTab(index)}
@@ -173,6 +154,6 @@ export function Profile() {
           </Paper>
         </Box>
       )}
-    </div>
+    </Box>
   );
 }

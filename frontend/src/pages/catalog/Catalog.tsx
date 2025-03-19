@@ -12,6 +12,9 @@ import type { CatalogFilters as ICatalogFilters } from '@/types';
 import { useStore } from '@/store';
 import { useShallow } from 'zustand/react/shallow';
 import { Request } from '@/entities/request';
+import styles from './Catalog.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 const getInitialFilters = (): ICatalogFilters => ({
   requester_type: [],
@@ -71,50 +74,30 @@ export function Catalog() {
   }
 
   return (
-    <div>
-      <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+    <Box>
+      <Typography className={cx('catalog__title')} variant="h4">
         Запросы о помощи
       </Typography>
-      <Box
-        sx={{ display: 'grid', gridTemplateColumns: '1fr 4fr', gap: '20px' }}
-      >
+      <Box className={cx('catalog-content')}>
         <CatalogFilters
           filters={filters}
           onChange={setFilters}
           onReset={resetFilters}
         />
-        <Box
-          sx={{ display: 'grid', gridTemplateRows: '150px auto', gap: '20px' }}
-        >
+        <Box className={cx('catalog-main-content')}>
           <CatalogSearch onChange={setSearch} />
           {catalogError && !isLoadingCatalog ? (
             <Paper variant="outlined">
-              <Box
-                sx={{
-                  height: '500px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
+              <Box className={cx('catalog-error')}>
                 <ServerError />
               </Box>
             </Paper>
           ) : (
             <Paper
+              className={cx('catalog-requests-wrapper')}
               variant="outlined"
-              sx={{
-                padding: '12px 36px',
-              }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  mb: '20px',
-                }}
-              >
+              <Box className={cx('catalog-requests')}>
                 <Typography variant="h6">
                   Найдено: {filteredRequests.length}
                 </Typography>
@@ -138,6 +121,6 @@ export function Catalog() {
           )}
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 }

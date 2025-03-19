@@ -1,5 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { PersonalDataEntry } from './lib';
+import styles from './PersonalDataBlock.module.scss';
+import classnames from 'classnames/bind';
+const cx = classnames.bind(styles);
 
 interface PersonalDataBlockProps {
   title?: string;
@@ -10,10 +13,7 @@ export function PersonalDataBlock({ title, entries }: PersonalDataBlockProps) {
   function renderEntries(entries: PersonalDataEntry[]) {
     return entries.map(([title, value]) =>
       value ? (
-        <Box
-          key={title}
-          sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}
-        >
+        <Box className={cx('personal-data-block')} key={title}>
           {title ? <Typography variant="subtitle2">{title}</Typography> : null}
           <Typography variant="body2">{value}</Typography>
         </Box>
@@ -21,9 +21,9 @@ export function PersonalDataBlock({ title, entries }: PersonalDataBlockProps) {
     );
   }
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <Box className={cx('personal-data-group')}>
       {title ? (
-        <Typography variant="h6" sx={{ lineHeight: 3 }}>
+        <Typography className={cx('personal-data-group__title')} variant="h6">
           {title}
         </Typography>
       ) : null}
